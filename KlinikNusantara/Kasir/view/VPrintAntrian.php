@@ -1,5 +1,5 @@
 <?php
-require_once 'C:\xampp\htdocs\KlinikNusantara\vendor\autoload.php';
+require_once 'vendor/autoload.php';
 
 $antrian = $_GET['antrian'];
 $nama_ruangan = $_GET['nama_ruangan'];
