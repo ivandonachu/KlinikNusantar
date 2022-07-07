@@ -22,11 +22,10 @@ $tanggal_awal = $_GET['tanggal1'];
 $tanggal_akhir = $_GET['tanggal2'];
 $tanggal = htmlspecialchars($_POST['tanggal']);
 $nama_alkes = htmlspecialchars($_POST['nama_alkes']);
-$status = htmlspecialchars($_POST['status']);
 $qty = htmlspecialchars($_POST['qty']);
 $harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
-
+$status = 'PNB';
 if ($nama_file == "") {
 	$file = "";
 }
@@ -71,7 +70,7 @@ else if ( $nama_file != "" ) {
       
 
       //proses tambah stok alkes
-      if($status == 'Penambahan Stok'){
+      if($status == 'PNB'){
         $stok_alkes_baru = $stok_alkes + $qty;
         $jumlah = $qty * $harga;
       }

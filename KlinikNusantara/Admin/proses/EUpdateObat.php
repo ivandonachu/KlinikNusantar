@@ -23,7 +23,7 @@ $tanggal_awal = htmlspecialchars($_POST['tanggal1']);
 $tanggal_akhir = htmlspecialchars($_POST['tanggal2']);
 $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
 $nama_obat = htmlspecialchars($_POST['nama_obat']);
-$status = htmlspecialchars($_POST['status']);
+$status = 'PNB';
 $qty = htmlspecialchars($_POST['qty']);
 $harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
@@ -78,7 +78,7 @@ else if ( $nama_file != "" ) {
       $stok_obat = $data_obat['stok_obat'];
       
       if($nama_obat_ri == $nama_obat){
-        if($status == 'Penambahan Stok'){
+        if($status == 'PNB'){
           $stok_obat_baru = ($stok_obat - $qty_obat_ri) + $qty;
           $jumlah = $qty * $harga;
           
@@ -108,7 +108,7 @@ else if ( $nama_file != "" ) {
         }
       }
       else{
-        if($status == 'Penambahan Stok'){
+        if($status == 'PNB'){
           $stok_obat_baru_ri = $stok_obat_ri - $qty_obat_ri;
           $stok_obat_baru = $stok_obat + $qty;
           $jumlah = $qty * $harga;

@@ -27,7 +27,7 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
     $data_ri_alkes = mysqli_fetch_assoc($sql_ri_alkes);
     $qty_alkes_ri = $data_ri_alkes['qty'];
     $kode_alkes_ri = $data_ri_alkes['kode_alkes'];
-    $status = $data_ri_alkes['status'];
+    $status = $data_ri_alkes['kode_penggunaan'];
 
 
       //akses data alkes yang di input
@@ -37,7 +37,7 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
       $stok_alkes = $data_alkes['stok_alkes'];
    
 	
-      if($status == 'Penambahan Stok'){
+      if($status == 'PNB'){
         $stok_alkes_baru = $stok_alkes - $qty_alkes_ri;
         mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes_ri'");
         $query = mysqli_query($koneksi,"DELETE FROM riwayat_alkes WHERE no_riwayat = '$no_riwayat'");

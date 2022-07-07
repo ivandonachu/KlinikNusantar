@@ -123,6 +123,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
         <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPembayaran">Pembayaran</a>
             <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VDataPasien">Data Pasien</a>
             <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAntrian">Antrian</a>
+            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" target="_blank" href="VLiveAntrian">Live Antrian</a>
         </div>
     </div>
 </li>      
@@ -440,7 +441,7 @@ $d = $today->diff($tanggalx)->d;
  </div>
 
  <!-- Button Hapus -->
- <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Hapus Data Pasien'>
+ <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger mr-2 rounded" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Hapus Data Pasien'>
  <i class="fa-solid fa-trash"></i> Hapus</button>
  <div class="modal fade" id="PopUpHapus<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog" role ="document">
@@ -467,6 +468,88 @@ $d = $today->diff($tanggalx)->d;
    </div>
  </div>
 </div>
+
+<button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn btn-success mr-2 rounded" data-toggle="modal" data-target="#antrian<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Input Antrian Pasien'> 
+<i class="fa-solid fa-people-line"></i> Antrian</button>
+  <!-- Form EDIT DATA -->
+
+  <div class="modal fade" id="antrian<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg" role ="document">
+     <div class="modal-content"> 
+       <div class="modal-header">
+         <h5 class="modal-title"> Input Antrian Pasien </h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="close">
+           <span aria-hidden="true"> &times; </span>
+         </button>
+       </div>
+
+       <!-- Form Edit Data -->
+       <div class="modal-body">
+         <form action="../proses/PTambahAntrian" enctype="multipart/form-data" method="POST">
+
+         <div class="row">
+           <div class="col-md-6">
+             <label>Nama Pasien</label>
+             <input class="form-control form-control-sm" type="text"  name="id_pasien" value="<?= $nama_pasien; ?>" required="" disabled>
+             <input type="hidden" name="id_pasien" value="<?= $id_pasien; ?>">
+           </div>
+           <div class="col-md-6">
+             <label>Ruangan</label>
+            <select name="nama_ruangan" class="form-control form-control-sm">
+              <option>Ruangan 1</option>
+              <option>Ruangan 2</option>
+            </select>
+           </div>   
+
+         </div>
+          <br>
+         <div class="row">
+         <div class="col-md-6">
+          <div>
+          <label>Dokter</label>
+          </div>
+            
+  
+             <select id="tokens" class="selectpicker form-control" name="nama_dokter" multiple data-live-search="true">
+            <?php
+            include 'koneksi.php';
+         
+            $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
+            while ($data2 = mysqli_fetch_array($result)){
+              $nama_karyawan = $data2['nama_karyawan'];
+              $result2 = mysqli_query($koneksi, "SELECT nama_karyawan, username FROM karyawan a INNER JOIN account b on b.id_karyawan=a.id_karyawan WHERE nama_karyawan = '$nama_karyawan'");   
+              $data3 = mysqli_fetch_array($result2);
+              $nama_karyawanx = $data3['nama_karyawan'];
+
+  
+              if($nama_karyawanx == $nama_karyawan){
+
+              }
+              else{
+                echo "<option> $nama_karyawan </option> ";
+              }
+                
+             
+               }
+            ?>
+          </select>
+           </div> 
+            <div class="col-md-6">
+              <label>Keluhan Awal</label>
+              <textarea  class="form-control form-control-sm"  name="keluhan_awal" ></textarea>
+            </div>
+          </div>
+        <br>
+
+           <div class="modal-footer">
+             <button type="submit" class="btn btn-primary"> INPUT </button>
+             <button type="reset" class="btn btn-danger"> RESET</button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
 
 <?php echo  " </td> </tr>";
 }

@@ -27,7 +27,7 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
     $data_ri_obat = mysqli_fetch_assoc($sql_ri_obat);
     $qty_obat_ri = $data_ri_obat['qty'];
     $kode_obat_ri = $data_ri_obat['kode_obat'];
-    $status = $data_ri_obat['status'];
+    $status = $data_ri_obat['kode_penggunaan'];
 
 
       //akses data obat yang di input
@@ -37,7 +37,7 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
       $stok_obat = $data_obat['stok_obat'];
    
 	
-      if($status == 'Penambahan Stok'){
+      if($status == 'PNB'){
         $stok_obat_baru = $stok_obat - $qty_obat_ri;
         mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru' WHERE kode_obat =  '$kode_obat_ri'");
         $query = mysqli_query($koneksi,"DELETE FROM riwayat_obat WHERE no_riwayat = '$no_riwayat'");

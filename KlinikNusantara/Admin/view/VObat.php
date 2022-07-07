@@ -37,19 +37,23 @@ if (isset($_GET['tanggal1'])) {
 if(isset($_GET['kode_obat'])){
     $kode_obat = $_GET['kode_obat'];
     if ($tanggal_awal == $tanggal_akhir) {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan WHERE tanggal = '$tanggal_awal' AND a.kode_obat = '$kode_obat' ");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+        WHERE tanggal = '$tanggal_awal' AND a.kode_obat = '$kode_obat' ");
         $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
     } else {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND a.kode_obat = '$kode_obat' ORDER BY a.tanggal");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND a.kode_obat = '$kode_obat' ORDER BY a.tanggal");
         $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
     }
 }
 else{
     if ($tanggal_awal == $tanggal_akhir) {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan WHERE tanggal = '$tanggal_awal' ");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
+        WHERE tanggal = '$tanggal_awal' ");
         $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
     } else {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ORDER BY a.tanggal");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
+        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ORDER BY a.tanggal");
         $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
     }
 }
@@ -151,6 +155,7 @@ else{
                         <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VTindakan">List Tindakan</a>
                         <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VObat">List Obat</a>
                         <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAlatKesehatan">List Alat Kesehatan</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRuangan">List Ruangan</a>
                     </div>
                 </div>
             </li>
