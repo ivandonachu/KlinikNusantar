@@ -31,14 +31,17 @@ $tgl_daftar = date("Y-m-d");
     
 
         $id_pasien = 'PSN';
+        $id_rm = 'RM';
     
 
         $sql_data = mysqli_query($koneksi, "SELECT * FROM pasien  ");
         
         if(mysqli_num_rows($sql_data) == 0 ){
             $id_pasien_new = $id_pasien.$no_id;
-
-              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+            $id_rm_new = $id_rm.$no_id;
+            mysqli_query($koneksi,"INSERT INTO rekam_medis VALUES('$id_rm_new')");
+              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+              
                
                       echo "<script>alert('Data Pasien Berhasil di input'); window.location='../view/VDataPasien';</script>";exit;
         }
@@ -46,11 +49,12 @@ $tgl_daftar = date("Y-m-d");
         while(mysqli_fetch_array($sql_data)){
             $no_id = $no_id + 1;
             $id_pasien_new = $id_pasien.$no_id;
-
+            $id_rm_new = $id_rm.$no_id;
             $sql_cek = mysqli_query($koneksi, "SELECT * FROM pasien WHERE id_pasien = '$id_pasien_new' ");
             if(mysqli_num_rows($sql_cek) === 0 ){
-
-                mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+              mysqli_query($koneksi,"INSERT INTO rekam_medis VALUES('$id_rm_new')");
+              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+              
                
                        echo "<script>alert('Data Pasien Berhasil di input'); window.location='../view/VDataPasien';</script>";exit;
         

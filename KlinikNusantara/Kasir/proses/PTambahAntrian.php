@@ -18,14 +18,21 @@ else{  header("Location: logout.php");
 exit;
 }
 
-$nama_pasien = htmlspecialchars($_POST['nama_pasien']);
+$id_pasien = htmlspecialchars($_POST['id_pasien']);
 $nama_ruangan = htmlspecialchars($_POST['nama_ruangan']);
 $nama_dokter = htmlspecialchars($_POST['nama_dokter']);
 $keluhan_awal = htmlspecialchars($_POST['keluhan_awal']);
 $status_antrian = 'Menunggu' ;
 $tgl_antri = date("Y-m-d");
 
-        //akses data dokter
+    $result = mysqli_query($koneksi, "SELECT * FROM antrian WHERE id_pasien ='$id_pasien' AND tanggal = '$tgl_antri' AND status_antrian != 'Selesai' ");
+    if(mysqli_num_rows($result) == 1 ){
+    
+
+      echo "<script>alert('Pasien sudah dalam antrian hari ini'); window.location='../view/VDataPasien';</script>";exit;
+        }
+
+            //akses data dokter
         $sql_dokter = mysqli_query($koneksi, "SELECT id_karyawan FROM karyawan WHERE nama_karyawan = '$nama_dokter' ");
         $data_dokter = mysqli_fetch_assoc($sql_dokter);
         $id_dokter = $data_dokter['id_karyawan'];
@@ -42,6 +49,7 @@ $tgl_antri = date("Y-m-d");
      
 
 
+                    
      
         
 

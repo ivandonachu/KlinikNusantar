@@ -17,6 +17,14 @@
 /KlinikNusantara/Kasir/proses/logout.php
 /KlinikNusantara/Kasir/file_kasir
 
+/KlinikNusantara/Dokter/view/koneksi.php
+/KlinikNusantara/Dokter/view/logout.php
+/KlinikNusantara/Dokter/proses/koneksi.php
+/KlinikNusantara/Dokter/proses/logout.php
+/KlinikNusantara/Dokter/file_dokter
+
+
+
 /KlinikNusantara/Perawat/view/koneksi.php
 /KlinikNusantara/Perawat/view/logout.php
 /KlinikNusantara/Perawat/proses/koneksi.php

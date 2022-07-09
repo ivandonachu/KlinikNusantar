@@ -15,13 +15,35 @@ if ($jabatan_valid == 'Kasir') {
     header("Location: logout.php");
     exit;
 }
+$tanggal = date('Y-m-d');
+
+$sql_antrian_r1 = mysqli_query($koneksi, "SELECT kode_antrian FROM live_antrian WHERE kode_ruangan = 'RUA1' AND tanggal = '$tanggal' ORDER BY no_live DESC LIMIT 1");
+$data_antrian_r1 = mysqli_fetch_assoc($sql_antrian_r1);
+if( !isset( $data_antrian_r1['kode_antrian'])){
+    $kode_antrian_r1 = '00';
+}
+else{
+    $kode_antrian_r1 = $data_antrian_r1['kode_antrian'];
+}
+
+
+$sql_antrian_r2 = mysqli_query($koneksi, "SELECT kode_antrian FROM live_antrian WHERE kode_ruangan = 'RUA2' AND tanggal = '$tanggal' ORDER BY no_live DESC LIMIT 1");
+$data_antrian_r2 = mysqli_fetch_assoc($sql_antrian_r2);
+
+if( !isset( $data_antrian_r2['kode_antrian'])){
+    $kode_antrian_r2 = '00';
+}
+else{
+    $kode_antrian_r2 = $data_antrian_r2['kode_antrian'];
+}
+
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta http-equiv="refresh" content="5" />
+    <meta http-equiv="refresh" content="3" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -158,7 +180,15 @@ if ($jabatan_valid == 'Kasir') {
                 </tr>
                 <tr>
                     <td style="font-size: 50px;  color: #300030;">Aaa</td>
-                    <td align="center" style="font-size: 400px; color: #FFF;">A3</td>
+                    <?php 
+                        if($kode_antrian_r1 == ""){?>
+                            <td align="center" style="font-size: 400px; color: #FFF;"><?= $kode_antrian_r1; ?></td>
+                        <?php }
+                        else{?>
+                            <td align="center" style="font-size: 400px; color: #FFF;"><?= $kode_antrian_r1; ?></td>
+                        <?php }
+                    
+                    ?>
                     <td style="font-size: 50px;  color: #300030;">Aaaa</td>
 
                 </tr>
@@ -175,7 +205,15 @@ if ($jabatan_valid == 'Kasir') {
                 </tr>
                 <tr>
                     <td style="font-size: 50px;  color: #300030;">Aaa</td>
-                    <td align="center" style="font-size: 400px; color: #FFF;">B2</td>
+                    <?php 
+                        if($kode_antrian_r2 == ""){?>
+                            <td align="center" style="font-size: 400px; color: #FFF;"><?= $kode_antrian_r1; ?></td>
+                        <?php }
+                        else{?>
+                            <td align="center" style="font-size: 400px; color: #FFF;"><?= $kode_antrian_r2 ?></td>
+                        <?php }
+                    
+                    ?>
                     <td style="font-size: 50px;  color: #300030;">Aaaa</td>
 
                 </tr>

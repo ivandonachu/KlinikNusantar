@@ -359,7 +359,7 @@ $d = $today->diff($tanggalx)->d;
   <td style='font-size: clamp(12px, 1vw, 15px);' >$tgl_daftar</td>
   "; ?>
   <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
-  <button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#formedit<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Edit Data Pasien'> 
+  <button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning" data-toggle="modal" data-target="#formedit<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Edit Data Pasien'> 
   <i class="fas fa-edit"></i> Edit</button>
   <!-- Form EDIT DATA -->
 
@@ -441,7 +441,7 @@ $d = $today->diff($tanggalx)->d;
  </div>
 
  <!-- Button Hapus -->
- <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger mr-2 rounded" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Hapus Data Pasien'>
+ <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger " data-toggle="modal" data-target="#PopUpHapus<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Hapus Data Pasien'>
  <i class="fa-solid fa-trash"></i> Hapus</button>
  <div class="modal fade" id="PopUpHapus<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog" role ="document">
@@ -469,7 +469,7 @@ $d = $today->diff($tanggalx)->d;
  </div>
 </div>
 
-<button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn btn-success mr-2 rounded" data-toggle="modal" data-target="#antrian<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Input Antrian Pasien'> 
+<button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn btn-success " data-toggle="modal" data-target="#antrian<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Input Antrian Pasien'> 
 <i class="fa-solid fa-people-line"></i> Antrian</button>
   <!-- Form EDIT DATA -->
 
@@ -517,20 +517,12 @@ $d = $today->diff($tanggalx)->d;
             $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
             while ($data2 = mysqli_fetch_array($result)){
               $nama_karyawan = $data2['nama_karyawan'];
-              $result2 = mysqli_query($koneksi, "SELECT nama_karyawan, username FROM karyawan a INNER JOIN account b on b.id_karyawan=a.id_karyawan WHERE nama_karyawan = '$nama_karyawan'");   
-              $data3 = mysqli_fetch_array($result2);
-              $nama_karyawanx = $data3['nama_karyawan'];
-
   
-              if($nama_karyawanx == $nama_karyawan){
-
-              }
-              else{
                 echo "<option> $nama_karyawan </option> ";
               }
                 
              
-               }
+               
             ?>
           </select>
            </div> 

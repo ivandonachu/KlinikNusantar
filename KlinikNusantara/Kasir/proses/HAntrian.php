@@ -17,33 +17,20 @@ if ($jabatan_valid == 'Kasir') {
 else{  header("Location: logout.php");
 exit;
 }
-$id_pasien = htmlspecialchars($_POST['id_pasien']);
-$nama_pasien = htmlspecialchars($_POST['nama_pasien']);
-$tempat_lahir = htmlspecialchars($_POST['tempat_lahir']);
-$tanggal_lahir = htmlspecialchars($_POST['tanggal_lahir']);
-$nik = htmlspecialchars($_POST['nik']);
-$golongan_darah = htmlspecialchars($_POST['golongan_darah']);
-$no_hp = htmlspecialchars($_POST['no_hp']);
-$alamat = htmlspecialchars($_POST['alamat']);
+
+
+$no_antrian = htmlspecialchars($_POST['no_antrian']);
+$tanggal_awal = htmlspecialchars($_POST['tanggal1']);
+$tanggal_akhir = htmlspecialchars($_POST['tanggal2']);
+
+
+	
+
+
+		$query = mysqli_query($koneksi,"DELETE FROM antrian WHERE no_antrian = '$no_antrian'");
 
 
 
-
-
-                mysqli_query($koneksi,"UPDATE pasien SET nama_pasien = '$nama_pasien' , tempat_lahir = '$tempat_lahir', tanggal_lahir = '$tanggal_lahir', nik = '$nik', golongan_darah = '$golongan_darah', no_hp = '$no_hp', alamat = '$alamat' WHERE id_pasien =  '$id_pasien'");
-       
-       
-                echo "<script>alert('Data Pasien Berhasil di Edit'); window.location='../view/VDataPasien';</script>";exit;
-        
-                
-                 
-          
-                  
-
-     
-        
-
-       
-
-
-  ?>
+	
+		echo "<script>alert('Hapus Antrian Berhasil'); window.location='../view/VAntrian?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
+	

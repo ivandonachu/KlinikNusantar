@@ -33,6 +33,15 @@ if (isset($_GET['tanggal1'])) {
     $tanggal_akhir = date('Y-m-d');
 }
 
+if (isset($_GET['antrian'])) {
+    $antrian = $_GET['antrian'];
+
+} else {
+    $antrian = "";
+
+}
+
+
 if ($tanggal_awal == $tanggal_akhir) {
     $table = mysqli_query($koneksi, "SELECT * FROM antrian a INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
     WHERE tanggal = '$tanggal_awal' AND c.nama_ruangan = 'Ruangan 1' ORDER BY a.no_antrian");
@@ -84,6 +93,13 @@ if ($tanggal_awal == $tanggal_akhir) {
 </head>
 
 <body id="page-top">
+    <?php 
+      if($antrian == ""){
+
+      }
+      else{?>
+        <audio src="/assets/sound/doorbell.mp3" id="my_audio" autoplay="autoplay"></audio>
+      <?php };  ?>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -307,30 +323,74 @@ if ($tanggal_awal == $tanggal_akhir) {
                                             $antrian = $kode_antrian.$urut;
 
                                             echo "<tr>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$antrian</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$keluhan_awal</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_ruangan</td>
-                                    ";
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$antrian</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$keluhan_awal</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_ruangan</td>
+                                            ";
                                             if ($status_antrian == 'Menunggu') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #DAA520; font-weight: bold;' >$status_antrian </td>";
                                             } else if ($status_antrian == 'Dalam Perawatan') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #1E90FF; font-weight: bold;' >$status_antrian </td>";
+                                            }else if ($status_antrian == 'Pembayaran') {
+                                                echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #008B8B; font-weight: bold;' >$status_antrian </td>";
                                             } else if ($status_antrian == 'Selesai') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #008000; font-weight: bold;' >$status_antrian </td>";
                                             }
 
-                                        ?>
+                                           ?>
                                             <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
+                                      
+                                      
+                                            <?php   if ($status_antrian == 'Menunggu') {?>
+                                                <!-- Button Panggil Antri -->
+                                              <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-info" data-toggle="modal" data-target="#panggil_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Panggil Antrian'>
+                                              <i class='fa-solid fa-headset'></i></button>
+
+                                            <?php } ?>
+                                            
+                                             
+                                            <div class="modal fade" id="panggil_antrian1<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title"> <b> Panggil Antrian </b> </h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                                                <span aria-hidden="true"> &times; </span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <form action="../proses/PanggilAntrian" method="POST">
+                                                                <input type="hidden" name="no_antrian" value="<?php echo $no_antrian; ?>">
+                                                                <input type="hidden" name="antrian" value="<?php echo $antrian; ?>">
+                                                                <input type="hidden" name="nama_ruangan" value="<?php echo $nama_ruangan; ?>">
+                                                                <input type="hidden" name="tanggal" value="<?php echo $tanggal; ?>">
+                                                                <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
+                                                                <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
+                                                                <div class="form-group">
+                                                                    <h6> Panggil Antrian Antrian <?= $nama_pasien; ?> </h6>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary"> Panggil </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                             <!-- Button Print No antri -->
                                             
-                                            <?php echo "<a href='VPrintAntrian?antrian=$antrian&nama_ruangan=$nama_ruangan' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black; margin-right : 5px;'  type='submit' class=' btn btn-info' >
-                                            <i class='fa-solid fa-print'></i> Antrian</button></a>";?>
+                                            <?php echo "<a href='VPrintAntrian?antrian=$antrian&nama_ruangan=$nama_ruangan' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black; '  type='submit' class=' btn btn-secondary' >
+                                            <i class='fa-solid fa-print'></i></button></a>";?>
                                             
-                                            <button style=" font-size: clamp(7px, 1vw, 10px); color:black; "href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#edit_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Edit Antrian'>
-                                                <i class="fas fa-edit"></i> Edit</button>
+                                            <button style=" font-size: clamp(7px, 1vw, 10px); color:black; "href="#" type="submit" class=" btn bg-warning " data-toggle="modal" data-target="#edit_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Edit Antrian'>
+                                                <i class="fas fa-edit"></i></button>
                                             <!-- Form EDIT DATA -->
 
                                             <div class="modal fade bd-example-modal-lg" id="edit_antrian1<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
@@ -417,7 +477,7 @@ if ($tanggal_awal == $tanggal_akhir) {
 
                                             <!-- Button Hapus -->
                                             <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#hapus_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Hapus Antrian'>
-                                                <i class="fa-solid fa-trash"></i> Hapus</button>
+                                                <i class="fa-solid fa-trash"></i></button>
                                             <div class="modal fade" id="hapus_antrian1<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -482,7 +542,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                         <?php
                                         $urut = 0;
 
-
+                                        $kode_antrian = 'B';
                                         ?>
                                         <?php while ($data = mysqli_fetch_array($table2)) {
                                             $no_antrian = $data['no_antrian'];
@@ -495,28 +555,78 @@ if ($tanggal_awal == $tanggal_akhir) {
 
                                             $urut = $urut + 1;
 
-
+                                            $antrian = $kode_antrian.$urut;
                                             echo "<tr>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$urut</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$keluhan_awal</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_ruangan</td>
-                                    ";
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$antrian</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$keluhan_awal</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_ruangan</td>
+                                            ";
                                             if ($status_antrian == 'Menunggu') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #DAA520; font-weight: bold;' >$status_antrian </td>";
                                             } else if ($status_antrian == 'Dalam Perawatan') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #1E90FF; font-weight: bold;' >$status_antrian </td>";
-                                            } else if ($status_antrian == 'Selesai') {
+                                            } else if ($status_antrian == 'Pembayaran') {
+                                                echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #008B8B; font-weight: bold;' >$status_antrian </td>";
+                                            }else if ($status_antrian == 'Selesai') {
                                                 echo " <td style='font-size: clamp(12px, 1vw, 15px); color: #008000; font-weight: bold;' >$status_antrian </td>";
                                             }
 
                                         ?>
                                             <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
 
-                                            <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#edit_antrian2<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Edit Antrian'>
-                                                <i class="fas fa-edit"></i> Edit</button>
+                                            
+                                            
+                                        
+                                            
+                                            <?php   if ($status_antrian == 'Menunggu') {?>
+                                                <!-- Button Panggil Antri -->
+                                              <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-info" data-toggle="modal" data-target="#panggil_antrian2<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Panggil Antrian'>
+                                              <i class='fa-solid fa-headset'></i></button>
+
+                                            <?php } ?>
+                                            <div class="modal fade" id="panggil_antrian2<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title"> <b> Panggil Antrian </b> </h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                                                <span aria-hidden="true"> &times; </span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <form action="../proses/PanggilAntrian" method="POST">
+                                                                <input type="hidden" name="no_antrian" value="<?php echo $no_antrian; ?>">
+                                                                <input type="hidden" name="antrian" value="<?php echo $antrian; ?>">
+                                                                <input type="hidden" name="nama_ruangan" value="<?php echo $nama_ruangan; ?>">
+                                                                <input type="hidden" name="tanggal" value="<?php echo $tanggal; ?>">
+                                                                <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
+                                                                <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
+                                                                <div class="form-group">
+                                                                    <h6> Panggil Antrian Antrian <?= $nama_pasien; ?> </h6>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary"> Panggil </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <!-- Button Print No antri -->
+                                            
+                                            <?php echo "<a href='VPrintAntrian?antrian=$antrian&nama_ruangan=$nama_ruangan' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black; '  type='submit' class=' btn btn-secondary' >
+                                            <i class='fa-solid fa-print'></i></button></a>";?>
+
+                                            <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning " data-toggle="modal" data-target="#edit_antrian2<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Edit Antrian'>
+                                                <i class="fas fa-edit"></i></button>
                                             <!-- Form EDIT DATA -->
 
                                             <div class="modal fade bd-example-modal-lg" id="edit_antrian2<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
@@ -603,7 +713,7 @@ if ($tanggal_awal == $tanggal_akhir) {
 
                                                 <!-- Button Hapus -->
                                                 <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#hapus_antrian2<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Hapus Data Obat'>
-                                                    <i class="fa-solid fa-trash"></i> Hapus</button>
+                                                    <i class="fa-solid fa-trash"></i></button>
                                                 <div class="modal fade" id="hapus_antrian2<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
