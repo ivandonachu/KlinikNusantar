@@ -23,7 +23,6 @@ $tanggal_akhir = $_GET['tanggal2'];
 $tanggal = htmlspecialchars($_POST['tanggal']);
 $nama_obat = htmlspecialchars($_POST['nama_obat']);
 $qty = htmlspecialchars($_POST['qty']);
-$harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
 $status = 'PNB';
 if ($nama_file == "") {
@@ -67,7 +66,7 @@ else if ( $nama_file != "" ) {
 
       $kode_obat = $data_obat['kode_obat'];
       $stok_obat = $data_obat['stok_obat'];
-      
+      $harga = $data_obat['harga_beli'];
 
       //proses tambah stok obat
       if($status == 'PNB'){

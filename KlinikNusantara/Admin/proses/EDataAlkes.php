@@ -21,13 +21,14 @@ $tanggal_awal = htmlspecialchars($_POST['tanggal1']);
 $tanggal_akhir = htmlspecialchars($_POST['tanggal2']);
 $kode_alkes = htmlspecialchars($_POST['kode_alkes']);
 $nama_alkes = htmlspecialchars($_POST['nama_alkes']);
-$harga_alkes = htmlspecialchars($_POST['harga_alkes']);
+$harga_beli = htmlspecialchars($_POST['harga_beli']);
+$harga_jual = htmlspecialchars($_POST['harga_jual']);
 $deskripsi = htmlspecialchars($_POST['deskripsi']);
 
 
 
 
-                mysqli_query($koneksi,"UPDATE alat_kesehatan SET nama_alkes = '$nama_alkes' , harga_alkes = '$harga_alkes' , deskripsi = '$deskripsi' WHERE kode_alkes =  '$kode_alkes'");
+                mysqli_query($koneksi,"UPDATE alat_kesehatan SET nama_alkes = '$nama_alkes' , harga_beli = '$harga_beli', harga_jual = '$harga_jual' , deskripsi = '$deskripsi' WHERE kode_alkes =  '$kode_alkes'");
        
        
                echo "<script>alert('Data Alat Kesehatan Berhasil di Edit'); window.location='../view/VAlatKesehatan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;

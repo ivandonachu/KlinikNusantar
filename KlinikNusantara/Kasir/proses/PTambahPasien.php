@@ -19,6 +19,7 @@ exit;
 }
 
 $nama_pasien = htmlspecialchars($_POST['nama_pasien']);
+$jenis_kelamin = htmlspecialchars($_POST['jenis_kelamin']);
 $tempat_lahir = htmlspecialchars($_POST['tempat_lahir']);
 $tanggal_lahir = htmlspecialchars($_POST['tanggal_lahir']);
 $nik = htmlspecialchars($_POST['nik']);
@@ -40,7 +41,7 @@ $tgl_daftar = date("Y-m-d");
             $id_pasien_new = $id_pasien.$no_id;
             $id_rm_new = $id_rm.$no_id;
             mysqli_query($koneksi,"INSERT INTO rekam_medis VALUES('$id_rm_new')");
-              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$jenis_kelamin','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
               
                
                       echo "<script>alert('Data Pasien Berhasil di input'); window.location='../view/VDataPasien';</script>";exit;
@@ -53,7 +54,7 @@ $tgl_daftar = date("Y-m-d");
             $sql_cek = mysqli_query($koneksi, "SELECT * FROM pasien WHERE id_pasien = '$id_pasien_new' ");
             if(mysqli_num_rows($sql_cek) === 0 ){
               mysqli_query($koneksi,"INSERT INTO rekam_medis VALUES('$id_rm_new')");
-              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
+              mysqli_query($koneksi,"INSERT INTO pasien VALUES('$id_pasien_new','$id_rm_new','$nama_pasien','$jenis_kelamin','$tempat_lahir','$tanggal_lahir','$nik','$alamat','$golongan_darah','$no_hp','$tgl_daftar')");
               
                
                        echo "<script>alert('Data Pasien Berhasil di input'); window.location='../view/VDataPasien';</script>";exit;

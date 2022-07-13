@@ -21,12 +21,13 @@ exit;
 $tanggal_awal = $_GET['tanggal1'];
 $tanggal_akhir = $_GET['tanggal2'];
 $nama_alkes = htmlspecialchars($_POST['nama_alkes']);
-$harga_alkes = htmlspecialchars($_POST['harga_alkes']);
+$harga_beli = htmlspecialchars($_POST['harga_beli']);
+$harga_jual = htmlspecialchars($_POST['harga_jual']);
 $stok_awal = htmlspecialchars($_POST['stok_awal']);
 $deskripsi = htmlspecialchars($_POST['deskripsi']);
 
 
-    $no_kode = 0;
+    $no_kode = 1;
     
 
         $kode = 'ALK';
@@ -35,7 +36,7 @@ $deskripsi = htmlspecialchars($_POST['deskripsi']);
         
         if(mysqli_num_rows($sql_data) == 0 ){
             $kode_new = $kode.$no_kode;
-            mysqli_query($koneksi,"INSERT INTO alat_kesehatan VALUES('$kode_new','$nama_alkes','$harga_alkes','$stok_awal','$deskripsi')");
+            mysqli_query($koneksi,"INSERT INTO alat_kesehatan VALUES('$kode_new','$nama_alkes','$harga_beli','$harga_jual','$stok_awal','$deskripsi')");
                
             echo "<script>alert('Riwayat Alat Kesehatan Berhasil di Input'); window.location='../view/VAlatKesehatan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
         }
@@ -47,7 +48,7 @@ $deskripsi = htmlspecialchars($_POST['deskripsi']);
             $sql_alkes = mysqli_query($koneksi, "SELECT kode_alkes FROM alat_kesehatan WHERE kode_alkes = '$kode_new' ");
             $data_alkes = mysqli_fetch_assoc($sql_alkes);
             if(!isset($data_alkes['kode_alkes'])){
-                mysqli_query($koneksi,"INSERT INTO alat_kesehatan VALUES('$kode_new','$nama_alkes','$harga_alkes','$stok_awal','$deskripsi')");
+                mysqli_query($koneksi,"INSERT INTO alat_kesehatan VALUES('$kode_new','$nama_alkes','$harga_beli','$harga_jual','$stok_awal','$deskripsi')");
                
                 echo "<script>alert('Riwayat Alat Kesehatan Berhasil di Input'); window.location='../view/VAlatKesehatan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
             

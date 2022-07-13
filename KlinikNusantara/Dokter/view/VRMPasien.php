@@ -10,7 +10,7 @@ $result1 = mysqli_query($koneksi, "SELECT * FROM account a INNER JOIN karyawan b
 $data1 = mysqli_fetch_array($result1);
 $id1 = $data1['id_karyawan'];
 $jabatan_valid = $data1['jabatan'];
-if ($jabatan_valid == 'Kasir') {
+if ($jabatan_valid == 'Dokter') {
 } else {
     header("Location: logout.php");
     exit;
@@ -55,7 +55,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Data Pasien</title>
+    <title>Rekam Medis Pasien</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" type="text/css">
@@ -81,11 +81,11 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-       <!-- Sidebar -->
-       <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
+         <!-- Sidebar -->
+         <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
 <!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsKasir">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsDokter">
     <div class="sidebar-brand-icon rotate-n-15">
 
     </div>
@@ -99,7 +99,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a class="nav-link" href="DsKasir">
+    <a class="nav-link" href="DsDokter">
         <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
         <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
 </li>
@@ -109,24 +109,23 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
 
 <!-- Heading -->
 <div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
-    Menu Kasir
 </div>
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
         <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Kasir</span>
+        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Perwatan & Pasien</span>
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPembayaran">Pembayaran</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VDataPasien">Data Pasien</a>
+            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRiwayatPerawatan">Riwayat Perawatan</a>
+            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRMPasien">Rekam Medis Pasien</a>
             <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAntrian">Antrian</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" target="_blank" href="VLiveAntrian">Live Antrian</a>
         </div>
     </div>
-</li>      
+</li>
+
 
 
 
@@ -159,7 +158,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
                         <i class="fa fa-bars"></i>
                     </button>
    
-                    <?php echo "<a href='VDataPasien'><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Data Pasien</h5></a>"; ?>
+                    <?php echo "<a href='VRMPasien'><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Rekam Medis Pasien</h5></a>"; ?>
 
                    
                    
@@ -218,97 +217,6 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
                 <!-- End of Topbar -->
                 <div class="pinggir1" style="margin-right: 20px; margin-left: 20px;">
 
-<div class="row">
- <div class="col-md-10">
-
- </div>
- <div class="col-md-2">
-   <!-- Button Input Data Bayar -->
-   <div align="right">
-     <button  style= "font-size: clamp(7px, 3vw, 15px); " type="button" class="btn btn-primary" data-toggle="modal" data-target="#input"> <i class="fas fa-plus-square mr-2"></i>Input Pasien</button> <br> <br>
-   </div>
-   <!-- Form Modal  -->
-   <div class="modal fade bd-example-modal-lg" id="input" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role ="document">
-      <div class="modal-content"> 
-       <div class="modal-header">
-         <h5 class="modal-title"> Form Input Pasien</h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="close">
-           <span aria-hidden="true">&times;</span>
-         </button>
-       </div> 
-
-       <!-- Form Input Data -->
-       <div class="modal-body" align="left">
-         <?php  echo "<form action='../proses/PTambahPasien' enctype='multipart/form-data' method='POST'>";  ?>
-
-         <br>
-
-         <div class="row">
-           <div class="col-md-4">
-             <label>Nama Pasien</label>
-             <input class="form-control form-control-sm" type="text"  name="nama_pasien" required="">
-           </div>    
-           <div class="col-md-4">
-             <label>Tempat Lahir</label>
-             <input class="form-control form-control-sm" type="text"  name="tempat_lahir" required="">
-           </div>  
-           <div class="col-md-4">
-             <label>Tanggal Lahir</label>
-             <input class="form-control form-control-sm" type="date"  name="tanggal_lahir" required="">
-           </div>  
-         </div>
-          <br>
-          <div class="row">
-          <div class="col-md-4">
-             <label>Jenis Kelamin</label>
-             <select name="jenis_kelamin" class="form-control form-control-sm">
-              <option>Pria</option>
-              <option>Wanita</option>
-            </select>
-           </div>  
-           <div class="col-md-4">
-             <label>NIK</label>
-             <input class="form-control form-control-sm" type="text"  name="nik">
-           </div>    
-           <div class="col-md-4">
-             <label>Golongan Darah</label>
-            <select name="golongan_darah" class="form-control form-control-sm">
-              <option></option>
-              <option>A</option>
-              <option>B</option>
-              <option>O</option>
-              <option>AB</option>
-            </select>
-           </div>
-         </div>
-          <br>
-         <div class="row">
-          <div class="col-md-6">
-              <label>No WA</label>
-              <input class="form-control form-control-sm" type="text" name="no_hp" >
-            </div>
-            <div class="col-md-6">
-              <label>Alamat</label>
-              <textarea  class="form-control form-control-sm"  name="alamat" ></textarea>
-            </div>
-            </div>
-        <br>
-
-         <div class="modal-footer">
-           <button type="submit" class="btn btn-primary">INPUT</button>
-           <button type="reset" class="btn btn-danger"> RESET</button>
-         </div>
-       </form>
- 
-
-   </div>
- </div>
-</div>
-
-</div>
-</div>
-</div>
 
 <!-- Tabel -->    
 <div style="overflow-x: auto" >
@@ -341,7 +249,6 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
   $no_hp =$data['no_hp'];
   $alamat =$data['alamat'];
   $tgl_daftar =$data['tgl_daftar'];
-
 // tanggal lahir
 $tanggalx = new DateTime($tanggal_lahir);
 // tanggal hari ini
@@ -367,201 +274,10 @@ $d = $today->diff($tanggalx)->d;
   <td style='font-size: clamp(12px, 1vw, 15px);' >$alamat</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$no_hp</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$tgl_daftar</td>
-  "; ?>
-  <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
-  <button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning" data-toggle="modal" data-target="#formedit<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Edit Data Pasien'> 
-  <i class="fas fa-edit"></i> Edit</button>
-  <!-- Form EDIT DATA -->
-
-  <div class="modal fade" id="formedit<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role ="document">
-     <div class="modal-content"> 
-       <div class="modal-header">
-         <h5 class="modal-title"> Edit Data Pasien </h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="close">
-           <span aria-hidden="true"> &times; </span>
-         </button>
-       </div>
-
-       <!-- Form Edit Data -->
-       <div class="modal-body">
-         <form action="../proses/EDataPasien" enctype="multipart/form-data" method="POST">
-
-         <div class="row">
-           <div class="col-md-6">
-             <label>ID Pasien</label>
-             <input class="form-control form-control-sm" type="text"  name="id_pasien" value="<?= $id_pasien; ?>" required="" disabled>
-             <input type="hidden" name="id_pasien" value="<?= $id_pasien; ?>">
-           </div>    
-           <div class="col-md-6">
-             <label>Nama Pasien</label>
-             <input class="form-control form-control-sm" type="text"  name="nama_pasien"  value="<?= $nama_pasien; ?>" required="">
-           </div>   
-         </div>
-          <br>
-          <div class="row">
-          <div class="col-md-4">
-             <label>Jenis Kelamin</label>
-             <?php $dataSelect = $data['jenis_kelamin']; ?>
-            <select name="jenis_kelamin" class="form-control form-control-sm">
-              <option></option>
-              <option <?php echo ($dataSelect == 'Pria') ? "selected": "" ?> >Pria</option>
-              <option <?php echo ($dataSelect == 'Wanita') ? "selected": "" ?> >Wanita</option>
-            </select>
-           </div>
-          <div class="col-md-4">
-             <label>Tempat Lahir</label>
-             <input class="form-control form-control-sm" type="text"  name="tempat_lahir" value="<?= $tempat_lahir; ?>"  required="">
-           </div>  
-           <div class="col-md-4">
-             <label>Tanggal Lahir</label>
-             <input class="form-control form-control-sm" type="date"  name="tanggal_lahir" value="<?= $tanggal_lahir; ?>" required="">
-           </div>    
-         </div>
-          <br>
-         <div class="row">
-          <div class="col-md-6">
-             <label>NIK</label>
-             <input class="form-control form-control-sm" type="text"  name="nik" value="<?= $nik; ?>">
-           </div>    
-           <div class="col-md-6">
-             <label>Golongan Darah</label>
-             <?php $dataSelect = $data['golongan_darah']; ?>
-            <select name="golongan_darah" class="form-control form-control-sm">
-              <option></option>
-              <option <?php echo ($dataSelect == 'A') ? "selected": "" ?> >A</option>
-              <option <?php echo ($dataSelect == 'B') ? "selected": "" ?> >B</option>
-              <option <?php echo ($dataSelect == 'O') ? "selected": "" ?> >O</option>
-              <option <?php echo ($dataSelect == 'AB') ? "selected": "" ?> >AB</option>
-            </select>
-           </div>
-         </div>
-          <br>
-         <div class="row">
-          <div class="col-md-6">
-              <label>No WA</label>
-              <input class="form-control form-control-sm" type="text" name="no_hp"  value="<?= $no_hp; ?>">
-            </div>
-            <div class="col-md-6">
-              <label>Alamat</label>
-              <textarea  class="form-control form-control-sm"  name="alamat" ><?= $alamat; ?></textarea>
-            </div>
-            </div>
-        <br>
-
-           <div class="modal-footer">
-             <button type="submit" class="btn btn-primary"> Ubah </button>
-             <button type="reset" class="btn btn-danger"> RESET</button>
-           </div>
-         </form>
-       </div>
-     </div>
-   </div>
- </div>
-
- <!-- Button Hapus -->
- <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger " data-toggle="modal" data-target="#PopUpHapus<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Hapus Data Pasien'>
- <i class="fa-solid fa-trash"></i> Hapus</button>
- <div class="modal fade" id="PopUpHapus<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog" role ="document">
-    <div class="modal-content"> 
-     <div class="modal-header">
-       <h4 class="modal-title"> <b> Hapus Data Pasien </b> </h4>
-       <button type="button" class="close" data-dismiss="modal" aria-label="close">
-         <span aria-hidden="true"> &times; </span>
-       </button>
-     </div>
-
-     <div class="modal-body">
-       <form action="../proses/HDataPasien" method="POST">
-         <input type="hidden" name="id_pasien" value="<?php echo $id_pasien ;?>">
-         <div class="form-group">
-           <h6> Yakin Ingin Hapus Data Pasien <?php echo $data['nama_pasien']; ?> </h6>             
-         </div>
-
-         <div class="modal-footer">
-           <button type="submit" class="btn btn-primary"> Hapus </button>
-         </div>
-       </form>
-     </div>
-   </div>
- </div>
-</div>
-
-<button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn btn-success " data-toggle="modal" data-target="#antrian<?php echo $data['id_pasien']; ?>" data-toggle='tooltip' title='Input Antrian Pasien'> 
-<i class="fa-solid fa-people-line"></i> Antrian</button>
-  <!-- Form EDIT DATA -->
-
-  <div class="modal fade" id="antrian<?php echo $data['id_pasien']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role ="document">
-     <div class="modal-content"> 
-       <div class="modal-header">
-         <h5 class="modal-title"> Input Antrian Pasien </h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="close">
-           <span aria-hidden="true"> &times; </span>
-         </button>
-       </div>
-
-       <!-- Form Edit Data -->
-       <div class="modal-body">
-         <form action="../proses/PTambahAntrian" enctype="multipart/form-data" method="POST">
-
-         <div class="row">
-           <div class="col-md-6">
-             <label>Nama Pasien</label>
-             <input class="form-control form-control-sm" type="text"  name="id_pasien" value="<?= $nama_pasien; ?>" required="" disabled>
-             <input type="hidden" name="id_pasien" value="<?= $id_pasien; ?>">
-           </div>
-           <div class="col-md-6">
-             <label>Ruangan</label>
-            <select name="nama_ruangan" class="form-control form-control-sm">
-              <option>Ruangan 1</option>
-              <option>Ruangan 2</option>
-            </select>
-           </div>   
-
-         </div>
-          <br>
-         <div class="row">
-         <div class="col-md-6">
-          <div>
-          <label>Dokter</label>
-          </div>
-            
   
-             <select id="tokens" class="selectpicker form-control" name="nama_dokter" multiple data-live-search="true">
-            <?php
-            include 'koneksi.php';
-         
-            $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
-            while ($data2 = mysqli_fetch_array($result)){
-              $nama_karyawan = $data2['nama_karyawan'];
-  
-                echo "<option> $nama_karyawan </option> ";
-              }
-                
-             
-               
-            ?>
-          </select>
-           </div> 
-            <div class="col-md-6">
-              <label>Keluhan Awal</label>
-              <textarea  class="form-control form-control-sm"  name="keluhan_awal" ></textarea>
-            </div>
-          </div>
-        <br>
-
-           <div class="modal-footer">
-             <button type="submit" class="btn btn-primary"> INPUT </button>
-             <button type="reset" class="btn btn-danger"> RESET</button>
-           </div>
-         </form>
-       </div>
-     </div>
-   </div>
- </div>
-
+  <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
+  <?php echo "<a href='VRekamMedis?id_pasien=$id_pasien' target='_blank'><button style=' font-size: clamp(12px, 2vw, 15px);color:black; '   class=' btn btn-info' >
+                                            <i class='fa-solid fa-file-waveform'></i> Rekam Medis</button></a>"; ?>
 <?php echo  " </td> </tr>";
 }
 ?>

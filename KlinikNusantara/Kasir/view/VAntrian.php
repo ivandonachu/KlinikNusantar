@@ -438,22 +438,15 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                         <select id="tokens" class="selectpicker form-control" name="nama_dokter" multiple data-live-search="true">
                                                                             <?php
                                                                             include 'koneksi.php';
-
+                                                                         
                                                                             $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");
                                                                             while ($data2 = mysqli_fetch_array($result)) {
                                                                                 $nama_karyawan = $data2['nama_karyawan'];
-                                                                                $result2 = mysqli_query($koneksi, "SELECT nama_karyawan, username FROM karyawan a INNER JOIN account b on b.id_karyawan=a.id_karyawan WHERE nama_karyawan = '$nama_karyawan'");
-                                                                                $data3 = mysqli_fetch_array($result2);
-                                                                                $nama_karyawanx = $data3['nama_karyawan'];
                                                                                 $dataSelect = $data['nama_karyawan'];
 
-                                                                                if ($nama_karyawanx == $nama_karyawan) {
-                                                                                } else {
-
-
                                                                                     echo "<option" ?> <?php echo ($dataSelect == $nama_karyawan) ? "selected" : "" ?>> <?php echo $nama_karyawan; ?> <?php echo "</option>";
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                }
+                                                                                 }
+                                                                                                                                                                                                
                                                                                                                                                                                                         ?>
                                                                         </select>
                                                                     </div>
@@ -678,17 +671,13 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                             $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");
                                                                             while ($data2 = mysqli_fetch_array($result)) {
                                                                                 $nama_karyawan = $data2['nama_karyawan'];
-                                                                                $result2 = mysqli_query($koneksi, "SELECT nama_karyawan, username FROM karyawan a INNER JOIN account b on b.id_karyawan=a.id_karyawan WHERE nama_karyawan = '$nama_karyawan'");
-                                                                                $data3 = mysqli_fetch_array($result2);
-                                                                                $nama_karyawanx = $data3['nama_karyawan'];
+                                                                    
                                                                                 $dataSelect = $data['nama_karyawan'];
 
-                                                                                if ($nama_karyawanx == $nama_karyawan) {
-                                                                                } else {
-
+                                                              
 
                                                                                     echo "<option" ?> <?php echo ($dataSelect == $nama_karyawan) ? "selected" : "" ?>> <?php echo $nama_karyawan; ?> <?php echo "</option>";
-                                                                                                                                    }
+                                                                                                                        
                                                                                                                                 }
                                                                                                                                         ?>
                                                                         </select>

@@ -26,10 +26,26 @@ $tanggal = date("Y-m-d");
                                                              INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan  
                                                              INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
                                                              INNER JOIN rekam_medis e ON e.no_rm=d.no_rm
-                                                             LEFT JOIN perawatan f ON f.no_rm=e.no_rm 
                                                              WHERE a.tanggal = '$tanggal' AND b.nama_karyawan = '$nama' AND a.status_antrian = 'Dalam Perawatan' ");
 
+//script format tanggal
+function formattanggal($date){
+        
 
+    $newDate = date(" d F Y", strtotime($date));
+    switch(date("l"))
+  {
+    case 'Monday':$nmh="Senin";break; 
+    case 'Tuesday':$nmh="Selasa";break; 
+    case 'Wednesday':$nmh="Rabu";break; 
+    case 'Thursday':$nmh="Kamis";break; 
+    case 'Friday':$nmh="Jum'at";break; 
+    case 'Saturday':$nmh="Sabtu";break; 
+    case 'Sunday':$nmh="minggu";break; 
+  }
+  echo " $newDate";
+   }
+  
 
 ?>
 <!DOCTYPE html>
@@ -156,7 +172,7 @@ $tanggal = date("Y-m-d");
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRiwayatPerwatan">Riwayat Perawatan</a>
+            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRiwayatPerawatan">Riwayat Perawatan</a>
             <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRMPasien">Rekam Medis Pasien</a>
             <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAntrian">Antrian</a>
         </div>
@@ -284,7 +300,7 @@ $tanggal = date("Y-m-d");
                 </div>
 
 
-                <h2 align='center'>List Perawatan</h2>
+                <h2 align='center'>List Antrian</h2>
                             <br>
                             <hr>
                             <br>
@@ -294,10 +310,11 @@ $tanggal = date("Y-m-d");
                                     <thead align='center'>
                                         <tr>
                                             <th style="font-size: clamp(12px, 1vw, 15px);">Nama Pasien</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Jenis Kelamin</th>
                                             <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal Lahir</th>
                                             <th style="font-size: clamp(12px, 1vw, 15px);">Umur</th>
                                             <th style="font-size: clamp(12px, 1vw, 15px);">Keluhan Awal</th>
-                                            <th style="font-size: clamp(12px, 1vw, 15px);">Terahir Cek Up</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Terakhir Cek Up</th>
                                             <th style="font-size: clamp(12px, 1vw, 15px);">Cek Up Selanjutnya</th>
                                             <th></th>
 
@@ -318,12 +335,14 @@ $tanggal = date("Y-m-d");
                                         ?>
                                         <?php while ($data = mysqli_fetch_array($table)) {
                                             $nama_pasien = $data['nama_pasien'];
+                                            $jenis_kelamin = $data['jenis_kelamin'];
                                             $id_pasien = $data['id_pasien'];
                                             $tanggal_lahir = $data['tanggal_lahir'];
                                             $nama_karyawan = $data['nama_karyawan'];
                                             $keluhan_awal = $data['keluhan_awal'];
                                             $status_antrian = $data['status_antrian'];
-
+                                            $no_antrian = $data['no_antrian'];
+                                          
                                             $sql_antrian = mysqli_query($koneksi, "SELECT tanggal FROM antrian a INNER JOIN pasien b ON b.id_pasien=a.id_pasien 
                                                                                                                 INNER JOIN rekam_medis c ON c.no_rm=b.no_rm
                                                                                                                 LEFT JOIN perawatan d ON d.no_rm=c.no_rm 
@@ -360,8 +379,9 @@ $tanggal = date("Y-m-d");
 
                                             echo "<tr>
                                             <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
-                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal_lahir</td>
-                                            <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$y . " tahun " . $m . " bulan " . $d . " hari";?> <?php echo"</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_kelamin</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?=  formattanggal($tanggal_lahir); ?> <?php echo" </td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$y . " T " . $m . " B " . $d . " H";?> <?php echo"</td>
                                             <td style='font-size: clamp(12px, 1vw, 15px);' >$keluhan_awal</td>
                                             <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal_terakhir_cekUP</td>
                                             <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal_cekUP_selanjutnya</td>
@@ -388,10 +408,9 @@ $tanggal = date("Y-m-d");
                                                         </div>
 
                                                         <div class="modal-body">
-                                                            <form action="../proses/HAntrian" method="POST">
+                                                            <form action="../proses/PSelesaiAntrian" method="POST">
                                                                 <input type="hidden" name="no_antrian" value="<?php echo $no_antrian; ?>">
-                                                                <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
-                                                                <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
+                                                            
                                                                 <div class="form-group">
                                                                     <h6> Yakin Ingin Menyelesaikan Perawatan <?= $nama_pasien; ?> </h6>
                                                                 </div>

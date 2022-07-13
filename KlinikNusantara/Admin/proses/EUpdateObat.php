@@ -25,7 +25,6 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
 $nama_obat = htmlspecialchars($_POST['nama_obat']);
 $status = 'PNB';
 $qty = htmlspecialchars($_POST['qty']);
-$harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
 
 if ($nama_file == "") {
@@ -74,11 +73,11 @@ else if ( $nama_file != "" ) {
       $data_obat = mysqli_fetch_assoc($sql_obat);
 
       $kode_obat = $data_obat['kode_obat'];
-      $harga_obat = $data_obat['harga_obat'];
       $stok_obat = $data_obat['stok_obat'];
+      $harga = $data_obat['harga_beli'];
       
       if($nama_obat_ri == $nama_obat){
-        if($status == 'PNB'){
+     
           $stok_obat_baru = ($stok_obat - $qty_obat_ri) + $qty;
           $jumlah = $qty * $harga;
           
@@ -92,23 +91,9 @@ else if ( $nama_file != "" ) {
             mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
           }
 
-        }
-        else{
-          $stok_obat_baru = ($stok_obat + $qty_obat_ri) - $qty;
-          $jumlah = $qty * $harga;
-          
-          if ($file == '') {
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru' WHERE kode_obat =  '$kode_obat'");
-            mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' WHERE no_riwayat =  '$no_riwayat'");
-          }
-          else{
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru' WHERE kode_obat =  '$kode_obat'");
-            mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
-          }
-        }
       }
       else{
-        if($status == 'PNB'){
+       
           $stok_obat_baru_ri = $stok_obat_ri - $qty_obat_ri;
           $stok_obat_baru = $stok_obat + $qty;
           $jumlah = $qty * $harga;
@@ -124,23 +109,7 @@ else if ( $nama_file != "" ) {
             mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
           }
 
-        }
-        else{
-          $stok_obat_baru_ri = $stok_obat_ri + $qty_obat_ri;
-          $stok_obat_baru = $stok_obat - $qty;
-          $jumlah = $qty * $harga;
-          
-          if ($file == '') {
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru_ri' WHERE kode_obat =  '$kode_obat_ri'");
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru' WHERE kode_obat =  '$kode_obat'");
-            mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' WHERE no_riwayat =  '$no_riwayat'");
-          }
-          else{
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru_ri' WHERE kode_obat =  '$kode_obat_ri'");
-            mysqli_query($koneksi,"UPDATE obat SET stok_obat = '$stok_obat_baru' WHERE kode_obat =  '$kode_obat'");
-            mysqli_query($koneksi,"UPDATE riwayat_obat SET kode_obat = '$kode_obat' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
-          }
-        }
+        
       }
 
           

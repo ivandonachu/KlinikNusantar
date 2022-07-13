@@ -18,6 +18,7 @@ else{  header("Location: logout.php");
 exit;
 }
 $id_pasien = htmlspecialchars($_POST['id_pasien']);
+$jenis_kelamin = htmlspecialchars($_POST['jenis_kelamin']);
 $nama_pasien = htmlspecialchars($_POST['nama_pasien']);
 $tempat_lahir = htmlspecialchars($_POST['tempat_lahir']);
 $tanggal_lahir = htmlspecialchars($_POST['tanggal_lahir']);
@@ -30,7 +31,7 @@ $alamat = htmlspecialchars($_POST['alamat']);
 
 
 
-                mysqli_query($koneksi,"UPDATE pasien SET nama_pasien = '$nama_pasien' , tempat_lahir = '$tempat_lahir', tanggal_lahir = '$tanggal_lahir', nik = '$nik', golongan_darah = '$golongan_darah', no_hp = '$no_hp', alamat = '$alamat' WHERE id_pasien =  '$id_pasien'");
+                mysqli_query($koneksi,"UPDATE pasien SET nama_pasien = '$nama_pasien', jenis_kelamin = '$jenis_kelamin' , tempat_lahir = '$tempat_lahir', tanggal_lahir = '$tanggal_lahir', nik = '$nik', golongan_darah = '$golongan_darah', no_hp = '$no_hp', alamat = '$alamat' WHERE id_pasien =  '$id_pasien'");
        
        
                 echo "<script>alert('Data Pasien Berhasil di Edit'); window.location='../view/VDataPasien';</script>";exit;

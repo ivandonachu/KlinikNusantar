@@ -25,7 +25,6 @@ $no_riwayat = htmlspecialchars($_POST['no_riwayat']);
 $nama_alkes = htmlspecialchars($_POST['nama_alkes']);
 $status = 'PNB';
 $qty = htmlspecialchars($_POST['qty']);
-$harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
 
 if ($nama_file == "") {
@@ -74,11 +73,11 @@ else if ( $nama_file != "" ) {
       $data_alkes = mysqli_fetch_assoc($sql_alkes);
 
       $kode_alkes = $data_alkes['kode_alkes'];
-      $harga_alkes = $data_alkes['harga_alkes'];
       $stok_alkes = $data_alkes['stok_alkes'];
+      $harga = $data_alkes['harga_beli'];
       
       if($nama_alkes_ri == $nama_alkes){
-        if($status == 'PNB'){
+     
           $stok_alkes_baru = ($stok_alkes - $qty_alkes_ri) + $qty;
           $jumlah = $qty * $harga;
           
@@ -92,23 +91,10 @@ else if ( $nama_file != "" ) {
             mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
           }
 
-        }
-        else{
-          $stok_alkes_baru = ($stok_alkes + $qty_alkes_ri) - $qty;
-          $jumlah = $qty * $harga;
-          
-          if ($file == '') {
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes'");
-            mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' WHERE no_riwayat =  '$no_riwayat'");
-          }
-          else{
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes'");
-            mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
-          }
-        }
+    
       }
       else{
-        if($status == 'PNB'){
+     
           $stok_obat_baru_ri = $stok_alkes_ri - $qty_alkes_ri;
           $stok_alkes_baru = $stok_alkes + $qty;
           $jumlah = $qty * $harga;
@@ -124,29 +110,13 @@ else if ( $nama_file != "" ) {
             mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
           }
 
-        }
-        else{
-          $stok_obat_baru_ri = $stok_alkes_ri + $qty_alkes_ri;
-          $stok_alkes_baru = $stok_alkes - $qty;
-          $jumlah = $qty * $harga;
-          
-          if ($file == '') {
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_obat_baru_ri' WHERE kode_alkes =  '$kode_alkes_ri'");
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes'");
-            mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' WHERE no_riwayat =  '$no_riwayat'");
-          }
-          else{
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_obat_baru_ri' WHERE kode_alkes =  '$kode_alkes_ri'");
-            mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes'");
-            mysqli_query($koneksi,"UPDATE riwayat_alkes SET kode_alkes = '$kode_alkes' , tanggal = '$tanggal' , id_karyawan = '$id_karyawan' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah', file_bukti = '$file' WHERE no_riwayat =  '$no_riwayat'");
-          }
-        }
+  
       }
 
           
      
        
-           echo "<script>alert('Riwayat Alat Kesehatan Berhasil di Edit'); window.location='../view/VAlatKesehatan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
+          echo "<script>alert('Riwayat Alat Kesehatan Berhasil di Edit'); window.location='../view/VAlatKesehatan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
         
 
   ?>

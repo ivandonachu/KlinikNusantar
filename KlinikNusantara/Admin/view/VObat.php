@@ -295,17 +295,24 @@ else{
                                     <br>
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label>Nama Obat</label>
                                             <input class="form-control form-control-sm" type="text" name="nama_obat" required="">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label>Harga Obat</label>
-                                            <input class="form-control form-control-sm" type="nummber" name="harga_obat" required="">
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label>Stok Awal Obat</label>
                                             <input class="form-control form-control-sm" type="nummber" name="stok_awal" value='0' required="">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Harga Beli</label>
+                                            <input class="form-control form-control-sm" type="nummber" name="harga_beli" required="">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Harga Jual</label>
+                                            <input class="form-control form-control-sm" type="nummber" name="harga_jual"  required="">
                                         </div>
                                     </div>
                                     <br>
@@ -394,10 +401,6 @@ else{
                                             <label>QTY</label>
                                             <input class="form-control form-control-sm" type="float" id="qty" name="qty" required="">
                                         </div>
-                                        <div class="col-md-6">
-                                            <label>Harga</label>
-                                            <input class="form-control form-control-sm" type="float" id="harga" name="harga" required="">
-                                        </div>
                                     </div>
 
 
@@ -482,9 +485,14 @@ else{
                                     <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?> <a download="../file_admin/<?= $file_bukti ?>" href="../file_admin/<?= $file_bukti ?>"> <?php echo "$file_bukti </a> </td>
                                     "; ?>
                                         <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
-
-                                        <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#formedit<?php echo $data['no_riwayat']; ?>" data-toggle='tooltip' title='Edit Data Obat'>
+                                    <?php  
+                                    if($status == 'Penambahan Stok' ){?>
+                                    
+                                    <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#formedit<?php echo $data['no_riwayat']; ?>" data-toggle='tooltip' title='Edit Data Obat'>
                                             <i class="fas fa-edit"></i> Edit</button>
+
+
+                                   <?php  }?>
                                         <!-- Form EDIT DATA -->
 
                                         <div class="modal fade bd-example-modal-lg" id="formedit<?php echo $data['no_riwayat']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
@@ -552,10 +560,6 @@ else{
                                                                     <label>QTY</label>
                                                                     <input class="form-control " type="float" id="qty" name="qty" value="<?= $qty; ?>" required="">
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <label>Harga</label>
-                                                                    <input class="form-control " type="float" id="harga" name="harga" value="<?= $harga; ?>" required="">
-                                                                </div>
                                                             </div>
 
                                                             <br>
@@ -575,10 +579,17 @@ else{
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- Button Hapus -->
-                                        <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['no_riwayat']; ?>" data-toggle='tooltip' title='Hapus Data Obat'>
+                                        <?php  
+                                    if($status == 'Penambahan Stok' ){?>
+                                    
+                                   <!-- Button Hapus -->
+                                   <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['no_riwayat']; ?>" data-toggle='tooltip' title='Hapus Data Obat'>
                                             <i class="fa-solid fa-trash"></i> Hapus</button>
+
+
+                                   <?php  }?>
+
+                                        
                                         <div class="modal fade" id="PopUpHapus<?php echo $data['no_riwayat']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -629,7 +640,8 @@ else{
                             <tr>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Kode Obat</th>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Nama Obat</th>
-                                <th style="font-size: clamp(12px, 1vw, 15px);">Harga Obat</th>
+                                <th style="font-size: clamp(12px, 1vw, 15px);">Harga Beli Obat</th>
+                                <th style="font-size: clamp(12px, 1vw, 15px);">Harga Jual Obat</th>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Stok Obat</th>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Satuan</th>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Deskripsi</th>
@@ -642,7 +654,8 @@ else{
                             <?php while ($data = mysqli_fetch_array($table2)) {
                                 $kode_obat = $data['kode_obat'];
                                 $nama_obat = $data['nama_obat'];
-                                $harga_obat = $data['harga_obat'];
+                                $harga_beli = $data['harga_beli'];
+                                $harga_jual = $data['harga_jual'];
                                 $stok_obat = $data['stok_obat'];
                                 $satuan = $data['satuan'];
                                 $deskripsi = $data['deskripsi'];
@@ -651,7 +664,8 @@ else{
                                 echo "<tr>
                             <td style='font-size: clamp(12px, 1vw, 15px);' >$kode_obat</td>
                             <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_obat</td>
-                            <td  style='font-size: clamp(12px, 1vw, 15px);'>" ?> <?= formatuang($harga_obat); ?> <?php echo "</td>
+                            <td  style='font-size: clamp(12px, 1vw, 15px);'>" ?> <?= formatuang($harga_beli); ?> <?php echo "</td>
+                            <td  style='font-size: clamp(12px, 1vw, 15px);'>" ?> <?= formatuang($harga_jual); ?> <?php echo "</td>
                             <td style='font-size: clamp(12px, 1vw, 15px);' >$stok_obat</td>
                             <td style='font-size: clamp(12px, 1vw, 15px);' >$satuan</td>
                             <td style='font-size: clamp(12px, 1vw, 15px);' >$deskripsi</td>
@@ -691,8 +705,12 @@ else{
                                                     <br>
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label>Harga Obat</label>
-                                                            <input class="form-control form-control-sm" type="text" name="harga_obat" value="<?= $harga_obat; ?>">
+                                                            <label>Harga Beli</label>
+                                                            <input class="form-control form-control-sm" type="text" name="harga_beli" value="<?= $harga_beli; ?>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Harga Jual</label>
+                                                            <input class="form-control form-control-sm" type="text" name="harga_jual" value="<?= $harga_jual; ?>">
                                                         </div>
                                                     </div>
                                                     <br>

@@ -23,7 +23,6 @@ $tanggal_akhir = $_GET['tanggal2'];
 $tanggal = htmlspecialchars($_POST['tanggal']);
 $nama_alkes = htmlspecialchars($_POST['nama_alkes']);
 $qty = htmlspecialchars($_POST['qty']);
-$harga = htmlspecialchars($_POST['harga']);
 $nama_file = $_FILES['file']['name'];
 $status = 'PNB';
 if ($nama_file == "") {
@@ -67,7 +66,7 @@ else if ( $nama_file != "" ) {
 
       $kode_alkes = $data_alkes['kode_alkes'];
       $stok_alkes = $data_alkes['stok_alkes'];
-      
+      $harga = $data_alkes['harga_beli'];
 
       //proses tambah stok alkes
       if($status == 'PNB'){
@@ -76,7 +75,7 @@ else if ( $nama_file != "" ) {
       }
       else{
         $stok_alkes_baru = $stok_alkes - $qty;
-        $jumlah = $qty * $harga_obat;
+        $jumlah = $qty * $harga;
       }
 
       $query = mysqli_query($koneksi,"UPDATE alat_kesehatan SET stok_alkes = '$stok_alkes_baru' WHERE kode_alkes =  '$kode_alkes'");
