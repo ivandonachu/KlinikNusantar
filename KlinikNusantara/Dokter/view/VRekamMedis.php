@@ -119,7 +119,7 @@ $id_pasien = $_GET['id_pasien'];
                                                                           INNER JOIN pasien c ON c.no_rm=a.no_rm
                                                                           INNER JOIN antrian d ON d.no_antrian=a.no_antrian  
                                                                           INNER JOIN karyawan e ON e.id_karyawan=a.id_dokter
-                                                                    WHERE c.id_pasien = '$id_pasien' ORDER BY a.no_perawatan  ASC ");
+                                                                           WHERE c.id_pasien = '$id_pasien' ORDER BY a.no_perawatan  ASC ");
 
 // tanggal lahir
 $tanggalx = new DateTime($tanggal_lahir);

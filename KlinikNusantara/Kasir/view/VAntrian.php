@@ -349,6 +349,11 @@ if ($tanggal_awal == $tanggal_akhir) {
                                               <button style=" font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-info" data-toggle="modal" data-target="#panggil_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Panggil Antrian'>
                                               <i class='fa-solid fa-headset'></i></button>
 
+                                               <!-- Button Print No antri -->
+                                            
+                                             <a href='VPrintAntrian?antrian=$antrian&nama_ruangan=$nama_ruangan&nama_karyawan=$nama_karyawan&nama_pasien=$nama_pasien&tanggal=$tanggal' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black; '  type='submit' class=' btn btn-secondary' >
+                                            <i class='fa-solid fa-print'></i></button></a>
+
                                             <?php } ?>
                                             
                                              
@@ -382,12 +387,73 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                     </div>
                                                 </div>
                                             </div>
-
-
-                                            <!-- Button Print No antri -->
                                             
-                                            <?php echo "<a href='VPrintAntrian?antrian=$antrian&nama_ruangan=$nama_ruangan' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black; '  type='submit' class=' btn btn-secondary' >
-                                            <i class='fa-solid fa-print'></i></button></a>";?>
+                                            <?php 
+                                            if($status_antrian == 'Selesai' ){ ?>
+                                            <!-- Button Print struk bayar -->
+                                            
+                                            <?php echo "<a href='VPrintStruk?antrian=$antrian&nama_ruangan=$nama_ruangan&nama_karyawan=$nama_karyawan&nama_pasien=$nama_pasien&tanggal=$tanggal' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black;
+                                             '  type='submit' class=' btn btn-secondary' >  <i class='fa-solid fa-print'></i></button></a>";
+                                                
+                                            } ?>
+
+                                            
+
+                                            
+                                            <?php 
+                                            if($status_antrian == 'Pembayaran' ){ ?>
+                                            <!-- Button Bayar -->
+                                            <button style=" font-size: clamp(7px, 1vw, 10px); color:black; "href="#" type="submit" class=" btn bg-success " data-toggle="modal" data-target="#pembayaran<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Pembayaran'>
+                                            <i class="fa-solid fa-dollar-sign"></i></button>
+                    
+
+                                            <div class="modal fade" id="pembayaran<?php echo $data['no_antrian']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title"> <b> Konfirmasi Pembayaran </b> </h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                                                <span aria-hidden="true"> &times; </span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <form action="../proses/PBayar" method="POST">
+                                                                <input type="hidden" name="no_antrian" value="<?php echo $no_antrian; ?>">
+                                                                <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
+                                                                <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Pembayaran</label>
+
+                                                                        <select name="jenis_pembayaran" class="form-control form-control-sm">
+                                                                            <option>Cash</option>
+                                                                            <option>Debit</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <br>
+                                                                <br>
+                                                                <div class="form-group">
+                                                                    <h6> Konfirmasi Pembayaran <?= $nama_pasien; ?> </h6>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary"> Bayar </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <?php
+                                                
+                                            } ?>
+                                             
+
+
+
+
                                             
                                             <button style=" font-size: clamp(7px, 1vw, 10px); color:black; "href="#" type="submit" class=" btn bg-warning " data-toggle="modal" data-target="#edit_antrian1<?php echo $data['no_antrian']; ?>" data-toggle='tooltip' title='Edit Antrian'>
                                                 <i class="fas fa-edit"></i></button>

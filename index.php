@@ -43,7 +43,7 @@
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
             <a href="index.php" class="logo d-flex align-items-center">
-                <img src="assets/img/Logo Klinik.jpeg" alt="">
+             
                 
                 
             </a>
@@ -67,7 +67,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 d-flex flex-column justify-content-center">
-                    <h1 data-aos="fade-up"> <b> Klinik Gigi Nusantara </b></h1>
+                    <h1 data-aos="fade-up"> <b></b></h1>
                     <h2 data-aos="fade-up" data-aos-delay="400"></h2>
                 </div>
                 <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
@@ -84,7 +84,7 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>PT Sriwijaya Teknik Energi </span></strong>. All Rights Reserved
+                &copy; Copyright <strong><span> </span></strong>. All Rights Reserved
             </div>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->

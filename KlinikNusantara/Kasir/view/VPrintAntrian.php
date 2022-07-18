@@ -3,9 +3,12 @@ require_once 'vendor/autoload.php';
 
 $antrian = $_GET['antrian'];
 $nama_ruangan = $_GET['nama_ruangan'];
+$nama_karyawan = $_GET['nama_karyawan'];
+$nama_pasien = $_GET['nama_pasien'];
+$tanggal = $_GET['tanggal'];
 
 
-$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 80]  ]);
+$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 98]  ]);
 $mpdf->AddPageByArray([
     'margin-left' => 5,
     'margin-right' => 5,
@@ -23,14 +26,68 @@ $html = '
 
 <table rules="rows"  align="center">
 <tr>
-    <th  style="font-size: 30px;">'. $nama_ruangan .'</th>
-
+    <th  style="font-size: 20px;">Klinik Nusantara</th>
 </tr>
 <tr>
- 
-    <td align="center" style="font-size: 150px; ">'. $antrian .'</td>
+    <td  style="font-size: 12px;">Jl. Mayor Salim Batubara, Kota Palembang</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; ">'. $nama_pasien .'</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; ">'. $tanggal .'</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; ">'. $nama_ruangan .'</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; ">'. $nama_karyawan .'</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 80px; ">'. $antrian .'</td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
+<tr>
+    <td align="center" style="font-size: 12px; "></td>
+</tr>
 
-
+<tr>
+    <td align="center" style="font-size: 20px; ">Terima Kasih</td>
 </tr>
 
 </table>

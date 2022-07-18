@@ -28,25 +28,32 @@ $status_antrian = 'Dalam Perawatan' ;
 $tgl_antri = date("Y-m-d");
 
         
-        
+            
 
 
 
             $result = mysqli_query($koneksi, "SELECT * FROM antrian WHERE  kode_ruangan = 'RUA1' AND status_antrian = 'Dalam Perawatan' ");
+
             if(mysqli_num_rows($result) != 0 ){
                 $data_antrian = mysqli_fetch_assoc($result);
-                $tanggalx = $data_antrian['tanggal'];
+                $no_antrianx = $data_antrian['no_antrian'];
+                 //akses data ruangan
+                $sql_ruangan = mysqli_query($koneksi, "SELECT kode_ruangan FROM ruangan WHERE nama_ruangan = '$nama_ruangan' ");
+                $data_ruangan = mysqli_fetch_assoc($sql_ruangan);
+                $kode_ruangan = $data_ruangan['kode_ruangan'];
+                mysqli_query($koneksi,"UPDATE antrian SET status_antrian = 'Menunggu' WHERE no_antrian =  '$no_antrianx'");
 
-            echo "<script>alert('Ada Pasien dalam perawatan $tanggalx'); window.location='../view/VAntrian?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
+                mysqli_query($koneksi,"INSERT INTO live_antrian VALUES('','$tanggal','$antrian','$kode_ruangan')");
+
+                mysqli_query($koneksi,"UPDATE antrian SET status_antrian = '$status_antrian' WHERE no_antrian =  '$no_antrian'");
+               
+                    echo "<script>alert('Panggilan Berhasil'); window.location='../view/VAntrian?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir&antrian=$antrian';</script>";exit;
+
+
+
+
                 }
 
-                $result = mysqli_query($koneksi, "SELECT * FROM antrian WHERE  kode_ruangan = 'RUA2' AND status_antrian = 'Dalam Perawatan' ");
-            if(mysqli_num_rows($result) != 0 ){
-                $data_antrian = mysqli_fetch_assoc($result);
-                $tanggalx = $data_antrian['tanggal'];
-
-            echo "<script>alert('Ada Pasien dalam perawatan $tanggalx'); window.location='../view/VAntrian?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
-                }
 
         //akses data ruangan
         $sql_ruangan = mysqli_query($koneksi, "SELECT kode_ruangan FROM ruangan WHERE nama_ruangan = '$nama_ruangan' ");
