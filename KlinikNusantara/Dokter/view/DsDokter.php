@@ -343,7 +343,7 @@ function formattanggal($date){
                                             $status_antrian = $data['status_antrian'];
                                             $no_antrian = $data['no_antrian'];
                                           
-                                            $sql_antrian = mysqli_query($koneksi, "SELECT tanggal FROM antrian a INNER JOIN pasien b ON b.id_pasien=a.id_pasien 
+                                            $sql_antrian = mysqli_query($koneksi, "SELECT tanggal, tgl_cek_selanjutnya FROM antrian a INNER JOIN pasien b ON b.id_pasien=a.id_pasien 
                                                                                                                 INNER JOIN rekam_medis c ON c.no_rm=b.no_rm
                                                                                                                 LEFT JOIN perawatan d ON d.no_rm=c.no_rm 
                                                                                                                 WHERE a.id_pasien = '$id_pasien' AND status_antrian = 'Selesai' ORDER BY a.no_antrian DESC LIMIT 1");

@@ -23,7 +23,7 @@ $tanggal_akhir = htmlspecialchars($_POST['tanggal2']);
 $no_antrian = htmlspecialchars($_POST['no_antrian']);
 $jenis_pembayaran = htmlspecialchars($_POST['jenis_pembayaran']);
 $status_antrian = 'Selesai' ;
-
+$total_bayar = $_POST['total_bayar'];
 $sql_perawatan = mysqli_query($koneksi, "SELECT * FROM perawatan a INNER JOIN rekam_medis b ON a.no_rm=b.no_rm
                                                                     INNER JOIN pasien c ON c.no_rm=a.no_rm
                                                                     INNER JOIN antrian d ON d.no_antrian=a.no_antrian  
@@ -179,7 +179,7 @@ if($obat_4 != ""){
 
 
 
-       mysqli_query($koneksi,"INSERT INTO pembayaran VALUES('','$no_perawatan','$jenis_pembayaran','$total_pembayaran')");
+       mysqli_query($koneksi,"INSERT INTO pembayaran VALUES('','$no_perawatan','$jenis_pembayaran','$total_pembayaran','$total_bayar')");
        mysqli_query($koneksi,"UPDATE antrian SET status_antrian = '$status_antrian' WHERE no_antrian =  '$no_antrian'");
                    	
 	  echo "<script>alert('Pembayaran Berhasil'); window.location='../view/VAntrian?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
