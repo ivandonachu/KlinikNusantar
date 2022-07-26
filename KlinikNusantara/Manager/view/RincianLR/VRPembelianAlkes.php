@@ -140,7 +140,7 @@ $foto_profile = $data['foto_profile'];
          <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
 <!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="../DsManager">
     <div class="sidebar-brand-icon rotate-n-15">
 
     </div>
@@ -154,7 +154,7 @@ $foto_profile = $data['foto_profile'];
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a class="nav-link" href="DsManager">
+    <a class="nav-link" href="../DsManager">
         <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
         <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
 </li>

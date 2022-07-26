@@ -19,9 +19,24 @@ $result = mysqli_query($koneksi, "SELECT * FROM karyawan WHERE id_karyawan = '$i
 $data = mysqli_fetch_array($result);
 $nama = $data['nama_karyawan'];
 $foto_profile = $data['foto_profile'];
-$tanggal_awal = date('Y-m-d');
 
-$table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan f ON f.no_perawatan=e.no_perawatan INNER JOIN antrian a ON a.no_antrian=f.no_antrian INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
+if (isset($_GET['tanggal1'])) {
+    $tanggal_awal = $_GET['tanggal1'];
+    $tanggal_akhir = $_GET['tanggal2'];
+} elseif (isset($_POST['tanggal1'])) {
+    $tanggal_awal = $_POST['tanggal1'];
+    $tanggal_akhir = $_POST['tanggal2'];
+    
+} else {
+    $tanggal_awal = date('Y-m-d');
+    $tanggal_akhir = date('Y-m-d');
+
+}
+
+
+
+if ($tanggal_awal == $tanggal_akhir) {
+    $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan f ON f.no_perawatan=e.no_perawatan INNER JOIN antrian a ON a.no_antrian=f.no_antrian INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
     WHERE tanggal = '$tanggal_awal'");
 
     $table2 = mysqli_query($koneksi, "SELECT harga_jual, nama_alkes, SUM(jumlah) AS pendapatan_alkes , SUM(qty) AS total_terjual_alkes FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
@@ -126,9 +141,120 @@ $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
     $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
 
-    $no_urut1 = 0;
-    $no_urut2 = 0;
-    $no_urut3 = 0;
+} else {
+    $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan f ON f.no_perawatan=e.no_perawatan INNER JOIN antrian a ON a.no_antrian=f.no_antrian INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
+    WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+
+    $table2 = mysqli_query($koneksi, "SELECT harga_jual, nama_alkes, SUM(jumlah) AS pendapatan_alkes , SUM(qty) AS total_terjual_alkes FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                                                        INNER JOIN riwayat_alkes_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                                                        INNER JOIN alat_kesehatan d ON d.kode_alkes=c.kode_alkes
+                                                                                                                                                        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' GROUP BY d.nama_alkes ");
+
+    $table3 = mysqli_query($koneksi, "SELECT harga_jual, nama_obat, SUM(jumlah) AS pendapatan_obat , SUM(qty) AS total_terjual_obat FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                                                    INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                                                    INNER JOIN obat d ON d.kode_obat=c.kode_obat
+                                                                                                                                                    WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' GROUP BY d.nama_obat ");
+
+    $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , COUNT(nama_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                                                                        INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                                                                        INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
+                                                                                                                                                                        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' GROUP BY d.nama_tindakan ");
+
+    //alat kesehatan
+    //sql total seluruh pendapatan alkes
+    $sql_alkes_seluruh = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_alkes_total FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                INNER JOIN riwayat_alkes_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                INNER JOIN alat_kesehatan d ON d.kode_alkes=c.kode_alkes
+                                                                                                                INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+    $data_alkes_seluruh = mysqli_fetch_assoc($sql_alkes_seluruh);
+    $pendapatan_alkes_total = $data_alkes_seluruh['pendapatan_alkes_total'];
+
+    //sql total seluruh pendapatan alkes cash
+    $sql_alkes_cash = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_alkes_cash FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                            INNER JOIN riwayat_alkes_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                            INNER JOIN alat_kesehatan d ON d.kode_alkes=c.kode_alkes
+                                                                                                            INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                            WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Cash' ");
+    $data_alkes_cash = mysqli_fetch_assoc($sql_alkes_cash);
+    $pendapatan_alkes_cash = $data_alkes_cash['pendapatan_alkes_cash'];
+
+    //sql total seluruh pendapatan alkes debit
+    $sql_alkes_debit = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_alkes_debit FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                            INNER JOIN riwayat_alkes_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                            INNER JOIN alat_kesehatan d ON d.kode_alkes=c.kode_alkes
+                                                                                                            INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                            WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Debit' ");
+    $data_alkes_debit = mysqli_fetch_assoc($sql_alkes_debit);
+    $pendapatan_alkes_debit = $data_alkes_debit['pendapatan_alkes_debit'];
+
+    //obat
+    //sql total seluruh pendapatan obat
+    $sql_obat_seluruh = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_obat_total FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                            INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                            INNER JOIN obat d ON d.kode_obat=c.kode_obat
+                                                                                                            INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                            WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+    $data_obat_seluruh = mysqli_fetch_assoc($sql_obat_seluruh);
+    $pendapatan_obat_total = $data_obat_seluruh['pendapatan_obat_total'];
+
+    //sql total seluruh pendapatan alkes cash
+    $sql_obat_cash = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_obat_cash FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                        INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                        INNER JOIN obat d ON d.kode_obat=c.kode_obat
+                                                                                                        INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Cash' ");
+    $data_obat_cash = mysqli_fetch_assoc($sql_obat_cash);
+    $pendapatan_obat_cash = $data_obat_cash['pendapatan_obat_cash'];
+
+    //sql total seluruh pendapatan alkes debit
+    $sql_obat_debit = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_obat_debit FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                            INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                            INNER JOIN obat d ON d.kode_obat=c.kode_obat
+                                                                                                            INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                            WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Debit' ");
+    $data_obat_debit = mysqli_fetch_assoc($sql_obat_debit);
+    $pendapatan_obat_debit = $data_obat_debit['pendapatan_obat_debit'];
+
+    //tindakan 
+    //sql tindakan total
+    $sql_tindakan_seluruh = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_seluruh  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                        INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                        INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
+                                                                                                                        INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+    $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
+    $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
+
+    //sql tindakan cash
+    $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                    INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                    INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
+                                                                                                                    INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                    WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Cash' ");
+    $data_tindakan_cash = mysqli_fetch_assoc($sql_tindakan_cash);
+    $pendapatan_tindakan_cash = $data_tindakan_cash['pendapatan_tindakan_cash'];
+
+    //sql tindakan debit
+    $sql_tindakan_debit = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_debit  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                    INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
+                                                                                                                    INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
+                                                                                                                    INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                    WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jenis_pembayaran = 'Debit' ");
+    $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
+    $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
+
+    $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
+    $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
+    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
+   
+}
+$no_urut1 = 0;
+$no_urut2 = 0;
+$no_urut3 = 0;
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -381,6 +507,16 @@ $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan
                 </div>
               
                 <div class="pinggir1" style="margin-right: 20px; margin-left: 20px;">
+                <?php echo "<form  method='POST' action='DsManager' style='margin-bottom: 15px;'>" ?>
+                    <div>
+                        <div align="left" style="margin-left: 20px;">
+                            <input type="date" id="tanggal1" style="font-size: 14px" name="tanggal1">
+                            <span>-</span>
+                            <input type="date" id="tanggal2" style="font-size: 14px" name="tanggal2">
+                            <button type="submit" name="submmit" style="font-size: 12px; margin-left: 10px; margin-bottom: 2px;" class="btn1 btn btn-outline-primary btn-sm">Lihat</button>
+                        </div>
+                    </div>
+                    </form>
                 <div class="row">
                         <!-- Tampilan tanggal -->
                         <div class="col-md-6">
