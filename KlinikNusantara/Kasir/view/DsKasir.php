@@ -21,6 +21,50 @@ $nama = $data['nama_karyawan'];
 $foto_profile = $data['foto_profile'];
 
 
+        $tgl1 = date("Y-m-d");
+        $tgl2 = date('Y-m-d', strtotime('+1 days', strtotime($tgl1))); 
+    
+        //DATA PERAWATAN TERAKHIR
+        $table = mysqli_query($koneksi, "SELECT * FROM perawatan a INNER JOIN rekam_medis b ON a.no_rm=b.no_rm
+                                                                            INNER JOIN pasien c ON c.no_rm=a.no_rm
+                                                                            INNER JOIN antrian d ON d.no_antrian=a.no_antrian  
+                                                                            INNER JOIN karyawan e ON e.id_karyawan=a.id_dokter 
+                                                                            WHERE  a.tgl_cek_selanjutnya = '$tgl2' ");
+
+//script format tanggal
+function formattanggal($date){
+        
+
+    $newDate = date(" d F Y", strtotime($date));
+    switch(date("l"))
+  {
+    case 'Monday':$nmh="Senin";break; 
+    case 'Tuesday':$nmh="Selasa";break; 
+    case 'Wednesday':$nmh="Rabu";break; 
+    case 'Thursday':$nmh="Kamis";break; 
+    case 'Friday':$nmh="Jum'at";break; 
+    case 'Saturday':$nmh="Sabtu";break; 
+    case 'Sunday':$nmh="minggu";break; 
+  }
+  echo " $newDate";
+   }
+
+   function formattanggalx($date){
+        
+
+    $newDate = date("l, d F Y", strtotime($date));
+    switch(date("l"))
+  {
+    case 'Monday':$nmh="Senin";break; 
+    case 'Tuesday':$nmh="Selasa";break; 
+    case 'Wednesday':$nmh="Rabu";break; 
+    case 'Thursday':$nmh="Kamis";break; 
+    case 'Friday':$nmh="Jum'at";break; 
+    case 'Saturday':$nmh="Sabtu";break; 
+    case 'Sunday':$nmh="minggu";break; 
+  }
+  echo " $newDate";
+   }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -274,10 +318,124 @@ $foto_profile = $data['foto_profile'];
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <img style="margin-top: 60px; margin-left: 100px;" src="../gambar/kasir_toko.svg">
-                </div>
+                <h2 align='center'>List Perawatan Besok</h2>
+                            <br>
+                            <hr>
+                            <br>
+                            <!-- Tabel -->
+                            <div style="overflow-x: auto" >
+                                <table id="example" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align='center'>
+                                    <thead align='center'>
+                                        <tr>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Nama Pasien</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Jenis Kelamin</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal Lahir</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Umur</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Dokter</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Terakhir Cek Up</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Cek Up Selanjutnya</th>
+                                            <th style="font-size: clamp(12px, 1vw, 15px);">Kirim Pesan Pengingat</th>
 
+                                        </tr>
+                                    </thead>
+                                    <tbody align='center'>
+                                        <?php
+                                        $urut = 0;
+                                 
+                              
+                                        $kode_antrian = 'A';
+                                        function formatuang($angka)
+                                        {
+                                            $uang = "Rp " . number_format($angka, 2, ',', '.');
+                                            return $uang;
+                                        }
+
+                                        ?>
+                                        <?php while ($data = mysqli_fetch_array($table)) {
+                                            $nama_pasien = $data['nama_pasien'];
+                                            $jenis_kelamin = $data['jenis_kelamin'];
+                                            $id_pasien = $data['id_pasien'];
+                                            $tanggal_lahir = $data['tanggal_lahir'];
+                                            $nama_karyawan = $data['nama_karyawan'];
+                                            $status_antrian = $data['status_antrian'];
+                                            $no_antrian = $data['no_antrian'];
+                                            $no_perawatan = $data['no_perawatan'];
+                                           
+                                            $sql_antrian = mysqli_query($koneksi, "SELECT b.no_hp, tanggal, tgl_cek_selanjutnya FROM antrian a INNER JOIN pasien b ON b.id_pasien=a.id_pasien 
+                                                                                                                INNER JOIN rekam_medis c ON c.no_rm=b.no_rm
+                                                                                                                LEFT JOIN perawatan d ON d.no_rm=c.no_rm 
+                                                                                                                WHERE a.id_pasien = '$id_pasien' AND status_antrian = 'Selesai' ORDER BY a.no_antrian DESC LIMIT 1");
+                                            $data_antrian = mysqli_fetch_assoc($sql_antrian);
+
+                                            if( !isset( $data_antrian['tanggal'])){
+                                                $tanggal_terakhir_cekUP = 'Pertama Kali Cek UP';
+                                                $tanggal_cekUP_selanjutnya =  "Pertama Kali Cek UP" ;
+                                        
+                                          
+                                            }
+                                            else{
+                                                $tanggal_terakhir_cekUP = $data_antrian['tanggal'];
+                                                $tanggal_cekUP_selanjutnya = $data_antrian['tgl_cek_selanjutnya'] ;
+                                                $no_hp = $data_antrian['no_hp'];
+                                          
+                                            }
+                                            $tanggalxxx = formattanggal($tanggal_cekUP_selanjutnya);
+                                            
+
+                                            $urut = $urut + 1;
+                                            $antrian = $kode_antrian.$urut;
+
+                                            // tanggal lahir
+                                            $tanggalx = new DateTime($tanggal_lahir);
+                                            // tanggal hari ini
+                                            $today = new DateTime('today');
+
+                                            // tahun
+                                            $y = $today->diff($tanggalx)->y;
+
+                                            // bulan
+                                            $m = $today->diff($tanggalx)->m;
+
+                                            // hari
+                                            $d = $today->diff($tanggalx)->d;
+
+                                            echo "<tr>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_kelamin</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?=  formattanggal($tanggal_lahir); ?> <?php echo" </td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$y . " T " . $m . " B " . $d . " H";?> <?php echo"</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal_terakhir_cekUP</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal_cekUP_selanjutnya</td>
+                                            <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
+                                      
+                                            
+                                            <?php 
+                                               $sql_riwayat_wa = mysqli_query($koneksi, "SELECT * FROM perawatan a INNER JOIN riwayat_wa b ON b.no_perawatan=a.no_perawatan 
+                                                                                         WHERE a.no_perawatan = '$no_perawatan'");
+                                               
+                                               if(mysqli_num_rows($sql_riwayat_wa) == 0 ){?>
+                                                <!-- Button Selesai -->
+                                                <?php echo "<a href='../proses/PesanWA?tanggal_cekUP_selanjutnya=$tanggalxxx&no_perawatan=$no_perawatan&nama_karyawan=$nama_karyawan&nama_pasien=$nama_pasien&no_hpx=$no_hp' target='_blank'><button style=' font-size: clamp(12px, 2vw, 15px);color:black; '  type='submit' class=' btn btn-info' >
+                                                 <i class='fa-solid fa-envelopes-bulk'></i> </button></a>";?>
+                                                
+                                                <?php }
+                                        
+                                                else{ 
+                                                  
+                                              }
+                                            ?>
+                                           
+
+                                          
+
+                                        <?php echo  " </td> </tr>";
+                                        }
+                                        ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
             </div>
             <!-- End of Main Content -->
 
