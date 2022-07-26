@@ -106,62 +106,46 @@ $username = htmlspecialchars($data1['username']);
     <!-- Sidebar -->
     <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsAdmin">
-        <div class="sidebar-brand-icon rotate-n-15">
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
+    <div class="sidebar-brand-icon rotate-n-15">
 
+    </div>
+    <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.jpeg"></div>
+</a>
+<br>
+
+<br>
+<!-- Divider -->
+<hr class="sidebar-divider my-0">
+
+<!-- Nav Item - Dashboard -->
+<li class="nav-item active">
+    <a class="nav-link" href="DsManager">
+        <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
+        <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+<!-- Heading -->
+<div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
+    Menu Manager
+</div>
+
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VLabaRugi">Laba Rugi</a>
         </div>
-        <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.jpeg"></div>
-      </a>
-      <br>
-
-      <br>
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-       <!-- Nav Item - Dashboard -->
-       <li class="nav-item active">
-                <a class="nav-link" href="DsAdmin">
-                    <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
-                    <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading" style="font-size: clamp(5px, 3vw, 22px); color:white;">
-                Menu Admin
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-dollar-sign" style="font-size: 15px; color:white;"></i>
-                    <span style="font-size: clamp(5px, 2v3vww, 15px); color:white;">Oprasional</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPengeluaran">Pengeluaran</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo1" 15 aria-expanded="true" aria-controls="collapseTwo1">
-                    <i class="fas fa-users" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Data SDK</span>
-                </a>
-                <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VKaryawan">Data Karyawan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAccount">Akun Karyawan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VTindakan">List Tindakan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VObat">List Obat</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAlatKesehatan">List Alat Kesehatan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRuangan">List Ruangan</a>
-                    </div>
-                </div>
-            </li>
+    </div>
+</li>
 
 
 
