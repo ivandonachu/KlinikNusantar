@@ -348,20 +348,15 @@ $tanggalx = new DateTime($tanggal_lahir);
 $today = new DateTime('today');
 
 // tahun
-$y = $today->diff($tanggalx)->y;
+$umur = $today->diff($tanggalx);
 
-// bulan
-$m = $today->diff($tanggalx)->m;
-
-// hari
-$d = $today->diff($tanggalx)->d;
 
   echo "<tr>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$id_pasien</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_kelamin</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$tempat_lahir,";?> <?=  formattanggal($tanggal_lahir); ?> <?php echo" </td>
-  <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$y . " T " . $m . " B " . $d . " H";?> <?php echo"</td>
+  <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$umur->y . "T " . $umur->m . "B " . $umur->d . "H";?> <?php echo"</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$golongan_darah</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$nik</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$alamat</td>
@@ -533,8 +528,8 @@ $d = $today->diff($tanggalx)->d;
             <?php
             include 'koneksi.php';
          
-            $result2 = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
-            while ($data2 = mysqli_fetch_array($result2)){
+            $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
+            while ($data2 = mysqli_fetch_array($result)){
               $nama_karyawan = $data2['nama_karyawan'];
   
                 echo "<option> $nama_karyawan </option> ";
