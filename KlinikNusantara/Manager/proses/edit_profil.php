@@ -14,7 +14,7 @@ if ($jabatan_valid == 'Dokter') {
 
 }
 
-else{  header("Location: logout.php");
+else{  header("Location:  logout.php");
 exit;
 }
 

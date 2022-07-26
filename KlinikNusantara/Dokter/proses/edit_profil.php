@@ -13,8 +13,8 @@ $jabatan_valid = $data1['jabatan'];
 if ($jabatan_valid == 'Dokter') {
 
 }
-
-else{  header("Location: logout.php");
+ 
+else{  header("Location:  logout.php");
 exit;
 }
 

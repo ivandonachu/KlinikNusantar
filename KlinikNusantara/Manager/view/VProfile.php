@@ -12,7 +12,7 @@ $id1 = $data1['id_karyawan'];
 $jabatan_valid = $data1['jabatan'];
 if ($jabatan_valid == 'Admin') {
 } else {
-  header("Location: logout.php");
+  header("Location:  logout.php");
   exit;
 }
 
