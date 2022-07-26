@@ -38,18 +38,6 @@ function formattanggal($date){
 echo " $newDate";
  }
 
- function hitung_umur($tanggal_lahirx){
-  $birthDate = new DateTime($tanggal_lahirx);
-  $today = new DateTime("today");
-  if ($birthDate > $today) { 
-      exit("0 tahun 0 bulan 0 hari");
-  }
-  $y = $today->diff($birthDate)->y;
-  $m = $today->diff($birthDate)->m;
-  $d = $today->diff($birthDate)->d;
-  return $y." tahun ".$m." bulan ".$d." hari";
-}
-
 //sql data konten
 
 $table = mysqli_query($koneksi, "SELECT * FROM pasien");
@@ -354,12 +342,26 @@ $table = mysqli_query($koneksi, "SELECT * FROM pasien");
   $alamat =$data['alamat'];
   $tgl_daftar =$data['tgl_daftar'];
 
+// tanggal lahir
+$tanggalx = new DateTime($tanggal_lahir);
+// tanggal hari ini
+$today = new DateTime();
+
+// tahun
+$y = $today->diff($tanggalx)->y;
+
+// bulan
+$m = $today->diff($tanggalx)->m;
+
+// hari
+$d = $today->diff($tanggalx)->d;
+
   echo "<tr>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$id_pasien</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_kelamin</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$tempat_lahir,";?> <?=  formattanggal($tanggal_lahir); ?> <?php echo" </td>
-  <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?= hitung_umur($tanggal_lahir); ?> <?php echo"</td>
+  <td style='font-size: clamp(12px, 1vw, 15px);' >";?> <?php echo "".$y . "T " . $m . "B " . $d . "H";?> <?php echo"</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$golongan_darah</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$nik</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$alamat</td>
