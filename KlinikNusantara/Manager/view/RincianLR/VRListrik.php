@@ -285,7 +285,7 @@ if ($tanggal_awal == $tanggal_akhir) {
      <td style='font-size: clamp(12px, 1vw, 15px);'>$keterangan</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($jumlah); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($total); ?> <?php echo "</td>
-     <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?> <a download="../file_admin/<?= $file_bukti ?>" href="../file_admin/<?= $file_bukti ?>"> <?php echo "$file_bukti </a> </td>
+     <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?> <a download="/KlinikNusantara/Admin/file_admin/<?= $file_bukti ?>" href="/KlinikNusantara/Admin/file_admin/<?= $file_bukti ?>"> <?php echo "$file_bukti </a> </td>
     </tr>";
   }
 
