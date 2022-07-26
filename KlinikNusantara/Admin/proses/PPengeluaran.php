@@ -22,7 +22,7 @@ exit;
 $tanggal_awal = $_GET['tanggal1'];
 $tanggal_akhir = $_GET['tanggal2'];
 $tanggal = htmlspecialchars($_POST['tanggal']);
-$akun = htmlspecialchars($_POST['akun']);
+$akun = $_POST['akun'];
 $jumlah = htmlspecialchars($_POST['jumlah']);
 $keterangan = htmlspecialchars($_POST['keterangan']);
 $nama_file = $_FILES['file']['name'];

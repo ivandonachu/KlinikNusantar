@@ -10,7 +10,7 @@ $result1 = mysqli_query($koneksi, "SELECT * FROM account a INNER JOIN karyawan b
 $data1 = mysqli_fetch_array($result1);
 $id1 = $data1['id_karyawan'];
 $jabatan_valid = $data1['jabatan'];
-if ($jabatan_valid == 'Admin') {
+if ($jabatan_valid == 'Manager') {
 } else {
     header("Location: logout.php");
     exit;
@@ -35,11 +35,14 @@ if (isset($_GET['tanggal1'])) {
 }
 
 if ($tanggal_awal == $tanggal_akhir) {
-    $table = mysqli_query($koneksi, "SELECT * FROM pengeluaran WHERE tanggal = '$tanggal_awal'");
+    $table = mysqli_query($koneksi, "SELECT * FROM pengeluaran WHERE tanggal = '$tanggal_awal' AND akun = 'Gaji Karyawan' ");
+    $table2 = mysqli_query($koneksi, "SELECT SUM(jumlah) AS total_pengeluaran  FROM pengeluaran WHERE tanggal  = '$tanggal_awal' AND akun = 'Gaji Karyawan' ");
+    $data2 = mysqli_fetch_array($table2);
+    $total_pengeluaran = $data2['total_pengeluaran'];
   }
   else{
-    $table = mysqli_query($koneksi, "SELECT * FROM pengeluaran WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'");
-    $table2 = mysqli_query($koneksi, "SELECT SUM(jumlah) AS total_pengeluaran  FROM pengeluaran WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+    $table = mysqli_query($koneksi, "SELECT * FROM pengeluaran WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND akun = 'Gaji Karyawan'");
+    $table2 = mysqli_query($koneksi, "SELECT SUM(jumlah) AS total_pengeluaran  FROM pengeluaran WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND akun = 'Gaji Karyawan' ");
     $data2 = mysqli_fetch_array($table2);
     $total_pengeluaran = $data2['total_pengeluaran'];
   
@@ -60,7 +63,7 @@ if ($tanggal_awal == $tanggal_akhir) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Data Pengeluaran</title>
+    <title>Rincian Gaji Karyawan</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" type="text/css">
@@ -89,62 +92,46 @@ if ($tanggal_awal == $tanggal_akhir) {
         <!-- Sidebar -->
         <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsAdmin">
-                <div class="sidebar-brand-icon rotate-n-15">
+<!-- Sidebar - Brand -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
+    <div class="sidebar-brand-icon rotate-n-15">
 
-                </div>
-                <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.jpeg"></div>
-            </a>
-            <br>
+    </div>
+    <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.jpeg"></div>
+</a>
+<br>
 
-            <br>
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+<br>
+<!-- Divider -->
+<hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="DsAdmin">
-                    <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
-                    <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
-            </li>
+<!-- Nav Item - Dashboard -->
+<li class="nav-item active">
+    <a class="nav-link" href="DsManager">
+        <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
+        <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
+</li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+<!-- Divider -->
+<hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
-                Menu Admin
-            </div>
+<!-- Heading -->
+<div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
+    Menu Manager
+</div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-dollar-sign" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Oprasional</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPengeluaran">Pengeluaran</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo1" 15 aria-expanded="true" aria-controls="collapseTwo1">
-                    <i class="fas fa-users" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Data SDK</span>
-                </a>
-                <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VKaryawan">Data Karyawan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAccount">Akun Karyawan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VTindakan">List Tindakan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VObat">List Obat</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAlatKesehatan">List Alat Kesehatan</a>
-                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRuangan">List Ruangan</a>
-                    </div>
-                </div>
-            </li>
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
+    </a>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="../VLabaRugi">Laba Rugi</a>
+        </div>
+    </div>
+</li>
 
 
 
@@ -177,7 +164,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <?php echo "<a href='VPengeluaran'><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Data Pengeluaran</h5></a>"; ?>
+                    <?php echo "<a href='VRGajiKaryawan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Rincian Gaji Karyawan</h5></a>"; ?>
 
 
 
@@ -236,89 +223,20 @@ if ($tanggal_awal == $tanggal_akhir) {
                 <!-- End of Topbar -->
               <!-- Name Page -->
   <div class="pinggir1" style="margin-right: 20px; margin-left: 20px;">
-    <?php  echo "<form  method='POST' action='VPengeluaran' style='margin-bottom: 15px;'>" ?>
-    <div>
-      <div align="left" style="margin-left: 20px;"> 
-        <input type="date" id="tanggal1" style="font-size: 14px" name="tanggal1"> 
-        <span>-</span>
-        <input type="date" id="tanggal2" style="font-size: 14px" name="tanggal2">
-        <button type="submit" name="submmit" style="font-size: 12px; margin-left: 10px; margin-bottom: 2px;" class="btn1 btn btn-outline-primary btn-sm" >Lihat</button>
-      </div>
-    </div>
-  </form>
-  <div class="row">
-    <div class="col-md-6">
-     <?php  echo" <a style='font-size: 12px'> Data yang Tampil  $tanggal_awal  sampai  $tanggal_akhir</a>" ?>
-   </div>
-   <div class="col-md-6">
-    <!-- Button Input Data Bayar -->
-    <div align="right">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#input"> <i class="fas fa-plus-square mr-2"></i> Catat Pengeluaran </button> <br> <br>
-    </div>
-    
-     <!-- Form Modal  -->
-    <div class="modal fade bd-example-modal-lg" id="input" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-     <div class="modal-dialog modal-lg" role ="document">
-       <div class="modal-content"> 
-        <div class="modal-header">
-          <h5 class="modal-title"> Form Pengeluaran</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> 
+  <div align="left">
+                <?php echo "<a href='../VLabaRugi?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'><button type='button' class='btn btn-primary'>Kembali</button></a>"; ?>
+                </div>
 
-        <!-- Form Input Data -->
-        <div class="modal-body" align="left">
-          <?php  echo "<form action='../proses/PPengeluaran?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir' enctype='multipart/form-data' method='POST'>";  ?>
+                    <br>
+                    <div class="row">
+                        <!-- Tampilan tanggal -->
+                        <div class="col-md-6">
+                            <?php echo " <a style='font-size: 12px'> Data yang Tampil  $tanggal_awal  sampai  $tanggal_akhir</a>" ?>
+                        </div>
+                    </div>
+                    <br>
 
-          <div class="row">
-             <div class="col-md-6">
-              <label>Tanggal</label>
-              <input class="form-control " type="date"name="tanggal" required="">
-            </div>
-            <div class="col-md-6">
-              <label>Akun</label>
-              <select name="akun" class="form-control">
-                <option>Biaya Kantor</option>
-                <option>Listrik & Telepon</option>
-                <option>Alat Tulis Kantor</option>
-                <option>Gaji Karyawan</option>
-              </select>
-             </div>    
-        </div>
-        <br>
-
-      <div class="row">
-        <div class="col-md-6">
-          <label>Jumlah</label>
-          <input class="form-control" type="number" name="jumlah"  required="">
-        </div>    
-        <div class="col-md-6">
-          <label>Keterangan</label>
-          <textarea class="form-control" name="keterangan" ></textarea>
-        </div>         
-      </div>
-     <br>
-      <div>
-        <label>Upload File</label> 
-        <input type="file" name="file"> 
-      </div> 
-
-
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">CATAT</button>
-        <button type="reset" class="btn btn-danger"> RESET</button>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-
-
+           
 
 
 
@@ -334,7 +252,7 @@ if ($tanggal_awal == $tanggal_akhir) {
       <th style="font-size: clamp(12px, 1vw, 15px);">Pengeluaran</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">Total</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">file</th>
-      <th>Aksi</th>
+
     </tr>
   </thead>
   <tbody>
@@ -368,119 +286,7 @@ if ($tanggal_awal == $tanggal_akhir) {
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($jumlah); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($total); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?> <a download="../file_admin/<?= $file_bukti ?>" href="../file_admin/<?= $file_bukti ?>"> <?php echo "$file_bukti </a> </td>
-     "; ?>
-     <?php echo "<td style='font-size: 12px'>"; ?>
-     <button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#formedit<?php echo $data['no_pengeluaran']; ?>" data-toggle='tooltip' title='Edit Data Pengeluaran'> 
-     <i class="fas fa-edit"></i> Edit</button>
-
-        <!-- Form EDIT DATA -->
-
-        <div class="modal fade bd-example-modal-lg" id="formedit<?php echo $data['no_pengeluaran']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role ="document">
-            <div class="modal-content"> 
-            <div class="modal-header">
-            <h5 class="modal-title"> Form Edit Pengeluaran</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                  <span aria-hidden="true"> &times; </span>
-                </button>
-              </div>
-
-
-              <!-- Form Edit Data -->
-              <div class="modal-body">
-                <form action="../proses/EPengeluaran.php" enctype="multipart/form-data" method="POST">
-                  
-                 <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
-                 <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir;?>">
-                 <input type="hidden" name="no_pengeluaran" value="<?php echo $no_pengeluaran;?>">
-
-                  <div class="row">
-                    <div class="col-md-6">
-                        <label>Tanggal</label>
-                        <input class="form-control " type="date" name="tanggal" value="<?= $tanggal;?>" required="">
-                    </div>
-                    <div class="col-md-6">
-                    <label>Akun</label>
-                    <select name="akun" class="form-control">
-                      <?php $dataSelect = $data['akun']; ?>
-                      <option <?php echo ($dataSelect == 'Biaya Kantor') ? "selected": "" ?> >Biaya Kantor</option>
-                      <option <?php echo ($dataSelect == 'Listrik & Telepon') ? "selected": "" ?> >Listrik & Telepon</option>
-                      <option <?php echo ($dataSelect == 'Alat Tulis Kantor') ? "selected": "" ?> >Alat Tulis Kantor</option>
-                      <option <?php echo ($dataSelect == 'Gaji Karyawan') ? "selected": "" ?> >Gaji Karyawan</option>
-                    </select>
-                    </div>       
-                 </div>
-
-                  <br>
-
-                 <div class="row">
-                    <div class="col-md-6">
-                      <label>Jumlah</label>
-                      <input class="form-control form-control-sm" type="number" id="jumlah" name="jumlah"  value="<?=  $jumlah;?>"  required="">
-                    </div>    
-                    <div class="col-md-6">
-                    <label>Keterangan</label>
-                    <textarea class="form-control" name="keterangan" ><?=  $keterangan;?></textarea>
-                    </div>         
-                  </div>    
-                  
-                  <br>
-
-                  <div>
-                    <label>Upload File</label> 
-                    <input type="file" name="file"> 
-                  </div> 
-                 
-
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"> Ubah </button>
-                    <button type="reset" class="btn btn-danger"> RESET</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-        <button style= " font-size: clamp(7px, 1vw, 10px);color:black;" href="#" type="submit" class=" btn btn-danger" data-toggle="modal" data-target="#PopUpHapus<?php echo $data['no_pengeluaran']; ?>" data-toggle='tooltip' title='Hapus Data Pengeluran'>
-        <i class="fa-solid fa-trash"></i> Hapus</button>
-
-      <div class="modal fade bd-example-modal-lg" id="PopUpHapus<?php echo $data['no_pengeluaran']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
-       <div class="modal-dialog modal-lg" role ="document">
-         <div class="modal-content"> 
-          <div class="modal-header">
-          <div class="modal-header">
-          <h5 class="modal-title"> Hapus Pengeluaran</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="close">
-              <span aria-hidden="true"> &times; </span>
-            </button>
-          </div>
-
-
-          <div class="modal-body">
-            <form action="../proses/HPengeluaran" method="POST">
-              <input type="hidden" name="no_pengeluaran" value="<?php echo $no_pengeluaran; ?>">
-              <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
-              <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir;?>">
-
-
-              <div class="form-group">
-                <h6> Yakin Ingin Hapus Data Pengeluaran? </h6>             
-              </div>
-
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary"> Hapus </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <?php echo  " </td> </tr>";
+    </tr>";
   }
 
 ?>

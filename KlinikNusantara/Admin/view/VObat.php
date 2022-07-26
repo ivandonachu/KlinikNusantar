@@ -37,24 +37,87 @@ if (isset($_GET['tanggal1'])) {
 if(isset($_GET['kode_obat'])){
     $kode_obat = $_GET['kode_obat'];
     if ($tanggal_awal == $tanggal_akhir) {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
-        WHERE tanggal = '$tanggal_awal' AND a.kode_obat = '$kode_obat' ");
-        $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        WHERE tanggal = '$tanggal_awal' AND a.kode_obat = '$kode_obat' ");
+
+        $table2 = mysqli_query($koneksi, "SELECT * FROM riwayat_obat_perawatan a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        INNER JOIN perawatan e ON e.no_perawatan=a.no_perawatan
+                                                                        INNER JOIN antrian f ON f.no_antrian=e.no_antrian
+                                                                        WHERE f.tanggal = '$tanggal_awal' AND a.kode_obat = '$kode_obat' ");
+
+        $table3 = mysqli_query($koneksi, "SELECT * FROM obat");
+
+        //pembelian obat
+        $sql_pembelian_obat = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pembelian_obat FROM riwayat_obat WHERE tanggal = '$tanggal_awal' AND kode_obat = '$kode_obat' ");
+
+        $data_pembelian_obat = mysqli_fetch_assoc($sql_pembelian_obat);
+        $pembelian_obat = $data_pembelian_obat['pembelian_obat'];
     } else {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
-        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND a.kode_obat = '$kode_obat' ORDER BY a.tanggal");
-        $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND a.kode_obat = '$kode_obat' ORDER BY a.tanggal");
+
+        $table2 = mysqli_query($koneksi, "SELECT * FROM riwayat_obat_perawatan a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        INNER JOIN perawatan e ON e.no_perawatan=a.no_perawatan
+                                                                        INNER JOIN antrian f ON f.no_antrian=e.no_antrian
+                                                                        WHERE f.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND a.kode_obat = '$kode_obat' ");
+
+        $table3 = mysqli_query($koneksi, "SELECT * FROM obat");
+
+        //pembelian obat
+        $sql_pembelian_obat = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pembelian_obat FROM riwayat_obat WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND kode_obat = '$kode_obat' ");
+
+        $data_pembelian_obat = mysqli_fetch_assoc($sql_pembelian_obat);
+        $pembelian_obat = $data_pembelian_obat['pembelian_obat'];
     }
 }
 else{
     if ($tanggal_awal == $tanggal_akhir) {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
-        WHERE tanggal = '$tanggal_awal' ");
-        $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
+                                                                        WHERE tanggal = '$tanggal_awal' ");
+
+        $table2 = mysqli_query($koneksi, "SELECT * FROM riwayat_obat_perawatan a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        INNER JOIN perawatan e ON e.no_perawatan=a.no_perawatan
+                                                                        INNER JOIN antrian f ON f.no_antrian=e.no_antrian
+                                                                        WHERE f.tanggal = '$tanggal_awal'  ");
+
+        $table3 = mysqli_query($koneksi, "SELECT * FROM obat");
+
+        //pembelian obat
+        $sql_pembelian_obat = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pembelian_obat FROM riwayat_obat WHERE tanggal = '$tanggal_awal' ");
+
+        $data_pembelian_obat = mysqli_fetch_assoc($sql_pembelian_obat);
+        $pembelian_obat = $data_pembelian_obat['pembelian_obat'];
     } else {
-        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
-        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ORDER BY a.tanggal");
-        $table2 = mysqli_query($koneksi, "SELECT * FROM obat");
+        $table = mysqli_query($koneksi, "SELECT * FROM riwayat_obat a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan
+                                                                        WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ORDER BY a.tanggal");
+
+        $table2 = mysqli_query($koneksi, "SELECT * FROM riwayat_obat_perawatan a INNER JOIN obat b ON b.kode_obat=a.kode_obat 
+                                                                        INNER JOIN karyawan c ON c.id_karyawan=a.id_karyawan 
+                                                                        INNER JOIN status_penggunaan d ON d.kode_penggunaan=a.kode_penggunaan 
+                                                                        INNER JOIN perawatan e ON e.no_perawatan=a.no_perawatan
+                                                                        INNER JOIN antrian f ON f.no_antrian=e.no_antrian
+                                                                        WHERE f.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+        $table3 = mysqli_query($koneksi, "SELECT * FROM obat");
+
+        //pembelian obat
+        $sql_pembelian_obat = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pembelian_obat FROM riwayat_obat WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
+
+        $data_pembelian_obat = mysqli_fetch_assoc($sql_pembelian_obat);
+        $pembelian_obat = $data_pembelian_obat['pembelian_obat'];
     }
 }
 
@@ -426,7 +489,7 @@ else{
 
 
                     <!-- Tabel -->
-                    <!-- Tabel -->
+                    <h6 align="Center">Riwayat Restok Obat</h6>
                     <div style="overflow-x: auto">
                         <table id="example" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align='center'>
                             <thead>
@@ -624,6 +687,71 @@ else{
                                     <?php echo  " </td> </tr>";
                                 }
                                     ?>
+                                <tr > 
+                                    <th colspan="8" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pembelian_obat); ?></th>
+                                   </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <br>
+                    <hr>
+                    <br>
+
+                    <!-- Tabel -->
+                    <h6 align="Center">Riwayat Penjualan Obat</h6>
+                    <div style="overflow-x: auto">
+                        <table id="example1" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align='center'>
+                            <thead>
+                                <tr>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Nama Karyawan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Status</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Nama Obat</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">QTY</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Satuan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Harga</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Jumlah</th>
+                         
+                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $urut = 0;
+                  
+                                ?>
+                                <?php while ($data = mysqli_fetch_array($table2)) {
+                                    $no_riwayat = $data['no_riwayat'];
+                                    $tanggal = $data['tanggal'];
+                                    $nama_karyawan = $data['nama_karyawan'];
+                                    $status = $data['status'];
+                                    $nama_obat = $data['nama_obat'];
+                                    $satuan = $data['satuan'];
+                                    $qty = $data['qty'];
+                                  
+                                    $jumlah = $data['jumlah'];
+                                    $harga = $jumlah / $qty;
+                                   
+                                    $urut = $urut + 1;
+
+
+                                    echo "<tr>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$urut</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$status</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_obat</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$qty</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$satuan</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >" ?> <?= formatuang($harga); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >" ?> <?= formatuang($jumlah); ?> <?php echo "</td>
+                                   </tr>";
+                                }
+                                    ?>
 
                             </tbody>
                         </table>
@@ -635,7 +763,7 @@ else{
                     <br>
 
                     <h6 align="Center">Stok Obat</h6>
-                    <table id="example1" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align="center">
+                    <table id="example2" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align="center">
                         <thead>
                             <tr>
                                 <th style="font-size: clamp(12px, 1vw, 15px);">Kode Obat</th>
@@ -651,7 +779,7 @@ else{
                         </thead>
                         <tbody>
 
-                            <?php while ($data = mysqli_fetch_array($table2)) {
+                            <?php while ($data = mysqli_fetch_array($table3)) {
                                 $kode_obat = $data['kode_obat'];
                                 $nama_obat = $data['nama_obat'];
                                 $harga_beli = $data['harga_beli'];
@@ -880,7 +1008,17 @@ else{
                 .appendTo('#example_wrapper .col-md-6:eq(0)');
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#example2').DataTable({
+                lengthChange: false,
 
+            });
+
+            table.buttons().container()
+                .appendTo('#example_wrapper .col-md-6:eq(0)');
+        });
+    </script>
     <script>
         function createOptions(number) {
             var options = [],

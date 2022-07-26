@@ -351,10 +351,10 @@ function formatuang($angka)
             <td align="left" style="font-size: 12px; width:22%;"><?= formatuang($harga_tindakan) ?></td>
         </tr>
         
-        </table> <?
+        </table> <?php
         $no_urut = $no_urut + 1;
     }
-    //tindakan 1
+    //tindakan 3
     if($tindakan_3 != ""){
         $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_3'");
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
@@ -374,7 +374,7 @@ function formatuang($angka)
         </table> <?php
         $no_urut = $no_urut + 1;
     }
-    //tindakan 1
+    //tindakan 4
     if($tindakan_4 != ""){
         $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_4'");
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);

@@ -1369,7 +1369,7 @@ function formattanggal($date){
                                                       
 
                                                   <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">INPUT</button>
+                                                    <button type="submit" class="btn btn-primary">EDIT</button>
                                                     <button type="reset" class="btn btn-danger"> RESET</button>
                                                   </div>
                                                 </form>
