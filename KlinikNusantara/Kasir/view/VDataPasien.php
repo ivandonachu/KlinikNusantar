@@ -533,8 +533,8 @@ $d = $today->diff($tanggalx)->d;
             <?php
             include 'koneksi.php';
          
-            $result = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
-            while ($data2 = mysqli_fetch_array($result)){
+            $result2 = mysqli_query($koneksi, "SELECT nama_karyawan FROM karyawan WHERE jabatan = 'Dokter' ");   
+            while ($data2 = mysqli_fetch_array($result2)){
               $nama_karyawan = $data2['nama_karyawan'];
   
                 echo "<option> $nama_karyawan </option> ";
