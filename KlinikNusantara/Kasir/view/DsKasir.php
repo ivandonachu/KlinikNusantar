@@ -379,7 +379,7 @@ function formattanggal($date){
                                                 $no_hp = $data_antrian['no_hp'];
                                           
                                             }
-                                            $tanggalxxx = formattanggal($tanggal_cekUP_selanjutnya);
+                                      
                                             
 
                                             $urut = $urut + 1;
