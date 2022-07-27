@@ -51,7 +51,7 @@ else{
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Kasir</title>
+    <title>Live Antrian</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" type="text/css">
