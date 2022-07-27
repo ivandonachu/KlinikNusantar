@@ -49,23 +49,46 @@ function formattanggal($date){
   echo " $newDate";
    }
 
-   function formattanggalx($date){
-        
-
-    $newDate = date("l, d F Y", strtotime($date));
-    switch(date("l"))
-  {
-    case 'Monday':$nmh="Senin";break; 
-    case 'Tuesday':$nmh="Selasa";break; 
-    case 'Wednesday':$nmh="Rabu";break; 
-    case 'Thursday':$nmh="Kamis";break; 
-    case 'Friday':$nmh="Jum'at";break; 
-    case 'Saturday':$nmh="Sabtu";break; 
-    case 'Sunday':$nmh="minggu";break; 
-  }
-  echo " $newDate";
+   function getDay($date){
+    $datetime = DateTime::createFromFormat('Y-m-d', $date);
+    return $datetime->format('l');
    }
-?>
+   
+   function getHari($date){
+    $day=getDay($date);
+    switch ($day) {
+     case 'Sunday':
+      $hari = 'Minggu';
+      break;
+     case 'Monday':
+      $hari = 'Senin';
+      break;
+     case 'Tuesday':
+      $hari = 'Selasa';
+      break;
+     case 'Wednesday':
+      $hari = 'Rabu';
+      break;
+     case 'Thursday':
+      $hari = 'Kamis';
+      break;
+     case 'Friday':
+      $hari = 'Jum\'at';
+      break;
+     case 'Saturday':
+      $hari = 'Sabtu';
+      break;
+     default:
+      $hari = 'Tidak ada';
+      break;
+    }
+    return $hari;
+   }
+   
+   
+   
+   ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -380,8 +403,10 @@ function formattanggal($date){
                                           
                                             }
                                       
-                                            
-
+                                            $tgl2x = date('d F Y', strtotime($tanggal_cekUP_selanjutnya)); 
+                                            $hari = getHari($tanggal_cekUP_selanjutnya ); 
+                                            $hari_tanggal = $hari . ', ' .$tgl2x;
+                                      
                                             $urut = $urut + 1;
                                             $antrian = $kode_antrian.$urut;
 
@@ -416,7 +441,7 @@ function formattanggal($date){
                                                
                                                if(mysqli_num_rows($sql_riwayat_wa) == 0 ){?>
                                                 <!-- Button Selesai -->
-                                                <?php echo "<a href='../proses/PesanWA?tanggal_cekUP_selanjutnya=$tanggalxxx&no_perawatan=$no_perawatan&nama_karyawan=$nama_karyawan&nama_pasien=$nama_pasien&no_hpx=$no_hp' target='_blank'><button style=' font-size: clamp(12px, 2vw, 15px);color:black; '  type='submit' class=' btn btn-info' >
+                                                <?php echo "<a href='../proses/PesanWA?hari_tanggal=$hari_tanggal&no_perawatan=$no_perawatan&nama_karyawan=$nama_karyawan&nama_pasien=$nama_pasien&no_hpx=$no_hp' target='_blank'><button style=' font-size: clamp(12px, 2vw, 15px);color:black; '  type='submit' class=' btn btn-info' >
                                                  <i class='fa-solid fa-envelopes-bulk'></i> </button></a>";?>
                                                 
                                                 <?php }
