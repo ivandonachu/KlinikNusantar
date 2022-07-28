@@ -400,12 +400,13 @@ function formattanggal($date){
                                                 $tanggal_terakhir_cekUP = $data_antrian['tanggal'];
                                                 $tanggal_cekUP_selanjutnya = $data_antrian['tgl_cek_selanjutnya'] ;
                                                 $no_hp = $data_antrian['no_hp'];
+                                                $tgl2x = date('d F Y', strtotime($tanggal_cekUP_selanjutnya)); 
+                                                $hari = getDay($tanggal_cekUP_selanjutnya); 
+                                                $hari_tanggal = $hari . ', ' .$tgl2x;
                                           
                                             }
-                                      
-                                            $tgl2x = date('d F Y', strtotime($tanggal_cekUP_selanjutnya)); 
-                                            $hari = getHari($tanggal_cekUP_selanjutnya ); 
-                                            $hari_tanggal = $hari . ', ' .$tgl2x;
+                                            
+                                           
                                       
                                             $urut = $urut + 1;
                                             $antrian = $kode_antrian.$urut;
