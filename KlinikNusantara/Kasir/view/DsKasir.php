@@ -29,7 +29,7 @@ $foto_profile = $data['foto_profile'];
                                                                             INNER JOIN pasien c ON c.no_rm=a.no_rm
                                                                             INNER JOIN antrian d ON d.no_antrian=a.no_antrian  
                                                                             INNER JOIN karyawan e ON e.id_karyawan=a.id_dokter 
-                                                                            WHERE  a.tgl_cek_selanjutnya = '$tgl2' ");
+                                                                            WHERE  a.tgl_cek_selanjutnya = '$tgl2' AND status_antrian = 'Selesai' ");
 
 //script format tanggal
 function formattanggal($date){
