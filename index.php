@@ -43,7 +43,7 @@
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
             <a href="index.php" class="logo d-flex align-items-center">
-                <img src="assets/img/logo2.png" alt="">
+                <img src="assets/img/logo2.png" style=" max-height: 55px; width: 100%;" alt="">
                 
                 
             </a>
