@@ -129,7 +129,7 @@ else{
     <br>
     <div class="row">
         <div class="col-md-6">
-            <img style="margin-top: px; max-height: 300px; width: 70%;" src="../gambar/Logo Klinik.jpeg">
+            <img style="margin-top: px; max-height: 300px; width: 70%;" src="../gambar/Logo Klinik.png">
         </div>
         <div class="col-md-6">
             <div align='right' ; style="margin-right: 50px;">

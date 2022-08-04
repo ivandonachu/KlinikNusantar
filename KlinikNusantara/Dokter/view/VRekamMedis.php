@@ -199,7 +199,7 @@ function formattanggal($date){
 
   <table style="width:100%"  >
   <tr align="center">
-    <th colspan="2" rowspan="3" style="width:43%" ><img src="../gambar/Logo Klinik.jpeg" style="height: 70px; width: 230px;"></th>
+    <th colspan="2" rowspan="3" style="width:43%" ><img src="../gambar/Logo Klinik.png" style="height: 70px; width: 230px;"></th>
     <th colspan="4"> <h9 style='font-size: 12px' >Alamat : Dsn. 01 RT/RW 03/01 Desa Suka Maju</h9></th>
   </tr>
   <tr align="center">
