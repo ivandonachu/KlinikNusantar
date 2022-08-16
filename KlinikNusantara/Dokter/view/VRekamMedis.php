@@ -855,6 +855,8 @@ function formattanggal($date){
                                                     </div> 
                                                       
                                                       </div>
+                                             
+                                             <?/*
                                                       <br>
                                                   <div class="row">
                                                   <div class="col-md-6">
@@ -976,7 +978,8 @@ function formattanggal($date){
                                                           <input class="form-control form-control-sm" type="number"  name="qty_obat_4" value="<?= $qty_obat_4; ?>" disabled>
                                                       </div>
                                                       </div>
-                                                      
+                                                      */
+                                                      ?>
 
                                             
                                                 </form>
