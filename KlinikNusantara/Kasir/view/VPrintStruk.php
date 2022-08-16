@@ -121,7 +121,7 @@ $html = '
 
 <table rules="rows"  align="center">
 <tr>
-    <td ><img style=" max-height: 30px; width: 100%;" src="../gambar/Logo Struk.jpeg"></td>
+    <td ><img style=" max-height: 35px; width: 100%;" src="../gambar/Logo Struk.jpg"></td>
     <td align="center" style="font-size: 9px;">Klinik Nusantara <br>Jl. Mayor Salim Batubara</td>
 </tr>
 

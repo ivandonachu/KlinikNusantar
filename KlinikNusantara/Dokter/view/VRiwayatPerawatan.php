@@ -441,7 +441,7 @@ $jumlah_perawatan = $hasil['jumlah_perawatan'];
                                                     </div> 
                                                       
                                                   </div>
-                                                    <br>
+                                                   <br>
                                                   <div class="row">
                                                   <div class="col-md-6">
                                                       <label>Tanggal Cek Up Selanjutnya</label>
@@ -454,7 +454,7 @@ $jumlah_perawatan = $hasil['jumlah_perawatan'];
                                                     </div> 
                                                       
                                                       </div>
-                                                      <br>
+                                               <?php /*       <br>
                                                   <div class="row">
                                                   <div class="col-md-6">
                                                     <div>
@@ -575,7 +575,7 @@ $jumlah_perawatan = $hasil['jumlah_perawatan'];
                                                           <input class="form-control form-control-sm" type="number"  name="qty_obat_4" value="<?= $qty_obat_4; ?>" disabled>
                                                       </div>
                                                       </div>
-                                                      
+                                                      */ ?>
 
                                             
                                                 </form>

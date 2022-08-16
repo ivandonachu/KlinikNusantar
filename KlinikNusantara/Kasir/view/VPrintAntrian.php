@@ -26,7 +26,7 @@ $html = '
 
 <table rules="rows"  align="center">
 <tr>
-    <th  style="font-size: 20px;">Klinik Nusantara</th>
+    <th  style="font-size: 20px;">BIG DENTAL CLINIC</th>
 </tr>
 <tr>
     <td  style="font-size: 12px;">Jl. Mayor Salim Batubara, Kota Palembang</td>
