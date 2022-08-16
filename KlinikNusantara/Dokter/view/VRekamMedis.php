@@ -1133,6 +1133,8 @@ function formattanggal($date){
                                                     </div> 
                                                       
                                                       </div>
+
+                                                      <?php /*
                                                       <br>
                                                   <div class="row">
                                                   <div class="col-md-6">
@@ -1371,7 +1373,7 @@ function formattanggal($date){
                                                       </div>
                                                       </div>
                                                       
-
+                                                                        */ ?>
                                                   <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary">EDIT</button>
                                                     <button type="reset" class="btn btn-danger"> RESET</button>
