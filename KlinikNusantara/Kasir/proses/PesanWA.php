@@ -14,7 +14,7 @@ $token = "kbjso4DswcPFMRjNshP6AKpXcjEoEaC47jYqs7bxnneUofBL45";
 $phone= $no_hpx; //untuk group pakai groupid contoh: 62812xxxxxx-xxxxx
 $message = "Selamat Pagi Kak  $nama_pasien  😊
 
-Dari klinik Nusantara 
+Dari BIG DENTAL CLINIC 
 
 Kami menginformasikan bahwa besok *$hari_tanggal* Ada jadwal kontrol dengan *$nama_karyawan* 
 
