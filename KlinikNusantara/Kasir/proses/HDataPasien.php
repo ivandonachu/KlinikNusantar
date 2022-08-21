@@ -22,7 +22,7 @@ exit;
 $id_pasien = htmlspecialchars($_POST['id_pasien']);
 
 
-$sql_pasien = mysqli_query($koneksi, "SELECT no_rm FROM pasien WHERE no_pasien = '$id_pasien'");
+$sql_pasien = mysqli_query($koneksi, "SELECT no_rm FROM pasien WHERE id_pasien  = '$id_pasien'");
 $data_pasien = mysqli_fetch_assoc($sql_pasien);
 
 $no_rm = $data_pasien['no_rm'];
