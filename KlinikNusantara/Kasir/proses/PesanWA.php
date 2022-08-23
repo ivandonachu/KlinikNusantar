@@ -20,7 +20,7 @@ Kami menginformasikan bahwa besok *$hari_tanggal* Ada jadwal kontrol dengan *$na
 
 Terimakasih 🙏
 
-Apapun Keluhanya, Perawatanya hanya di *Klinik Nusantara!* 💗";
+Apapun Keluhanya, Perawatanya hanya di *BIG DENTAL CLINIC !* 💗";
 
 $curl = curl_init();
 curl_setopt_array($curl, array(
