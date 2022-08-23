@@ -478,7 +478,7 @@ if ($tanggal_awal == $tanggal_akhir) {
       <div class="modal fade bd-example-modal-lg" id="PopUpHapus<?php echo $data['no_pengeluaran']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
        <div class="modal-dialog modal-lg" role ="document">
          <div class="modal-content"> 
-          <div class="modal-header">
+      
           <div class="modal-header">
           <h5 class="modal-title"> Hapus Pengeluaran</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="close">
@@ -506,7 +506,7 @@ if ($tanggal_awal == $tanggal_akhir) {
         </div>
       </div>
     </div>
-      </div>
+
 
     <?php echo  " </td> </tr>";
   }
