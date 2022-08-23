@@ -32,27 +32,51 @@ $status = 'PGN';
 //cek tindakan
 if (isset($_POST['tindakan_1'])) {
   $tindakan_1 =  htmlspecialchars($_POST['tindakan_1']);
+  $qty_tindakan_1 = htmlspecialchars($_POST['qty_tindakan_1']);
+
+  if($qty_tindakan_1 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
 
 } else{
   $tindakan_1 = "";
+  $qty_tindakan_1 = "";
 }
 if (isset($_POST['tindakan_2'])) {
   $tindakan_2 =  htmlspecialchars($_POST['tindakan_2']);
+  $qty_tindakan_2 = htmlspecialchars($_POST['qty_tindakan_2']);
+
+  if($qty_tindakan_2 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
 
 } else{
   $tindakan_2 = "";
+  $qty_tindakan_2 = "";
 }
 if (isset($_POST['tindakan_3'])) {
   $tindakan_3 =  htmlspecialchars($_POST['tindakan_3']);
+  $qty_tindakan_3 = htmlspecialchars($_POST['qty_tindakan_3']);
+
+  if($qty_tindakan_3 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
 
 } else{
   $tindakan_3 = "";
+  $qty_tindakan_3 = "";
 }
 if (isset($_POST['tindakan_4'])) {
   $tindakan_4 =  htmlspecialchars($_POST['tindakan_4']);
+  $qty_tindakan_4 = htmlspecialchars($_POST['qty_tindakan_4']);
+
+  if($qty_tindakan_4 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
 
 } else{
   $tindakan_4 = "";
+  $qty_tindakan_4 = "";
 }
 
     
@@ -165,6 +189,43 @@ if (isset($_POST['obat_4'])) {
 }
 
 
+if($tindakan_1 != ""){
+  if($tindakan_2 != ""){
+    if( $tindakan_1 == $tindakan_2){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+  else if($tindakan_3 != ""){
+    if( $tindakan_1 == $tindakan_3){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+  else if($tindakan_4 != ""){
+    if( $tindakan_1 == $tindakan_4){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+}
+else if($tindakan_2 != ""){
+  if($tindakan_3 != ""){
+    if( $tindakan_2 == $tindakan_3){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+  else if($tindakan_4 != ""){
+    if( $tindakan_2 == $tindakan_4){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+}
+else if($tindakan_3 != ""){
+  if($tindakan_4 != ""){
+    if( $tindakan_3 == $tindakan_4){
+      echo "<script>alert('Ada data alat kesehatan yang dobel input'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+   }
+  }
+}
+
 
 if($alkes_1 != ""){
   if($alkes_2 != ""){
@@ -252,7 +313,7 @@ $tgl_antri = date("Y-m-d");
       echo "<script>alert('Data Perawatan Pasien hari ini sudah di inputkan'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
         }
 
-        mysqli_query($koneksi,"INSERT INTO perawatan VALUES('','$no_rm','$no_antrian','$id1','$diagnosis','$tanggal_cek_selanjutnya','$resep','$pesan','$tindakan_1','$tindakan_2','$tindakan_3','$tindakan_4'
+        mysqli_query($koneksi,"INSERT INTO perawatan VALUES('','$no_rm','$no_antrian','$id1','$diagnosis','$tanggal_cek_selanjutnya','$resep','$pesan','$tindakan_1','$qty_tindakan_1','$tindakan_2','$qty_tindakan_2','$tindakan_3','$qty_tindakan_3','$tindakan_4','$qty_tindakan_4'
                                                             ,'$alkes_1','$qty_alkes_1','$alkes_2','$qty_alkes_2','$alkes_3','$qty_alkes_3','$alkes_4','$qty_alkes_4'
                                                             ,'$obat_1','$qty_obat_1','$obat_2','$qty_obat_2','$obat_3','$qty_obat_3','$obat_4','$qty_obat_4')");
 
@@ -268,8 +329,9 @@ if (isset($_POST['tindakan_1'])) {
 
   $kode_tindakan = $data_tindakan['kode_tindakan'];
   $harga_tindakan = $data_tindakan['harga_tindakan'];
+  $jumlah = $qty_tindakan_1 * $harga_tindakan;
 
-  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$harga_tindakan')");
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_1','$jumlah')");
 
 } 
 //tindakan 1
@@ -279,8 +341,10 @@ if (isset($_POST['tindakan_2'])) {
 
   $kode_tindakan = $data_tindakan['kode_tindakan'];
   $harga_tindakan = $data_tindakan['harga_tindakan'];
+  $jumlah = $qty_tindakan_2 * $harga_tindakan;
+  
 
-  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$harga_tindakan')");
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_2','$jumlah')");
 
 } 
 //tindakan 1
@@ -291,7 +355,10 @@ if (isset($_POST['tindakan_3'])) {
   $kode_tindakan = $data_tindakan['kode_tindakan'];
   $harga_tindakan = $data_tindakan['harga_tindakan'];
 
-  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$harga_tindakan')");
+  $jumlah = $qty_tindakan_3 * $harga_tindakan;
+  
+
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_3','$jumlah')");
 
 } 
 //tindakan 4
@@ -302,7 +369,10 @@ if (isset($_POST['tindakan_4'])) {
   $kode_tindakan = $data_tindakan['kode_tindakan'];
   $harga_tindakan = $data_tindakan['harga_tindakan'];
 
-  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$harga_tindakan')");
+  $jumlah = $qty_tindakan_4 * $harga_tindakan;
+  
+
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_4','$jumlah')");
 
 } 
 

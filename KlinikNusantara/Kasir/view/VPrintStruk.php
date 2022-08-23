@@ -21,9 +21,13 @@ $jumlah_bayar = $data_pembayaran['jumlah_bayar'];
 $kembalian = $jumlah_bayar - $jumlah_tagihan ;
 
 $tindakan_1 = $data_pembayaran['tindakan_1'];
+$qty_tindakan_1 = $data_pembayaran['qty_tindakan_1'];
 $tindakan_2 = $data_pembayaran['tindakan_2'];
+$qty_tindakan_2 = $data_pembayaran['qty_tindakan_2'];
 $tindakan_3 = $data_pembayaran['tindakan_3'];
+$qty_tindakan_3 = $data_pembayaran['qty_tindakan_3'];
 $tindakan_4 = $data_pembayaran['tindakan_4'];
+$qty_tindakan_4 = $data_pembayaran['qty_tindakan_4'];
 
 $alkes_1 = $data_pembayaran['alkes_1'];
 $qty_alkes_1 = $data_pembayaran['qty_alkes_1'];
@@ -174,15 +178,16 @@ $html = '
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
 
         $harga_tindakan = $data_tindakan['harga_tindakan'];
+        $jumlah = $qty_tindakan_1 * $harga_tindakan;
         $html .= '<table align="center" style="width:100%">
 
         <tr>
             <td align="left" style="font-size: 9px; width:5%; ">'. $no_urut .'.</td>
             <td align="left" style="font-size: 9px; width:36%;">'. $tindakan_1 .'</td>
-            <td align="left" style="font-size: 9px; width:10%;">  1 x </td>
+            <td align="left" style="font-size: 9px; width:10%;">'. $qty_tindakan_1 .' x </td>
             <td align="left" style="font-size: 9px; width:22%;">'.  formatuang($harga_tindakan) .'</td>
             <td align="left" style="font-size: 9px; width:5%;"> = </td>
-            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($harga_tindakan) .'</td>
+            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($jumlah) .'</td>
         </tr>
         
         </table> ';
@@ -194,15 +199,16 @@ $html = '
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
 
         $harga_tindakan = $data_tindakan['harga_tindakan'];
+        $jumlah = $qty_tindakan_2 * $harga_tindakan;
         $html .= '<table  align="center" style="width:100%">
 
         <tr>
             <td align="left" style="font-size: 9px; width:5%; ">'. $no_urut .'.</td>
             <td align="left" style="font-size: 9px; width:36%;">'. $tindakan_2 .'</td>
-            <td align="left" style="font-size: 9px; width:10%;">  1 x </td>
+            <td align="left" style="font-size: 9px; width:10%;">'. $qty_tindakan_2 .' x </td>
             <td align="left" style="font-size: 9px; width:22%;">'.  formatuang($harga_tindakan) .'</td>
             <td align="left" style="font-size: 9px; width:5%;"> = </td>
-            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($harga_tindakan) .'</td>
+            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($jumlah) .'</td>
         </tr>
         
         </table> ';
@@ -214,15 +220,16 @@ $html = '
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
 
         $harga_tindakan = $data_tindakan['harga_tindakan'];
+        $jumlah = $qty_tindakan_3 * $harga_tindakan;
         $html .= '<table  align="center" style="width:100%">
 
         <tr>
             <td align="left" style="font-size: 9px; width:5%; ">'. $no_urut .'.</td>
             <td align="left" style="font-size: 9px; width:36%;">'. $tindakan_3 .'</td>
-            <td align="left" style="font-size: 9px; width:10%;">  1 x </td>
+            <td align="left" style="font-size: 9px; width:10%;">'. $qty_tindakan_3 .' x </td>
             <td align="left" style="font-size: 9px; width:22%;">'.  formatuang($harga_tindakan) .'</td>
             <td align="left" style="font-size: 9px; width:5%;"> = </td>
-            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($harga_tindakan) .'</td>
+            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($jumlah) .'</td>
         </tr>
         
         </table> ';
@@ -234,15 +241,16 @@ $html = '
         $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
 
         $harga_tindakan = $data_tindakan['harga_tindakan'];
+        $jumlah = $qty_tindakan_4 * $harga_tindakan;
         $html .= '<table align="center" style="width:100%">
 
         <tr>
             <td align="left" style="font-size: 9px; width:5%; ">'. $no_urut .'.</td>
             <td align="left" style="font-size: 9px; width:36%;">'. $tindakan_4 .'</td>
-            <td align="left" style="font-size: 9px; width:10%;">  1 x </td>
+            <td align="left" style="font-size: 9px; width:10%;">'. $qty_tindakan_4 .' x </td>
             <td align="left" style="font-size: 9px; width:22%;">'.  formatuang($harga_tindakan) .'</td>
             <td align="left" style="font-size: 9px; width:5%;"> = </td>
-            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($harga_tindakan) .'</td>
+            <td align="left" style="font-size: 9px; width:22%;">'. formatuang($jumlah) .'</td>
         </tr>
         
         </table> ';

@@ -375,7 +375,7 @@ function formattanggal($date){
           <br>
           
           <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-8">
           <label>Tindakan 1</label>
              <select id="tokens" class="selectpicker form-control" name="tindakan_1" multiple data-live-search="true">
             <?php
@@ -391,7 +391,14 @@ function formattanggal($date){
             ?>
           </select>   
            </div> 
-           <div class="col-md-6">
+           <div class="col-md-4">
+                <label>QTY Tindakan 1</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_1">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+           <div class="col-md-8">
           <label>Tindakan 2</label>
              <select id="tokens" class="selectpicker form-control" name="tindakan_2" multiple data-live-search="true">
             <?php
@@ -407,12 +414,15 @@ function formattanggal($date){
             ?>
           </select>   
            </div> 
-             
+           <div class="col-md-4">
+                <label>QTY Tindakan 2</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_2">
+            </div>
          </div>
          <br>
           
           <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-8">
           <label>Tindakan 3</label>
              <select id="tokens" class="selectpicker form-control" name="tindakan_3" multiple data-live-search="true">
             <?php
@@ -428,7 +438,14 @@ function formattanggal($date){
             ?>
           </select>   
            </div> 
-           <div class="col-md-6">
+           <div class="col-md-4">
+                <label>QTY Tindakan 3</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_3">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+           <div class="col-md-8">
           <label>Tindakan 4</label>
              <select id="tokens" class="selectpicker form-control" name="tindakan_4" multiple data-live-search="true">
             <?php
@@ -444,7 +461,10 @@ function formattanggal($date){
             ?>
           </select>   
            </div> 
-             
+           <div class="col-md-4">
+                <label>QTY Tindakan 4</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_4">
+            </div>
          </div>
           <br>
          <div class="row">
@@ -689,10 +709,18 @@ function formattanggal($date){
                                             $tanggal_perawatan = $data['tanggal'];
                                             $dokter = $data['nama_karyawan'];
                                             $id_pasien = $data['id_pasien'];
+
                                             $tindakan_1 = $data['tindakan_1'];
                                             $tindakan_2 = $data['tindakan_2'];
                                             $tindakan_3 = $data['tindakan_3'];
                                             $tindakan_4 = $data['tindakan_4'];
+                                            
+                                            $qty_tindakan_1 = $data['qty_tindakan_1'];
+                                            $qty_tindakan_2 = $data['qty_tindakan_2'];
+                                            $qty_tindakan_3 = $data['qty_tindakan_3'];
+                                            $qty_tindakan_4 = $data['qty_tindakan_4'];
+
+
                                             $keluhan_awal = $data['keluhan_awal'];
                                             $diagnosis = $data['diagnosis'];
                                             $resep = $data['resep'];
@@ -811,38 +839,70 @@ function formattanggal($date){
                                                     <br>
                                                     
                                                     <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-8">
                                                       <div>
                                                       <label>Tindakan 1</label>
                                                       </div>
                                                       <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_1; ?>" disabled>
                                                     </div> 
-                                                    <div class="col-md-6">
-                                                    <div>
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 1</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_1; ?>" disabled>
+                                                    </div>
+                                                    </div>
+                                                    
+                                                    <br>
+
+                                                    <div class="row">
+                                                    <div class="col-md-8">
+                                                      <div>
                                                       <label>Tindakan 2</label>
                                                       </div>
                                                       <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_2; ?>" disabled>
                                                     </div> 
-                                                      
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 2</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_2; ?>" disabled>
+                                                    </div>
                                                   </div>
                                                   <br>
                                                     
-                                                    <div class="row">
-                                                    <div class="col-md-6">
-                                                    <div>
+                                                  <div class="row">
+                                                    <div class="col-md-8">
+                                                      <div>
                                                       <label>Tindakan 3</label>
                                                       </div>
-                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_3; ?>" disabled>   
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_3; ?>" disabled>
                                                     </div> 
-                                                    <div class="col-md-6">
-                                                    <div>
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 3</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_3; ?>" disabled>
+                                                    </div>
+                                                  </div>
+
+                                                  <br>
+
+                                                  <div class="row">
+                                                    <div class="col-md-8">
+                                                      <div>
                                                       <label>Tindakan 4</label>
                                                       </div>
                                                       <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_4; ?>" disabled>
                                                     </div> 
-                                                      
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 4</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_4; ?>" disabled>
+                                                    </div>
                                                   </div>
-                                                    <br>
+                                                  <br>
                                                   <div class="row">
                                                   <div class="col-md-6">
                                                       <label>Tanggal Cek Up Selanjutnya</label>
@@ -910,7 +970,7 @@ function formattanggal($date){
                                                     <br>
                                                     
                                                     <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-8">
                                                       <div>
                                                       <label>Tindakan 1</label>
                                                       </div>
@@ -930,7 +990,14 @@ function formattanggal($date){
                                                                         ?>
                                                       </select>
                                                     </div> 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 1</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_1" value="<?= $qty_tindakan_1; ?>">
+                                                    </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                    <div class="col-md-8">
                                                     <div>
                                                       <label>Tindakan 2</label>
                                                       </div>
@@ -950,12 +1017,15 @@ function formattanggal($date){
                                                                         ?>
                                                       </select>   
                                                     </div> 
-                                                      
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 2</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_2" value="<?= $qty_tindakan_2; ?>">
+                                                    </div>
                                                   </div>
                                                   <br>
                                                     
                                                     <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-8">
                                                     <div>
                                                       <label>Tindakan 3</label>
                                                       </div>
@@ -975,7 +1045,16 @@ function formattanggal($date){
                                                                         ?>
                                                       </select>     
                                                     </div> 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 3</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_3" value="<?= $qty_tindakan_3; ?>">
+                                                    </div>
+                                                    </div>
+                                                    
+                                                    <br>
+
+                                                    <div class="row">
+                                                    <div class="col-md-8">
                                                     <div>
                                                       <label>Tindakan 4</label>
                                                       </div>
@@ -995,7 +1074,10 @@ function formattanggal($date){
                                                                         ?>
                                                       </select>    
                                                     </div> 
-                                                      
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 4</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_4" value="<?= $qty_tindakan_4; ?>">
+                                                    </div>
                                                   </div>
                                                     <br>
                                                   <div class="row">

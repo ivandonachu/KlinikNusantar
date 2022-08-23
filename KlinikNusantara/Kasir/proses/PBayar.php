@@ -34,10 +34,13 @@ $data_perawatan = mysqli_fetch_assoc($sql_perawatan);
 
 $no_perawatan = $data_perawatan['no_perawatan'];
 $tindakan_1 = $data_perawatan['tindakan_1'];
+$qty_tindakan_1 = $data_perawatan['qty_tindakan_1'];
 $tindakan_2 = $data_perawatan['tindakan_2'];
+$qty_tindakan_2 = $data_perawatan['qty_tindakan_2'];
 $tindakan_3 = $data_perawatan['tindakan_3'];
+$qty_tindakan_3 = $data_perawatan['qty_tindakan_3'];
 $tindakan_4 = $data_perawatan['tindakan_4'];
-
+$qty_tindakan_4 = $data_perawatan['qty_tindakan_4'];
 
 $alkes_1 = $data_perawatan['alkes_1'];
 $qty_alkes_1 = $data_perawatan['qty_alkes_1'];
@@ -65,7 +68,7 @@ if($tindakan_1 != ""){
 
     $harga = $data_tindakan['harga_tindakan'];
 
-    $jumlah = 1 * $harga;
+    $jumlah = $qty_tindakan_1 * $harga;
     $total_pembayaran = $total_pembayaran + $jumlah;
 }
 
@@ -75,7 +78,7 @@ if($tindakan_2 != ""){
 
     $harga = $data_tindakan['harga_tindakan'];
 
-    $jumlah = 1 * $harga;
+    $jumlah = $qty_tindakan_2 * $harga;
     $total_pembayaran = $total_pembayaran + $jumlah;
 }
 
@@ -85,7 +88,7 @@ if($tindakan_3 != ""){
 
     $harga = $data_tindakan['harga_tindakan'];
 
-    $jumlah = 1 * $harga;
+    $jumlah = $qty_tindakan_3 * $harga;
     $total_pembayaran = $total_pembayaran + $jumlah;
 }
 
@@ -95,7 +98,7 @@ if($tindakan_4 != ""){
 
     $harga = $data_tindakan['harga_tindakan'];
 
-    $jumlah = 1 * $harga;
+    $jumlah = $qty_tindakan_4 * $harga;
     $total_pembayaran = $total_pembayaran + $jumlah;
 }
 
