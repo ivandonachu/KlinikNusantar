@@ -506,6 +506,7 @@ if ($tanggal_awal == $tanggal_akhir) {
         </div>
       </div>
     </div>
+      </div>
 
     <?php echo  " </td> </tr>";
   }
