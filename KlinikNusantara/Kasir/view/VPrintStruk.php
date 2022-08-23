@@ -44,7 +44,7 @@ $obat_4 = $data_pembayaran['obat_4'];
 $qty_obat_4 = $data_pembayaran['qty_obat_4'];
 $total_pembayaran= 0;   
 $no_urut=1;
-$panjang_kertas = 165;
+$panjang_kertas = 180;
 
 if($tindakan_1 == "" ){
     $panjang_kertas = $panjang_kertas - 4;
