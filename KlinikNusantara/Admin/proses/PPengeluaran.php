@@ -23,7 +23,10 @@ $tanggal_awal = $_GET['tanggal1'];
 $tanggal_akhir = $_GET['tanggal2'];
 $tanggal = htmlspecialchars($_POST['tanggal']);
 $akun = $_POST['akun'];
-$jumlah = htmlspecialchars($_POST['jumlah']);
+$nama_item = htmlspecialchars($_POST['nama_item']);
+$qty = htmlspecialchars($_POST['qty']);
+$harga = htmlspecialchars($_POST['harga']);
+$jumlah = $qty * $harga;
 $keterangan = htmlspecialchars($_POST['keterangan']);
 $nama_file = $_FILES['file']['name'];
 
@@ -64,7 +67,7 @@ else if ( $nama_file != "" ) {
 
     
 
-            mysqli_query($koneksi,"INSERT INTO pengeluaran VALUES('','$tanggal','$akun','$jumlah','$keterangan','$file')");
+            mysqli_query($koneksi,"INSERT INTO pengeluaran VALUES('','$tanggal','$akun','$nama_item','$qty','$harga','$jumlah','$keterangan','$file')");
                
             echo "<script>alert('Data Pengeluaran Berhasil di Input'); window.location='../view/VPengeluaran?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir';</script>";exit;
      

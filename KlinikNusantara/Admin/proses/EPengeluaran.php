@@ -22,7 +22,10 @@ $tanggal_akhir = htmlspecialchars($_POST['tanggal2']);
 $no_pengeluaran = htmlspecialchars($_POST['no_pengeluaran']);
 $tanggal = htmlspecialchars($_POST['tanggal']);
 $akun = $_POST['akun'];
-$jumlah = htmlspecialchars($_POST['jumlah']);
+$nama_item = htmlspecialchars($_POST['nama_item']);
+$qty = htmlspecialchars($_POST['qty']);
+$harga = htmlspecialchars($_POST['harga']);
+$jumlah = $qty * $harga;
 $keterangan = htmlspecialchars($_POST['keterangan']);
 $nama_file = $_FILES['file']['name'];
 
@@ -62,10 +65,10 @@ else if ( $nama_file != "" ) {
 
 
   if ($file == '') {
-    mysqli_query($koneksi,"UPDATE pengeluaran SET tanggal = '$tanggal' , akun = '$akun' , jumlah = '$jumlah' , keterangan = '$keterangan' WHERE no_pengeluaran =  '$no_pengeluaran'");
+    mysqli_query($koneksi,"UPDATE pengeluaran SET tanggal = '$tanggal' , akun = '$akun' , nama_item = '$nama_item' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' , keterangan = '$keterangan' WHERE no_pengeluaran =  '$no_pengeluaran'");
   }
   else{
-    mysqli_query($koneksi,"UPDATE pengeluaran SET tanggal = '$tanggal' , akun = '$akun' , jumlah = '$jumlah' , keterangan = '$keterangan', file_bukti = '$file' WHERE no_pengeluaran =  '$no_pengeluaran'");
+    mysqli_query($koneksi,"UPDATE pengeluaran SET tanggal = '$tanggal' , akun = '$akun' , nama_item = '$nama_item' , qty = '$qty' , harga = '$harga' , jumlah = '$jumlah' , keterangan = '$keterangan', file_bukti = '$file' WHERE no_pengeluaran =  '$no_pengeluaran'");
                   
   }
                

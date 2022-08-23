@@ -287,11 +287,20 @@ if ($tanggal_awal == $tanggal_akhir) {
              </div>    
         </div>
         <br>
-
+        <div class="row">
+        <div class="col-md-6">
+          <label>Nama Item</label>
+          <input class="form-control" type="text" name="nama_item"  required="">
+        </div>    
+        <div class="col-md-6">
+          <label>QTY</label>
+          <input class="form-control" type="number" name="qty"  required="">
+        </div>         
+      </div>
       <div class="row">
         <div class="col-md-6">
-          <label>Jumlah</label>
-          <input class="form-control" type="number" name="jumlah"  required="">
+          <label>Harga</label>
+          <input class="form-control" type="number" name="harga"  required="">
         </div>    
         <div class="col-md-6">
           <label>Keterangan</label>
@@ -331,7 +340,10 @@ if ($tanggal_awal == $tanggal_akhir) {
       <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">Akun</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">Keterangan</th>
-      <th style="font-size: clamp(12px, 1vw, 15px);">Pengeluaran</th>
+      <th style="font-size: clamp(12px, 1vw, 15px);">Nama Item</th>
+      <th style="font-size: clamp(12px, 1vw, 15px);">Qty Item</th>
+      <th style="font-size: clamp(12px, 1vw, 15px);">Harga</th>
+      <th style="font-size: clamp(12px, 1vw, 15px);">Jumlah</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">Total</th>
       <th style="font-size: clamp(12px, 1vw, 15px);">file</th>
       <th>Aksi</th>
@@ -352,6 +364,9 @@ if ($tanggal_awal == $tanggal_akhir) {
      $no_pengeluaran = $data['no_pengeluaran'];
      $tanggal =$data['tanggal'];
      $akun = $data['akun'];
+     $nama_item = $data['nama_item'];
+     $qty = $data['qty'];
+     $harga = $data['harga'];
      $jumlah = $data['jumlah'];
      $keterangan = $data['keterangan'];
      $file_bukti = $data['file_bukti'];
@@ -365,6 +380,9 @@ if ($tanggal_awal == $tanggal_akhir) {
      <td style='font-size: clamp(12px, 1vw, 15px);'>$tanggal</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>$akun</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>$keterangan</td>
+     <td style='font-size: clamp(12px, 1vw, 15px);'>$nama_item</td>
+     <td style='font-size: clamp(12px, 1vw, 15px);'>$qty</td>
+     <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($harga); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($jumlah); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"?>  <?= formatuang($total); ?> <?php echo "</td>
      <td style='font-size: clamp(12px, 1vw, 15px);'>"; ?> <a download="../file_admin/<?= $file_bukti ?>" href="../file_admin/<?= $file_bukti ?>"> <?php echo "$file_bukti </a> </td>
@@ -412,11 +430,20 @@ if ($tanggal_awal == $tanggal_akhir) {
                  </div>
 
                   <br>
-
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label>Nama Item</label>
+                      <input class="form-control form-control-sm" type="text" id="nama_item" name="nama_item"  value="<?=  $nama_item;?>"  required="">
+                    </div>    
+                    <div class="col-md-6">
+                    <label>Qty Item</label>
+                    <input class="form-control form-control-sm" type="number" id="qty" name="qty"  value="<?=  $qty;?>"  required="">
+                    </div>         
+                  </div> 
                  <div class="row">
                     <div class="col-md-6">
-                      <label>Jumlah</label>
-                      <input class="form-control form-control-sm" type="number" id="jumlah" name="jumlah"  value="<?=  $jumlah;?>"  required="">
+                      <label>Harga</label>
+                      <input class="form-control form-control-sm" type="number" id="harga" name="harga"  value="<?=  $harga;?>"  required="">
                     </div>    
                     <div class="col-md-6">
                     <label>Keterangan</label>
