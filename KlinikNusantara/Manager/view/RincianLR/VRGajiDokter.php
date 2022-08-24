@@ -34,10 +34,11 @@ $foto_profile = $data['foto_profile'];
 
 if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                             
-    $table = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , SUM(qty_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $table = mysqli_query($koneksi, "SELECT  nama_karyawan, SUM(jumlah) AS pendapatan_tindakan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                                                                         INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                                                                         INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
-                                                                                                                                                                        WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_tindakan ");
+                                                                                                                                                                        INNER JOIN karyawan e ON b.id_dokter=e.id_karyawan 
+                                                                                                                                                                        WHERE a.tanggal = '$tanggal_awal' AND e.jabatan = 'Dokter' GROUP BY e.nama_karyawan ");
     
     //tindakan 
     //sql tindakan total
@@ -48,7 +49,8 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                 WHERE a.tanggal = '$tanggal_awal' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
-
+    $pendapatan_tindakan_seluruh = (($pendapatan_tindakan_seluruh*40)/100);
+    
     //sql tindakan cash
     $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                 INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
@@ -70,10 +72,11 @@ if ($tanggal_awal == $tanggal_akhir) {
 } else {
    
 
-    $table = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , SUM(qty_tindakan) AS total_tindakan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $table = mysqli_query($koneksi, "SELECT nama_karyawan, SUM(jumlah) AS pendapatan_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                                                                         INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                                                                         INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
-                                                                                                                                                                        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' GROUP BY d.nama_tindakan ");
+                                                                                                                                                                        INNER JOIN karyawan e ON b.id_dokter=e.id_karyawan 
+                                                                                                                                                                        WHERE  a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' AND e.jabatan = 'Dokter' GROUP BY e.nama_karyawan ");
     
     //tindakan 
     //sql tindakan total
@@ -84,7 +87,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
-
+    $pendapatan_tindakan_seluruh = (($pendapatan_tindakan_seluruh*40)/100);
     //sql tindakan cash
     $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
@@ -129,7 +132,7 @@ function formatuang($angka)
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Rincian Pendapatan Layanan</title>
+    <title>Rincian Gajian Perdokter</title>
 
     <!-- Custom fonts for this template-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" type="text/css">
@@ -230,7 +233,7 @@ function formatuang($angka)
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <?php echo "<a href='VRLayananTindakan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Rincian Layanan Tindakan</h5></a>"; ?>
+                    <?php echo "<a href=''><h5 class='text-center sm' style='color:white; margin-top: 8px; font-size: clamp(2px, 3vw, 22px);'>Rincian Gajian Perdokter</h5></a>"; ?>
 
 
 
@@ -305,49 +308,39 @@ function formatuang($angka)
            
                    
                 
-                                <h6 align="Center">Rincian Layanan Tindakan</h6>
+                                <h6 align="Center">Rincian Gaji Tindakan Per Dokter</h6>
                                 <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
                                 <thead align = 'center'>
                                     <tr>
                                     <th  style='font-size: 12px'>No</th>
-                                    <th  style='font-size: 12px'>Nama Tindakan</th>
-                                    <th  style='font-size: 12px'>Jumlah Tindakan</th>
-                                    <th  style='font-size: 12px'>Harga</th>
-                                    <th  style='font-size: 12px'>Total Pendapatan</th>
+                                    <th  style='font-size: 12px'>Nama Dokter</th>
+                                    <th  style='font-size: 12px'>Total Gaji Tindakan 40%</th>
+                                    <th  style='font-size: 12px'></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while($data = mysqli_fetch_array($table)){
-                                    $harga_tindakan = $data['harga_tindakan'];
-                                    $nama_tindakan =$data['nama_tindakan'];
+
+                                    $nama_karyawan =$data['nama_karyawan'];
                     
-                                    $total_tindakan = $data['total_tindakan'];
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
+                                    $pendapatan_tindakan = (($pendapatan_tindakan*40)/100);
                                     $no_urut += 1 ;
 
                                     echo "<tr>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$no_urut</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$nama_tindakan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$total_tindakan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($harga_tindakan); ?> <?php echo"</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$nama_karyawan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo"</td>
-                                                           
+                                    <td class='text-center'><a href='VRincianDokter?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir&nama_dokter=$nama_karyawan'>Rincian</a></td>               
                                 </tr>";
                                 }
                                 
                                 ?>
                                 
                                 <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Cash</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
-                                </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Debit</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
-                                </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
+                                    <th colspan="2" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
+                                    <th></th>
                                 </tr>
                                 
                                 

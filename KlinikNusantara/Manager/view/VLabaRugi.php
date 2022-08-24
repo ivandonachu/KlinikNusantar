@@ -33,8 +33,8 @@ if (isset($_GET['tanggal1'])) {
     $tanggal_akhir = $_POST['tanggal2'];
     
 } else {
-    $tanggal_awal = date('Y-m-d');
-    $tanggal_akhir = date('Y-m-d');
+    $tanggal_awal = date('Y-m-1');
+    $tanggal_akhir = date('Y-m-31');
 
 }
 
@@ -76,6 +76,8 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                 WHERE a.tanggal = '$tanggal_awal' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
+
+    $pembagian_dokter = (($pendapatan_tindakan_seluruh*40)/100);
 
     //pembelian pokok
     //pembelian alat kesehatan
@@ -155,6 +157,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
+    $pembagian_dokter = (($pendapatan_tindakan_seluruh*40)/100);
 
     //pembelian pokok
     //pembelian alat kesehatan
@@ -197,7 +200,7 @@ if ($tanggal_awal == $tanggal_akhir) {
     $total_pendapatan = $pendapatan_alkes_total + $pendapatan_obat_total + $pendapatan_tindakan_seluruh;
     $total_harga_pokok = $pembelian_alkes + $pembelian_obat;
     $laba_kotor = $total_pendapatan - $total_harga_pokok;
-    $total_pengeluaran = $pengeluaran_gaji + $pengeluaran_biaya_kantor + $pengeluaran_listrik + $pengeluaran_atk;
+    $total_pengeluaran = $pengeluaran_gaji + $pengeluaran_biaya_kantor + $pengeluaran_listrik + $pengeluaran_atk + $pembagian_dokter;
     $laba_bersih_sebelum_pajak = $laba_kotor - $total_pengeluaran;
    
 }
@@ -543,6 +546,13 @@ $no_urut3 = 0;
                                     <td class="text-left"><?= formatuang(0); ?></td>
                                     <td class="text-left"><?= formatuang($pengeluaran_gaji); ?></td>
                                     <?php echo "<td class='text-right'><a href='RincianLR/VRGajiKaryawan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                </tr>
+                                <tr>
+                                    <td>5-510</td>
+                                    <td class="text-left">Gaji Dokter</td>
+                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                    <td class="text-left"><?= formatuang($pembagian_dokter); ?></td>
+                                    <?php echo "<td class='text-right'><a href='RincianLR/VRGajiDokter?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
                                 </tr>
                                 <tr>
                                     <td>5-520</td>

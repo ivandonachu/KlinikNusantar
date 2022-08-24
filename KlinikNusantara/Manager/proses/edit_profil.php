@@ -10,7 +10,7 @@ $result1 = mysqli_query($koneksi, "SELECT * FROM account a INNER JOIN karyawan b
 $data1 = mysqli_fetch_array($result1);
 $id1 = $data1['id_karyawan'];
 $jabatan_valid = $data1['jabatan'];
-if ($jabatan_valid == 'Dokter') {
+if ($jabatan_valid == 'Manager') {
 
 }
 
