@@ -528,9 +528,63 @@ $no_urut3 = 0;
                                              '  type='submit' class=' btn btn-secondary' >  <i class='fa-solid fa-print'></i> Print Struk</button></a>";
                                                 
                                              ?>
-                               
+
                                     
-                                   <!-- Button Hapus -->
+                                      <!-- Button Hapus -->
+                                   <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning" data-toggle="modal" data-target="#formedit<?php echo $data['no_pembayaran']; ?>" data-toggle='tooltip' title='Edit Data Alkes'>
+                                            <i class="fas fa-edit"></i> Edit</button>
+
+
+                                        <!-- Form EDIT DATA -->
+
+                                        <div class="modal fade bd-example-modal-lg" id="formedit<?php echo $data['no_pembayaran']; ?>" role="dialog" arialabelledby="modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"> Form Edit Riwayat Alat Kesehatan </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                                            <span aria-hidden="true"> &times; </span>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Form Edit Data -->
+                                                    <div class="modal-body" align="left">
+                                                        <form action="../proses/EPembayaran" enctype="multipart/form-data" method="POST">
+
+                                                            <input type="hidden" name="no_pembayaran" value="<?php echo $no_pembayaran; ?>">
+                                                            <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
+                                                            <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
+
+                                                            <div class="row">
+                                                                    <div class="col-md-6">
+                                                                    <label>Metode Pembayaran</label>
+                                                                    <?php $dataSelect = $data['jenis_pembayaran']; ?>
+                                                                    <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
+                                                                        <option <?php echo ($dataSelect == 'Cash') ? "selected" : "" ?>>Cash</option>
+                                                                        <option <?php echo ($dataSelect == 'Debit') ? "selected" : "" ?>>Debit</option>
+                                                                    </select>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label>Total Bayar</label>
+                                                                        <input class="form-control form-control-sm" name="total_bayar" value="<?php echo $jumlah_bayar; ?>" type="text"   required="" >
+                                                                    </div>
+                                                            </div>
+
+                                                            <br>
+
+
+                                                    </div>
+
+
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary"> Ubah </button>
+                                                        <button type="reset" class="btn btn-danger"> RESET</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
                                   
                                 
 
