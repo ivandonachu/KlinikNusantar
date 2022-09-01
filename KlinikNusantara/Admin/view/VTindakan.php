@@ -251,7 +251,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM tindakan");
            </div>
          </div>
           <br>
-        
+          
 
          <div class="modal-footer">
            <button type="submit" class="btn btn-primary">INPUT</button>
@@ -276,6 +276,7 @@ $table = mysqli_query($koneksi, "SELECT * FROM tindakan");
    <th style="font-size: clamp(12px, 1vw, 15px);">Kode Tindakan</th>
    <th style="font-size: clamp(12px, 1vw, 15px);">Nama Tindakan</th>
    <th style="font-size: clamp(12px, 1vw, 15px);">Harga Tindakan</th>
+   <th style="font-size: clamp(12px, 1vw, 15px);">Status Tindakan</th>
    <th></th>
  </tr>
 </thead>
@@ -293,13 +294,22 @@ function formatuang($angka)
   $kode_tindakan = $data['kode_tindakan'];
   $nama_tindakan = $data['nama_tindakan'];
   $harga_tindakan =$data['harga_tindakan'];
+  $status_tindakan =$data['status_tindakan'];
 
 
   echo "<tr>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$kode_tindakan</td>
   <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_tindakan</td>
   <td  style='font-size: clamp(12px, 1vw, 15px);'>" ?> <?= formatuang($harga_tindakan); ?> <?php echo "</td>
-  "; ?>
+  ";
+  if ($status_tindakan == 'Aktif') {
+      echo " <td style='font-size: clamp(12px, 1vw, 15px); color: Green; font-weight: bold;' >$status_tindakan </td>";
+  } else if ($status_tindakan == 'Non Aktif') {
+      echo " <td style='font-size: clamp(12px, 1vw, 15px); color: red; font-weight: bold;' >$status_tindakan </td>";
+  }
+ ?>
+
+
   <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
   <button style= " font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning mr-2 rounded" data-toggle="modal" data-target="#formedit<?php echo $data['kode_tindakan']; ?>" data-toggle='tooltip' title='Edit Data Tindakan'> 
   <i class="fas fa-edit"></i> Edit</button>
@@ -309,7 +319,8 @@ function formatuang($angka)
    <div class="modal-dialog modal-lg" role ="document">
      <div class="modal-content"> 
        <div class="modal-header">
-         <h5 class="modal-title"> Edit Data Tindakan </h5>
+         <h5 class="modal-title"> Edit Data Tindakan </h5> <br>
+         
          <button type="button" class="close" data-dismiss="modal" aria-label="close">
            <span aria-hidden="true"> &times; </span>
          </button>
@@ -318,6 +329,7 @@ function formatuang($angka)
        <!-- Form Edit Data -->
        <div class="modal-body">
          <form action="../proses/EDataTindakan" enctype="multipart/form-data" method="POST">
+         <small>hanya bisa edit harga dan status tindakan, jika nama berbeda silahkan input baru</small>
 
          <div class="row">
            <div class="col-md-6">
@@ -327,7 +339,8 @@ function formatuang($angka)
            </div>    
            <div class="col-md-6">
              <label>Nama Tindakan</label>
-             <input class="form-control form-control-sm" type="text"  name="nama_tindakan"  value="<?= $nama_tindakan; ?>" required="">
+             <input class="form-control form-control-sm" type="text"  name="nama_tindakan"  value="<?= $nama_tindakan; ?>" disabled required="">
+             <input type="hidden" name="nama_tindakan" value="<?= $nama_tindakan; ?>">
            </div>    
            </div>
           <br>
@@ -335,6 +348,15 @@ function formatuang($angka)
           <div class="col-md-6">
               <label>Harga Tindakan</label>
               <input class="form-control form-control-sm" type="text" name="harga_tindakan"  value="<?= $harga_tindakan; ?>">
+            </div>
+            <div class="col-md-6">
+              <label>Status Tindakan</label>
+              <select id="status_tindakan" name="status_tindakan" class="form-control">
+              <?php $dataSelect = $data['status_tindakan']; ?>
+                  <option <?php echo ($dataSelect == 'Aktif') ? "selected" : "" ?>>Aktif</option>
+                  <option <?php echo ($dataSelect == 'Non Aktif') ? "selected" : "" ?>>Non Aktif</option>
+                  
+              </select>
             </div>
          </div>
         <br>
@@ -366,7 +388,8 @@ function formatuang($angka)
        <form action="../proses/HDataTindakan" method="POST">
          <input type="hidden" name="kode_tindakan" value="<?php echo $kode_tindakan ;?>">
          <div class="form-group">
-           <h6> Yakin Ingin Hapus Data <?php echo $data['nama_tindakan']; ?>? </h6>             
+           <h6> Yakin Ingin Hapus Data <?php echo $data['nama_tindakan']; ?>? <br> (Hanya bisa di hapus jika belum di inputkan di perawatan, <br>
+           jika sudah silahkan unhide menggunakan button edit) </h6>             
          </div>
 
          <div class="modal-footer">

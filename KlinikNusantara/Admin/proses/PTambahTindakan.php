@@ -31,7 +31,7 @@ $harga_tindakan = htmlspecialchars($_POST['harga_tindakan']);
         
         if(mysqli_num_rows($sql_data) == 0 ){
             $kode_new = $kode.$no_kode;
-            $query = mysqli_query($koneksi,"INSERT INTO tindakan VALUES('$kode_new','$nama_tindakan','$harga_tindakan')");
+            $query = mysqli_query($koneksi,"INSERT INTO tindakan VALUES('$kode_new','$nama_tindakan','$harga_tindakan','Aktif')");
                
                        echo "<script>alert('Data Tindakan Berhasil di input'); window.location='../view/VTindakan';</script>";exit;
         }
@@ -43,7 +43,7 @@ $harga_tindakan = htmlspecialchars($_POST['harga_tindakan']);
             $sql_cek = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE kode_tindakan = '$kode_new' ");
             if(mysqli_num_rows($sql_cek) === 0 ){
 
-                $query = mysqli_query($koneksi,"INSERT INTO tindakan VALUES('$kode_new','$nama_tindakan','$harga_tindakan')");
+                $query = mysqli_query($koneksi,"INSERT INTO tindakan VALUES('$kode_new','$nama_tindakan','$harga_tindakan','Aktif')");
                
                         echo "<script>alert('Data Tindakan Berhasil di input'); window.location='../view/VTindakan';</script>";exit;
         

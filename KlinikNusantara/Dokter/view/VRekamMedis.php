@@ -381,7 +381,7 @@ function formattanggal($date){
             <?php
             include 'koneksi.php';
          
-            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
             while ($data = mysqli_fetch_array($result)){
               $nama_tindakan = $data['nama_tindakan'];
   
@@ -404,7 +404,7 @@ function formattanggal($date){
             <?php
             include 'koneksi.php';
          
-            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
             while ($data = mysqli_fetch_array($result)){
               $nama_tindakan = $data['nama_tindakan'];
   
@@ -428,7 +428,7 @@ function formattanggal($date){
             <?php
             include 'koneksi.php';
          
-            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
             while ($data = mysqli_fetch_array($result)){
               $nama_tindakan = $data['nama_tindakan'];
   
@@ -451,7 +451,7 @@ function formattanggal($date){
             <?php
             include 'koneksi.php';
          
-            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
             while ($data = mysqli_fetch_array($result)){
               $nama_tindakan = $data['nama_tindakan'];
   
@@ -978,7 +978,7 @@ function formattanggal($date){
                                                                         <?php
                                                                         include 'koneksi.php';
                                                                         $dataSelect = $data['tindakan_1'];
-                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
 
                                                                         while ($datax= mysqli_fetch_array($resultx)){
                                                                             $nama_tindakan = $datax['nama_tindakan'];
@@ -1005,7 +1005,7 @@ function formattanggal($date){
                                                                         <?php
                                                                         include 'koneksi.php';
                                                                         $dataSelect = $data['tindakan_2'];
-                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
 
                                                                         while ($datax= mysqli_fetch_array($resultx)){
                                                                             $nama_tindakan = $datax['nama_tindakan'];
@@ -1033,7 +1033,7 @@ function formattanggal($date){
                                                                         <?php
                                                                         include 'koneksi.php';
                                                                         $dataSelect = $data['tindakan_3'];
-                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
 
                                                                         while ($datax= mysqli_fetch_array($resultx)){
                                                                             $nama_tindakan = $datax['nama_tindakan'];
@@ -1062,7 +1062,7 @@ function formattanggal($date){
                                                                         <?php
                                                                         include 'koneksi.php';
                                                                         $dataSelect = $data['tindakan_4'];
-                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan ");   
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
 
                                                                         while ($datax= mysqli_fetch_array($resultx)){
                                                                             $nama_tindakan = $datax['nama_tindakan'];

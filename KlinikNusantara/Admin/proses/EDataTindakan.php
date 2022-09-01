@@ -20,11 +20,12 @@ exit;
 $kode_tindakan = htmlspecialchars($_POST['kode_tindakan']);
 $nama_tindakan = htmlspecialchars($_POST['nama_tindakan']);
 $harga_tindakan = htmlspecialchars($_POST['harga_tindakan']);
+$status_tindakan = htmlspecialchars($_POST['status_tindakan']);
 
 
 
 
-                mysqli_query($koneksi,"UPDATE tindakan SET nama_tindakan = '$nama_tindakan' , harga_tindakan = '$harga_tindakan' WHERE kode_tindakan =  '$kode_tindakan'");
+                mysqli_query($koneksi,"UPDATE tindakan SET nama_tindakan = '$nama_tindakan' , harga_tindakan = '$harga_tindakan' , status_tindakan = '$status_tindakan' WHERE kode_tindakan =  '$kode_tindakan'");
        
        
                 echo "<script>alert('Data Tindakan Berhasil di Edit'); window.location='../view/VTindakan';</script>";exit;

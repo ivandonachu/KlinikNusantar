@@ -466,6 +466,7 @@ $no_urut3 = 0;
                                     <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Nama Pasien</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Nama Dokter</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Metode Pembayaran</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Pembayaran</th>
@@ -490,6 +491,7 @@ $no_urut3 = 0;
                                     $no_antrian = $data['no_antrian'];
                                     $tanggal = $data['tanggal'];
                                     $nama_pasien = $data['nama_pasien'];
+                                    $nama_karyawan = $data['nama_karyawan'];
                                     $jenis_pembayaran = $data['jenis_pembayaran'];
                                     $jumlah_tagihan = $data['jumlah_tagihan'];
                                     $jumlah_bayar = $data['jumlah_bayar'];
@@ -502,6 +504,7 @@ $no_urut3 = 0;
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$urut</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_pembayaran</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan); ?> <?php echo"</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_bayar); ?> <?php echo"</td>
@@ -586,7 +589,7 @@ $no_urut3 = 0;
                     <br>
                     <hr>
                     <br>
-
+                                
                     <div class="row">
                         <div class="col-md-4">
                                 <h6 align="Center">Rincian Alat Kesehatan Terjual</h6>
