@@ -550,7 +550,8 @@ $no_urut3 = 0;
                                     $uang = "Rp " . number_format($angka, 2, ',', '.');
                                     return $uang;
                                 }
-
+                                $total_pendapatan_debitx = 0;
+                                $total_pendapatan_cashx = 0;
                                 ?>
                                 <?php while ($data = mysqli_fetch_array($table)) {
                                     $no_pembayaran = $data['no_pembayaran'];
@@ -561,7 +562,12 @@ $no_urut3 = 0;
                                     $jumlah_tagihan = $data['jumlah_tagihan'];
                                     $jumlah_bayar = $data['jumlah_bayar'];
                                     $kembalian = $jumlah_bayar - $jumlah_tagihan;
-                                
+                                    if($jenis_pembayaran == 'Debit'){
+                                        $total_pendapatan_debitx = $total_pendapatan_debitx + $jumlah_bayar;
+                                    }
+                                    else{
+                                        $total_pendapatan_cashx = $total_pendapatan_cashx + $jumlah_bayar;
+                                    }
                                     $urut = $urut + 1;
 
 
@@ -586,7 +592,7 @@ $no_urut3 = 0;
                     <br>
                     <hr>
                     <br>
-
+                    <?php /* 
                     <div class="row">
                         <div class="col-md-4">
                                 <h6 align="Center">Rincian Alat Kesehatan Terjual</h6>
@@ -677,7 +683,7 @@ $no_urut3 = 0;
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Debit</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_obat_debit); ?></th>
                                 </tr>
-                                <tr > 
+                                <tr> 
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_obat_total); ?></th>
                                 </tr>
@@ -685,8 +691,8 @@ $no_urut3 = 0;
                                 </tbody>
                                 </table>
 
-                        </div>
-                        <div class="col-md-4">
+                        </div> */?>
+                        <div class="col-md-12">
                 
                                 <h6 align="Center">Rincian Tindakan</h6>
                                 <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
@@ -720,17 +726,17 @@ $no_urut3 = 0;
                                 
                                 ?>
                                 
-                                <tr > 
+                                <tr> 
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Cash</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($total_pendapatan_cashx); ?></th>
                                 </tr>
                                 <tr > 
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Debit</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($total_pendapatan_debitx); ?></th>
                                 </tr>
                                 <tr > 
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($total_pendapatan_cashx + $total_pendapatan_debitx); ?></th>
                                 </tr>
                                 
                                 
@@ -746,7 +752,7 @@ $no_urut3 = 0;
                     <hr>
                     <br>
                     
-                                        
+                    
                     <div class="row" style="margin-right: 20px; margin-left: 20px;">
                     <div class="col-xl-4 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
@@ -755,7 +761,7 @@ $no_urut3 = 0;
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Pendapatan Cash</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=  formatuang($total_pendapatan_cash) ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=  formatuang($total_pendapatan_cashx) ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -771,7 +777,7 @@ $no_urut3 = 0;
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Pendapatan Debit</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debitx) ?></div>
                             </div>
                             <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -787,7 +793,7 @@ $no_urut3 = 0;
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Pendapatan</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($total_pendapatan)?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($total_pendapatan_cashx + $total_pendapatan_debitx)?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
