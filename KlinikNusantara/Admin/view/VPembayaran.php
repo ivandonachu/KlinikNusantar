@@ -607,7 +607,7 @@ $no_urut3 = 0;
                     </div>
 
 
-                    <br>
+                <?php /*    <br>
                     <hr>
                     <br>
 
@@ -709,8 +709,8 @@ $no_urut3 = 0;
                                 </tbody>
                                 </table>
 
-                        </div>
-                        <div class="col-md-4">
+                        </div> */?>
+                        <div class="col-md-12">
                 
                                 <h6 align="Center">Rincian Tindakan</h6>
                                 <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
