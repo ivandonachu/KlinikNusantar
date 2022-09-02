@@ -805,7 +805,7 @@ $no_urut3 = 0;
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Pendapatan</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($total_pendapatan_cash + $total_pendapatan_debit)?></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($pendapatan_tindakan_seluruh)?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
