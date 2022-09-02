@@ -607,10 +607,10 @@ $no_urut3 = 0;
                     </div>
 
 
-                <?php /*    <br>
+                   <br>
                     <hr>
                     <br>
-
+                    <?php /* 
                     <div class="row">
                         <div class="col-md-4">
                                 <h6 align="Center">Rincian Alat Kesehatan Terjual</h6>
