@@ -232,7 +232,7 @@ if ($tanggal_awal == $tanggal_akhir) {
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
 
     //sql tindakan cash
-    $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(e.jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                     INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
                                                                                                                     INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
@@ -241,7 +241,7 @@ if ($tanggal_awal == $tanggal_akhir) {
     $pendapatan_tindakan_cash = $data_tindakan_cash['pendapatan_tindakan_cash'];
 
     //sql tindakan debit
-    $sql_tindakan_debit = mysqli_query($koneksi, "SELECT  SUM(e.jumlah) AS pendapatan_tindakan_debit  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $sql_tindakan_debit = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_debit  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                     INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
                                                                                                                     INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
