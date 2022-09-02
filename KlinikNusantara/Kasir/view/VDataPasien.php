@@ -529,7 +529,7 @@ $d = $today->diff($tanggalx)->d;
           </div>
             
   
-             <select id="tokens" class="selectpicker form-control" name="nama_dokter" multiple data-live-search="true">
+             <select id="tokens" class="form-control form-control-sm" name="nama_dokter" >
             <?php
             include 'koneksi.php';
          
