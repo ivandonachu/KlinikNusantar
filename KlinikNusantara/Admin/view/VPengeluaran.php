@@ -527,7 +527,7 @@ if ($tanggal_awal == $tanggal_akhir) {
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
             Total Pengeluaran</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800"><?=   formatuang($total_pengeluaran) ?></div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"><?=   formatuang($total) ?></div>
           </div>
           <div class="col-auto">
            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
