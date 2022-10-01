@@ -200,13 +200,13 @@ function formattanggal($date){
   <table style="width:100%"  >
   <tr align="center">
     <th colspan="2" rowspan="3" style="width:43%" ><img src="../gambar/Logo Klinik.png" style="height: 70px; width: 230px;"></th>
-    <th colspan="4"> <h9 style='font-size: 12px' >Alamat : Dsn. 01 RT/RW 03/01 Desa Suka Maju</h9></th>
+    <th colspan="4"> <h9 style='font-size: 12px' >Jl.Mayor Salim Batubara - Dua Puluh Ilir Satu Palembbang</h9></th>
   </tr>
   <tr align="center">
-    <td colspan="4"><h9 style='font-size: 12px' > Kec. Buay Madang Timur Kab. OKU Timur 32361 Sum-Sel </h9></td>
+    <td colspan="4"><h9 style='font-size: 12px' > E-mail bigdentalclinicplg@gmail.com </h9></td>
   </tr>
   <tr align="center">
-    <td colspan="4"><h9 style='font-size: 12px' > Email : ptcahayabumimusi@gmail.com | Telp/Hp. 0812 2160 0689</h9></td>
+    <td colspan="4"><h9 style='font-size: 12px' > Telp. 0878 - 0885 - 5125</h9></td>
   </tr>
 </table>
 
