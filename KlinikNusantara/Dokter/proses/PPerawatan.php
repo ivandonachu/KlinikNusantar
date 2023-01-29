@@ -79,6 +79,32 @@ if (isset($_POST['tindakan_4'])) {
   $qty_tindakan_4 = "";
 }
 
+if (isset($_POST['tindakan_5'])) {
+  $tindakan_5 =  htmlspecialchars($_POST['tindakan_5']);
+  $qty_tindakan_5 = htmlspecialchars($_POST['qty_tindakan_5']);
+
+  if($qty_tindakan_5 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
+
+} else{
+  $tindakan_5 = "";
+  $qty_tindakan_5 = "";
+}
+
+if (isset($_POST['tindakan_6'])) {
+  $tindakan_6 =  htmlspecialchars($_POST['tindakan_6']);
+  $qty_tindakan_6 = htmlspecialchars($_POST['qty_tindakan_6']);
+
+  if($qty_tindakan_6 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
+
+} else{
+  $tindakan_6 = "";
+  $qty_tindakan_6 = "";
+}
+
     
 //Input Data alkes
 if(isset($_POST['alkes_1'])){
@@ -313,7 +339,8 @@ $tgl_antri = date("Y-m-d");
       echo "<script>alert('Data Perawatan Pasien hari ini sudah di inputkan'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
         }
 
-        mysqli_query($koneksi,"INSERT INTO perawatan VALUES('','$no_rm','$no_antrian','$id1','$diagnosis','$tanggal_cek_selanjutnya','$resep','$pesan','$tindakan_1','$qty_tindakan_1','$tindakan_2','$qty_tindakan_2','$tindakan_3','$qty_tindakan_3','$tindakan_4','$qty_tindakan_4'
+        mysqli_query($koneksi,"INSERT INTO perawatan VALUES('','$no_rm','$no_antrian','$id1','$diagnosis','$tanggal_cek_selanjutnya','$resep','$pesan'
+                                                            ,'$tindakan_1','$qty_tindakan_1','$tindakan_2','$qty_tindakan_2','$tindakan_3','$qty_tindakan_3','$tindakan_4','$qty_tindakan_4','$tindakan_5','$qty_tindakan_5','$tindakan_6','$qty_tindakan_6'
                                                             ,'$alkes_1','$qty_alkes_1','$alkes_2','$qty_alkes_2','$alkes_3','$qty_alkes_3','$alkes_4','$qty_alkes_4'
                                                             ,'$obat_1','$qty_obat_1','$obat_2','$qty_obat_2','$obat_3','$qty_obat_3','$obat_4','$qty_obat_4')");
 
@@ -373,6 +400,35 @@ if (isset($_POST['tindakan_4'])) {
   
 
   mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_4','$jumlah')");
+
+} 
+//tindakan 5
+if (isset($_POST['tindakan_5'])) {
+  $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_5'");
+  $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+
+  $kode_tindakan = $data_tindakan['kode_tindakan'];
+  $harga_tindakan = $data_tindakan['harga_tindakan'];
+
+  $jumlah = $qty_tindakan_5 * $harga_tindakan;
+  
+
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_5','$jumlah')");
+
+} 
+
+//tindakan 6
+if (isset($_POST['tindakan_6'])) {
+  $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_6'");
+  $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+
+  $kode_tindakan = $data_tindakan['kode_tindakan'];
+  $harga_tindakan = $data_tindakan['harga_tindakan'];
+
+  $jumlah = $qty_tindakan_6 * $harga_tindakan;
+  
+
+  mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_6','$jumlah')");
 
 } 
 

@@ -79,6 +79,33 @@ if (isset($_POST['tindakan_4'])) {
   $tindakan_4 = "";
   $qty_tindakan_4 = "";
 }
+
+if (isset($_POST['tindakan_5'])) {
+  $tindakan_5 =  htmlspecialchars($_POST['tindakan_5']);
+  $qty_tindakan_5 = htmlspecialchars($_POST['qty_tindakan_5']);
+
+  if($qty_tindakan_5 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
+
+} else{
+  $tindakan_5 = "";
+  $qty_tindakan_5 = "";
+}
+
+if (isset($_POST['tindakan_6'])) {
+  $tindakan_6 =  htmlspecialchars($_POST['tindakan_6']);
+  $qty_tindakan_6 = htmlspecialchars($_POST['qty_tindakan_6']);
+
+  if($qty_tindakan_6 == "" ){
+    echo "<script>alert('Qty Tindakan kesehatan yang di tambahkan tidak boleh kosong'); window.location='../view/VRekamMedis?id_pasien=$id_pasien';</script>";exit;
+  }
+
+} else{
+  $tindakan_6 = "";
+  $qty_tindakan_6 = "";
+}
+
     
 
     
@@ -332,6 +359,8 @@ $tgl_antri = date("Y-m-d");
       $tindakan_2_perawatan = $data_perawatan['tindakan_2'];
       $tindakan_3_perawatan = $data_perawatan['tindakan_3'];
       $tindakan_4_perawatan = $data_perawatan['tindakan_4'];
+      $tindakan_5_perawatan = $data_perawatan['tindakan_5'];
+      $tindakan_6_perawatan = $data_perawatan['tindakan_6'];
 
 
 
@@ -486,6 +515,84 @@ else{
   mysqli_query($koneksi,"UPDATE riwayat_tindakan SET kode_tindakan = '$kode_tindakan'  , qty_tindakan = '$qty_tindakan_4', jumlah = '$jumlah'  WHERE no_riwayat =  '$no_riwayat'");
 }
 }
+
+
+//tindakan 5
+if ($tindakan_5_perawatan == "") {
+  if($tindakan_5 == ""){
+
+  }
+  else{
+
+    $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_5'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+  
+    $kode_tindakan = $data_tindakan['kode_tindakan'];
+    $harga_tindakan = $data_tindakan['harga_tindakan'];
+    $jumlah = $qty_tindakan_5 * $harga_tindakan;
+  
+    mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_5','$jumlah')");
+
+  }
+} 
+else{
+$sql_ri_tindakan_5 = mysqli_query($koneksi, "SELECT * FROM riwayat_tindakan a INNER JOIN perawatan b ON b.no_perawatan=a.no_perawatan INNER JOIN tindakan c ON c.kode_tindakan=a.kode_tindakan WHERE a.no_perawatan = '$no_perawatan' AND c.nama_tindakan = '$tindakan_5_perawatan'");
+$data_ri_alkes_5 = mysqli_fetch_assoc($sql_ri_tindakan_5);
+$no_riwayat = $data_ri_alkes_5['no_riwayat'];
+
+if($tindakan_5 == "" ){
+  mysqli_query($koneksi,"DELETE FROM riwayat_tindakan WHERE no_riwayat = '$no_riwayat'");
+}
+else{
+    $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_5'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+  
+    $kode_tindakan = $data_tindakan['kode_tindakan'];
+    $harga_tindakan = $data_tindakan['harga_tindakan'];
+    $jumlah = $qty_tindakan_5 * $harga_tindakan;
+
+  mysqli_query($koneksi,"UPDATE riwayat_tindakan SET kode_tindakan = '$kode_tindakan'  , qty_tindakan = '$qty_tindakan_5', jumlah = '$jumlah'  WHERE no_riwayat =  '$no_riwayat'");
+}
+}
+
+//tindakan 6
+if ($tindakan_6_perawatan == "") {
+  if($tindakan_6 == ""){
+
+  }
+  else{
+
+    $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_6'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+  
+    $kode_tindakan = $data_tindakan['kode_tindakan'];
+    $harga_tindakan = $data_tindakan['harga_tindakan'];
+    $jumlah = $qty_tindakan_6 * $harga_tindakan;
+  
+    mysqli_query($koneksi,"INSERT INTO riwayat_tindakan VALUES('','$no_perawatan','$id1','$kode_tindakan','$qty_tindakan_6','$jumlah')");
+
+  }
+} 
+else{
+$sql_ri_tindakan_6 = mysqli_query($koneksi, "SELECT * FROM riwayat_tindakan a INNER JOIN perawatan b ON b.no_perawatan=a.no_perawatan INNER JOIN tindakan c ON c.kode_tindakan=a.kode_tindakan WHERE a.no_perawatan = '$no_perawatan' AND c.nama_tindakan = '$tindakan_6_perawatan'");
+$data_ri_alkes_6 = mysqli_fetch_assoc($sql_ri_tindakan_6);
+$no_riwayat = $data_ri_alkes_6['no_riwayat'];
+
+if($tindakan_6 == "" ){
+  mysqli_query($koneksi,"DELETE FROM riwayat_tindakan WHERE no_riwayat = '$no_riwayat'");
+}
+else{
+    $sql_tindakan = mysqli_query($koneksi, "SELECT * FROM tindakan WHERE nama_tindakan = '$tindakan_6'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+  
+    $kode_tindakan = $data_tindakan['kode_tindakan'];
+    $harga_tindakan = $data_tindakan['harga_tindakan'];
+    $jumlah = $qty_tindakan_6 * $harga_tindakan;
+
+  mysqli_query($koneksi,"UPDATE riwayat_tindakan SET kode_tindakan = '$kode_tindakan'  , qty_tindakan = '$qty_tindakan_6', jumlah = '$jumlah'  WHERE no_riwayat =  '$no_riwayat'");
+}
+}
+
 
     
       
@@ -1213,8 +1320,8 @@ if($obat_4_perawatan == "" ){
 
 
 mysqli_query($koneksi,"UPDATE perawatan SET diagnosis = '$diagnosis' , tgl_cek_selanjutnya = '$tanggal_cek_selanjutnya' , resep = '$resep' , pesan = '$pesan' 
-, tindakan_1 = '$tindakan_1' , tindakan_2 = '$tindakan_2', tindakan_3 = '$tindakan_3', tindakan_4 = '$tindakan_4'
-, qty_tindakan_1 = '$qty_tindakan_1', qty_tindakan_2 = '$qty_tindakan_2', qty_tindakan_3 = '$qty_tindakan_3', qty_tindakan_4 = '$qty_tindakan_4'
+, tindakan_1 = '$tindakan_1' , tindakan_2 = '$tindakan_2', tindakan_3 = '$tindakan_3', tindakan_4 = '$tindakan_4' , tindakan_5 = '$tindakan_5' , tindakan_6 = '$tindakan_6'
+, qty_tindakan_1 = '$qty_tindakan_1', qty_tindakan_2 = '$qty_tindakan_2', qty_tindakan_3 = '$qty_tindakan_3', qty_tindakan_4 = '$qty_tindakan_4' , qty_tindakan_5 = '$qty_tindakan_5'  , qty_tindakan_6 = '$qty_tindakan_6' 
 , alkes_1 = '$alkes_1' , qty_alkes_1 = '$qty_alkes_1', alkes_2 = '$alkes_2', qty_alkes_2 = '$qty_alkes_2' 
 , alkes_3 = '$alkes_3' , qty_alkes_3 = '$qty_alkes_3', alkes_4 = '$alkes_4', qty_alkes_4 = '$qty_alkes_4'
 , obat_1 = '$obat_1' , qty_obat_1 = '$qty_obat_1' , obat_2 = '$obat_2' , qty_obat_2 = '$qty_obat_2'

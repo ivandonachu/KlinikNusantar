@@ -275,6 +275,10 @@ function formatuang($angka)
                                     <th  style='font-size: 12px'>QTY Tindakan 3</th>
                                     <th  style='font-size: 12px'>Tindakan 4</th>
                                     <th  style='font-size: 12px'>QTY Tindakan 4</th>
+                                    <th  style='font-size: 12px'>Tindakan 5</th>
+                                    <th  style='font-size: 12px'>QTY Tindakan 5</th>
+                                    <th  style='font-size: 12px'>Tindakan 6</th>
+                                    <th  style='font-size: 12px'>QTY Tindakan 6</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -292,6 +296,10 @@ function formatuang($angka)
                                     $qty_tindakan_3 = $data['qty_tindakan_3'];
                                     $tindakan_4 = $data['tindakan_4'];
                                     $qty_tindakan_4 = $data['qty_tindakan_4'];
+                                    $tindakan_5 = $data['tindakan_5'];
+                                    $qty_tindakan_5 = $data['qty_tindakan_5'];
+                                    $tindakan_6 = $data['tindakan_6'];
+                                    $qty_tindakan_6 = $data['qty_tindakan_6'];
 
                                     $no_urut += 1 ;
 
@@ -308,6 +316,10 @@ function formatuang($angka)
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$qty_tindakan_3</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$tindakan_4</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$qty_tindakan_4</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$tindakan_5</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$qty_tindakan_5</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$tindakan_6</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$qty_tindakan_6</td>
                                     
                                        
                                                            

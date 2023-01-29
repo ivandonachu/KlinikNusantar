@@ -41,6 +41,10 @@ $tindakan_3 = $data_perawatan['tindakan_3'];
 $qty_tindakan_3 = $data_perawatan['qty_tindakan_3'];
 $tindakan_4 = $data_perawatan['tindakan_4'];
 $qty_tindakan_4 = $data_perawatan['qty_tindakan_4'];
+$tindakan_5 = $data_perawatan['tindakan_5'];
+$qty_tindakan_5 = $data_perawatan['qty_tindakan_5'];
+$tindakan_6 = $data_perawatan['tindakan_6'];
+$qty_tindakan_6 = $data_perawatan['qty_tindakan_6'];
 
 $alkes_1 = $data_perawatan['alkes_1'];
 $qty_alkes_1 = $data_perawatan['qty_alkes_1'];
@@ -99,6 +103,26 @@ if($tindakan_4 != ""){
     $harga = $data_tindakan['harga_tindakan'];
 
     $jumlah = $qty_tindakan_4 * $harga;
+    $total_pembayaran = $total_pembayaran + $jumlah;
+}
+
+if($tindakan_5 != ""){
+    $sql_tindakan = mysqli_query($koneksi, "SELECT harga_tindakan FROM tindakan WHERE nama_tindakan = '$tindakan_5'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+
+    $harga = $data_tindakan['harga_tindakan'];
+
+    $jumlah = $qty_tindakan_5 * $harga;
+    $total_pembayaran = $total_pembayaran + $jumlah;
+}
+
+if($tindakan_6 != ""){
+    $sql_tindakan = mysqli_query($koneksi, "SELECT harga_tindakan FROM tindakan WHERE nama_tindakan = '$tindakan_6'");
+    $data_tindakan = mysqli_fetch_assoc($sql_tindakan);
+
+    $harga = $data_tindakan['harga_tindakan'];
+
+    $jumlah = $qty_tindakan_6 * $harga;
     $total_pembayaran = $total_pembayaran + $jumlah;
 }
 

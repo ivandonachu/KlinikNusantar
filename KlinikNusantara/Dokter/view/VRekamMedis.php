@@ -466,6 +466,52 @@ function formattanggal($date){
                 <input class="form-control form-control-sm" type="number"  name="qty_tindakan_4">
             </div>
          </div>
+         <br>
+          <div class="row">
+           <div class="col-md-8">
+          <label>Tindakan 5</label>
+             <select id="tokens" class="selectpicker form-control" name="tindakan_5" multiple data-live-search="true">
+            <?php
+            include 'koneksi.php';
+         
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
+            while ($data = mysqli_fetch_array($result)){
+              $nama_tindakan = $data['nama_tindakan'];
+  
+                echo "<option> $nama_tindakan </option> ";
+              }
+
+            ?>
+          </select>   
+           </div> 
+           <div class="col-md-4">
+                <label>QTY Tindakan 5</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_5">
+            </div>
+         </div>
+         <br>
+          <div class="row">
+           <div class="col-md-8">
+          <label>Tindakan 6</label>
+             <select id="tokens" class="selectpicker form-control" name="tindakan_6" multiple data-live-search="true">
+            <?php
+            include 'koneksi.php';
+         
+            $result = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
+            while ($data = mysqli_fetch_array($result)){
+              $nama_tindakan = $data['nama_tindakan'];
+  
+                echo "<option> $nama_tindakan </option> ";
+              }
+
+            ?>
+          </select>   
+           </div> 
+           <div class="col-md-4">
+                <label>QTY Tindakan 6</label>
+                <input class="form-control form-control-sm" type="number"  name="qty_tindakan_6">
+            </div>
+         </div>
           <br>
          <div class="row">
          <div class="col-md-6">
@@ -714,11 +760,15 @@ function formattanggal($date){
                                             $tindakan_2 = $data['tindakan_2'];
                                             $tindakan_3 = $data['tindakan_3'];
                                             $tindakan_4 = $data['tindakan_4'];
+                                            $tindakan_5 = $data['tindakan_5'];
+                                            $tindakan_6 = $data['tindakan_6'];
                                             
                                             $qty_tindakan_1 = $data['qty_tindakan_1'];
                                             $qty_tindakan_2 = $data['qty_tindakan_2'];
                                             $qty_tindakan_3 = $data['qty_tindakan_3'];
                                             $qty_tindakan_4 = $data['qty_tindakan_4'];
+                                            $qty_tindakan_5 = $data['qty_tindakan_5'];
+                                            $qty_tindakan_6 = $data['qty_tindakan_6'];
 
 
                                             $keluhan_awal = $data['keluhan_awal'];
@@ -902,7 +952,43 @@ function formattanggal($date){
                                                       <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_4; ?>" disabled>
                                                     </div>
                                                   </div>
+
                                                   <br>
+
+                                                  <div class="row">
+                                                    <div class="col-md-8">
+                                                      <div>
+                                                      <label>Tindakan 5</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_5; ?>" disabled>
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 5</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_5; ?>" disabled>
+                                                    </div>
+                                                  </div>
+
+                                                  <br>
+
+                                                  <div class="row">
+                                                    <div class="col-md-8">
+                                                      <div>
+                                                      <label>Tindakan 6</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $tindakan_6; ?>" disabled>
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                      <div>
+                                                      <label>QTY Tindakan 6</label>
+                                                      </div>
+                                                      <input class="form-control form-control-sm" type="text"  name="tanggal_cek_selanjutnya"  value="<?= $qty_tindakan_6; ?>" disabled>
+                                                    </div>
+                                                  </div>
+
+                                                  <br>
+
                                                   <div class="row">
                                                   <div class="col-md-6">
                                                       <label>Tanggal Cek Up Selanjutnya</label>
@@ -1079,7 +1165,67 @@ function formattanggal($date){
                                                         <input class="form-control form-control-sm" type="number"  name="qty_tindakan_4" value="<?= $qty_tindakan_4; ?>">
                                                     </div>
                                                   </div>
+
+                                                  <br>
+
+                                                    <div class="row">
+                                                    <div class="col-md-8">
+                                                    <div>
+                                                      <label>Tindakan 5</label>
+                                                      </div>
+                                                      <select id="tokens" class="selectpicker form-control" name="tindakan_5" multiple data-live-search="true">
+                                                                        <?php
+                                                                        include 'koneksi.php';
+                                                                        $dataSelect = $data['tindakan_5'];
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
+
+                                                                        while ($datax= mysqli_fetch_array($resultx)){
+                                                                            $nama_tindakan = $datax['nama_tindakan'];
+
+
+                                                                            echo "<option" ?> <?php echo ($dataSelect == $nama_tindakan) ? "selected" : "" ?>> <?php echo $nama_tindakan; ?> <?php echo "</option>";
+                                                                        
+                                                                        }
+                                                                        ?>
+                                                      </select>    
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 5</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_5" value="<?= $qty_tindakan_5; ?>">
+                                                    </div>
+                                                  </div>
+
+                                                  <br>
+
+                                                    <div class="row">
+                                                    <div class="col-md-8">
+                                                    <div>
+                                                      <label>Tindakan 6</label>
+                                                      </div>
+                                                      <select id="tokens" class="selectpicker form-control" name="tindakan_6" multiple data-live-search="true">
+                                                                        <?php
+                                                                        include 'koneksi.php';
+                                                                        $dataSelect = $data['tindakan_6'];
+                                                                        $resultx = mysqli_query($koneksi, "SELECT nama_tindakan FROM tindakan WHERE status_tindakan = 'Aktif' ");   
+
+                                                                        while ($datax= mysqli_fetch_array($resultx)){
+                                                                            $nama_tindakan = $datax['nama_tindakan'];
+
+
+                                                                            echo "<option" ?> <?php echo ($dataSelect == $nama_tindakan) ? "selected" : "" ?>> <?php echo $nama_tindakan; ?> <?php echo "</option>";
+                                                                        
+                                                                        }
+                                                                        ?>
+                                                      </select>    
+                                                    </div> 
+                                                    <div class="col-md-4">
+                                                        <label>QTY Tindakan 6</label>
+                                                        <input class="form-control form-control-sm" type="number"  name="qty_tindakan_6" value="<?= $qty_tindakan_6; ?>">
+                                                    </div>
+                                                  </div>
+
                                                     <br>
+                                                    
                                                   <div class="row">
                                                   <div class="col-md-6">
                                                       <label>Tanggal Cek Up Selanjutnya</label>
