@@ -17,8 +17,11 @@ $no_hp = $data_pembayaran['no_hp'];
 $nik = $data_pembayaran['nik'];
 $jenis_pembayaran = $data_pembayaran['jenis_pembayaran'];
 $jumlah_tagihan = $data_pembayaran['jumlah_tagihan'];
+$total_potongan = $data_pembayaran['total_potongan'];
+$jumlah_potongan = $data_pembayaran['jumlah_potongan'];
+$jumlah_tagihan_potongan = $data_pembayaran['jumlah_tagihan_potongan'];
 $jumlah_bayar = $data_pembayaran['jumlah_bayar'];
-$kembalian = $jumlah_bayar - $jumlah_tagihan ;
+$kembalian = $jumlah_bayar - $jumlah_tagihan_potongan ;
 
 $tindakan_1 = $data_pembayaran['tindakan_1'];
 $qty_tindakan_1 = $data_pembayaran['qty_tindakan_1'];
@@ -517,10 +520,21 @@ $html = '
         <td align="center" style="font-size: 9px; width:45%;">'.  formatuangx($jumlah_tagihan) .'</td>
     </tr>
     <tr>
-        <td align="center" style="font-size: 9px; width:45%; ">Total Bayar</td>
+        <td align="center" style="font-size: 9px; width:45%; ">Total potongan</td>
         <td align="center" style="font-size: 9px; width:10%;"> = </td>
-        <td align="center" style="font-size: 9px; width:45%;">'.  formatuangx($jumlah_bayar) .'</td>
+        <td align="center" style="font-size: 9px; width:45%;">'.  $total_potongan  .' %  ( '.  formatuangx($jumlah_potongan) .' )</td>
     </tr>
+
+    <tr>
+        <td align="center" style="font-size: 9px; width:45%; ">Tagihan Setelah Potongan</td>
+        <td align="center" style="font-size: 9px; width:10%;"> = </td>
+        <td align="center" style="font-size: 9px; width:45%;">'.  formatuangx($jumlah_tagihan_potongan) .'</td>
+    </tr>
+    <tr>
+    <td align="center" style="font-size: 9px; width:45%; ">Jumlah Bayar</td>
+    <td align="center" style="font-size: 9px; width:10%;"> = </td>
+    <td align="center" style="font-size: 9px; width:45%;">'.  formatuangx($jumlah_bayar) .'</td>
+</tr>
     <tr>
         <td align="center" style="font-size: 9px; width:45%; ">Kembalian</td>
         <td align="center" style="font-size: 9px; width:10%;"> = </td>

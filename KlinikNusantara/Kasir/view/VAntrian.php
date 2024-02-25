@@ -623,6 +623,11 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                         <label>Total Bayar</label>
                                                                         <input class="form-control form-control-sm" name="total_bayar" type="text"   required="" >
                                                                     </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Potongan Harga</label>
+                                                                        <input class="form-control form-control-sm" name="potongan_bayar" type="text"  value="0"  required="" > 
+                                                                        <small>input dalam bentuk persen (0-100)%</small>
+                                                                    </div>
                                                                     
                                                                 </div>
                                                                 <br>

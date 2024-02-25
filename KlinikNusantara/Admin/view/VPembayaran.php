@@ -31,11 +31,9 @@ if (isset($_GET['tanggal1'])) {
 } elseif (isset($_POST['tanggal1'])) {
     $tanggal_awal = $_POST['tanggal1'];
     $tanggal_akhir = $_POST['tanggal2'];
-    
 } else {
     $tanggal_awal = date('Y-m-d');
     $tanggal_akhir = date('Y-m-d');
-
 }
 
 
@@ -53,7 +51,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                             INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN obat d ON d.kode_obat=c.kode_obat
                                                                                                                             WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_obat ");
-                                                                                                                            
+
     $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , COUNT(nama_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                             INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
@@ -113,7 +111,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                             WHERE a.tanggal = '$tanggal_awal' AND e.jenis_pembayaran = 'Debit' ");
     $data_obat_debit = mysqli_fetch_assoc($sql_obat_debit);
     $pendapatan_obat_debit = $data_obat_debit['pendapatan_obat_debit'];
-    
+
     //tindakan 
     //sql tindakan total
     $sql_tindakan_seluruh = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_seluruh  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
@@ -142,10 +140,17 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
     $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+WHERE a.tanggal = '$tanggal_awal'   ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
     $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
-    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
-
+    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit - $total_potongan_harga;
 } else {
     $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan f ON f.no_perawatan=e.no_perawatan INNER JOIN antrian a ON a.no_antrian=f.no_antrian INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
     WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
@@ -249,15 +254,22 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
     $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+        INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+        WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'  ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
     $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
-    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
-   
+    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit - $total_potongan_harga;
 }
 $no_urut1 = 0;
 $no_urut2 = 0;
 $no_urut3 = 0;
-
+$pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_harga;
 
 
 
@@ -301,66 +313,66 @@ $no_urut3 = 0;
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-       <!-- Sidebar -->
-       <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
+        <!-- Sidebar -->
+        <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-<!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsAdmin">
-    <div class="sidebar-brand-icon rotate-n-15">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsAdmin">
+                <div class="sidebar-brand-icon rotate-n-15">
 
-    </div>
-    <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
-</a>
-<br>
+                </div>
+                <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
+            </a>
+            <br>
 
-<br>
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
+            <br>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-<!-- Nav Item - Dashboard -->
-<li class="nav-item active">
-    <a class="nav-link" href="DsAdmin">
-        <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
-</li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="DsAdmin">
+                    <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
+            </li>
 
-<!-- Divider -->
-<hr class="sidebar-divider">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-<!-- Heading -->
-<div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
-    Menu Admin
-</div>
+            <!-- Heading -->
+            <div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
+                Menu Admin
+            </div>
 
-<!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fas fa-dollar-sign" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Oprasional</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPengeluaran">Pengeluaran</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPembayaran">Pembayaran</a>
-        </div>
-    </div>
-</li>
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo1" 15 aria-expanded="true" aria-controls="collapseTwo1">
-        <i class="fas fa-users" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Data SDK</span>
-    </a>
-    <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VKaryawan">Data Karyawan</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAccount">Akun Karyawan</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VTindakan">List Tindakan</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VObat">List Obat</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAlatKesehatan">List Alat Kesehatan</a>
-            <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRuangan">List Ruangan</a>
-        </div>
-    </div>
-</li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-dollar-sign" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Oprasional</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPengeluaran">Pengeluaran</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VPembayaran">Pembayaran</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo1" 15 aria-expanded="true" aria-controls="collapseTwo1">
+                    <i class="fas fa-users" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Data SDK</span>
+                </a>
+                <div id="collapseTwo1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VKaryawan">Data Karyawan</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAccount">Akun Karyawan</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VTindakan">List Tindakan</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VObat">List Obat</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VAlatKesehatan">List Alat Kesehatan</a>
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VRuangan">List Ruangan</a>
+                    </div>
+                </div>
+            </li>
 
 
             <!-- Divider -->
@@ -482,11 +494,14 @@ $no_urut3 = 0;
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Nama Dokter</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Metode Pembayaran</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Jumlah Potongan Harga</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan Potongan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan setelah Potongan</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Pembayaran</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Kembalian</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);"></th>
                                     <th></th>
-                                 
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -497,20 +512,22 @@ $no_urut3 = 0;
                                     $uang = "Rp " . number_format($angka, 2, ',', '.');
                                     return $uang;
                                 }
-                           
+
                                 ?>
                                 <?php while ($data = mysqli_fetch_array($table)) {
-                                    $no_pembayaran = $data['no_pembayaran'];
-                                    $no_antrian = $data['no_antrian'];
-                                    $tanggal = $data['tanggal'];
-                                    $nama_pasien = $data['nama_pasien'];
-                                    $nama_karyawan = $data['nama_karyawan'];
-                                    $jenis_pembayaran = $data['jenis_pembayaran'];
-                                    $jumlah_tagihan = $data['jumlah_tagihan'];
-                                    $jumlah_bayar = $data['jumlah_bayar'];
-                                    $kembalian = $jumlah_bayar - $jumlah_tagihan;
-            
-                                    $urut = $urut + 1;
+                                   $no_pembayaran = $data['no_pembayaran'];
+                                   $no_antrian = $data['no_antrian'];
+                                   $tanggal = $data['tanggal'];
+                                   $nama_pasien = $data['nama_pasien'];
+                                   $nama_karyawan = $data['nama_karyawan'];
+                                   $jenis_pembayaran = $data['jenis_pembayaran'];
+                                   $jumlah_tagihan = $data['jumlah_tagihan'];
+                                   $total_potongan = $data['total_potongan'];
+                                   $jumlah_potongan = $data['jumlah_potongan'];
+                                   $jumlah_tagihan_potongan = $data['jumlah_tagihan_potongan'];
+                                   $jumlah_bayar = $data['jumlah_bayar'];
+                                   $kembalian = $jumlah_bayar - $jumlah_tagihan_potongan;
+                                   $urut = $urut + 1;
 
 
                                     echo "<tr>
@@ -519,22 +536,25 @@ $no_urut3 = 0;
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_pembayaran</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_bayar); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($kembalian); ?> <?php echo"</td>
-                                    <td";?> <a> <?php echo "<a href='VRincianPembayaran?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir&no_antrian=$no_antrian'>Rincian</a></a></td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$total_potongan %</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_potongan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan_potongan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_bayar); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($kembalian); ?> <?php echo "</td>
+                                    <td"; ?> <a> <?php echo "<a href='VRincianPembayaran?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir&no_antrian=$no_antrian'>Rincian</a></a></td>
                                     "; ?>
                                         <?php echo "<td style='font-size: clamp(12px, 1vw, 15px);'>"; ?>
 
 
                                         <?php echo "<a href='VPrintStruk?no_antrian=$no_antrian&tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir' target='_blank'><button style=' font-size: clamp(7px, 1vw, 10px);color:black;
                                              '  type='submit' class=' btn btn-secondary' >  <i class='fa-solid fa-print'></i> Print Struk</button></a>";
-                                                
-                                             ?>
 
-                                    
-                                      <!-- Button Hapus -->
-                                   <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning" data-toggle="modal" data-target="#formedit<?php echo $data['no_pembayaran']; ?>" data-toggle='tooltip' title='Edit Data Alkes'>
+                                        ?>
+
+
+                                        <!-- Button Hapus -->
+                                        <button style=" font-size: clamp(7px, 1vw, 10px); color:black; " href="#" type="submit" class=" btn bg-warning" data-toggle="modal" data-target="#formedit<?php echo $data['no_pembayaran']; ?>" data-toggle='tooltip' title='Edit Data Alkes'>
                                             <i class="fas fa-edit"></i> Edit</button>
 
 
@@ -544,7 +564,7 @@ $no_urut3 = 0;
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title"> Form Edit Riwayat Alat Kesehatan </h5>
+                                                        <h5 class="modal-title"> Form Edit Pembayaran </h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="close">
                                                             <span aria-hidden="true"> &times; </span>
                                                         </button>
@@ -554,23 +574,29 @@ $no_urut3 = 0;
                                                     <div class="modal-body" align="left">
                                                         <form action="../proses/EPembayaran" enctype="multipart/form-data" method="POST">
 
-                                                            <input type="hidden" name="no_pembayaran" value="<?php echo $no_pembayaran; ?>">
+                                                        <input type="hidden" name="no_pembayaran" value="<?php echo $no_pembayaran; ?>">
+                                                            <input type="hidden" name="jumlah_tagihan" value="<?php echo $jumlah_tagihan; ?>">
                                                             <input type="hidden" name="tanggal1" value="<?php echo $tanggal_awal; ?>">
                                                             <input type="hidden" name="tanggal2" value="<?php echo $tanggal_akhir; ?>">
 
                                                             <div class="row">
-                                                                    <div class="col-md-6">
+                                                                <div class="col-md-6">
                                                                     <label>Metode Pembayaran</label>
                                                                     <?php $dataSelect = $data['jenis_pembayaran']; ?>
                                                                     <select id="jenis_pembayaran" name="jenis_pembayaran" class="form-control">
                                                                         <option <?php echo ($dataSelect == 'Cash') ? "selected" : "" ?>>Cash</option>
                                                                         <option <?php echo ($dataSelect == 'Debit') ? "selected" : "" ?>>Debit</option>
                                                                     </select>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <label>Total Bayar</label>
-                                                                        <input class="form-control form-control-sm" name="total_bayar" value="<?php echo $jumlah_bayar; ?>" type="text"   required="" >
-                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>Total Bayar</label>
+                                                                    <input class="form-control form-control-sm" name="total_bayar" value="<?php echo $jumlah_bayar; ?>" type="text" required="">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>Potongan Harga</label>
+                                                                    <input class="form-control form-control-sm" name="potongan_bayar" type="text" value="<?php echo $total_potongan; ?>" required="">
+                                                                    <small>input dalam bentuk persen (0-100)%</small>
+                                                                </div>
                                                             </div>
 
                                                             <br>
@@ -587,9 +613,9 @@ $no_urut3 = 0;
                                                 </div>
                                             </div>
                                         </div>
-                                
-                                  
-                                
+
+
+
 
 
                                     <?php echo  " </td> </tr>";
@@ -601,7 +627,7 @@ $no_urut3 = 0;
                     </div>
 
 
-                   <br>
+                    <br>
                     <hr>
                     <br>
                     <?php /* 
@@ -703,122 +729,142 @@ $no_urut3 = 0;
                                 </tbody>
                                 </table>
 
-                        </div> */?>
-                        <div class="col-md-12">
-                
-                                <h6 align="Center">Rincian Tindakan</h6>
-                                <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
-                                <thead align = 'center'>
-                                    <tr>
-                                    <th  style='font-size: 12px'>No</th>
-                                    <th  style='font-size: 12px'>Nama Tindakan</th>
-                                    <th  style='font-size: 12px'>Jumlah Tindakan</th>
-                                    <th  style='font-size: 12px'>Harga</th>
-                                    <th  style='font-size: 12px'>Total Pendapatan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while($data = mysqli_fetch_array($table4)){
+                        </div> */ ?>
+                    <div class="col-md-12">
+
+                        <h6 align="Center">Rincian Tindakan</h6>
+                        <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
+                            <thead align='center'>
+                                <tr>
+                                    <th style='font-size: 12px'>No</th>
+                                    <th style='font-size: 12px'>Nama Tindakan</th>
+                                    <th style='font-size: 12px'>Jumlah Tindakan</th>
+                                    <th style='font-size: 12px'>Harga</th>
+                                    <th style='font-size: 12px'>Total Pendapatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($data = mysqli_fetch_array($table4)) {
                                     $harga_tindakan = $data['harga_tindakan'];
-                                    $nama_tindakan =$data['nama_tindakan'];
-                    
+                                    $nama_tindakan = $data['nama_tindakan'];
+
                                     $total_tindakan = $data['total_tindakan'];
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
-                                    $no_urut3 += 1 ;
+                                    $no_urut3 += 1;
 
                                     echo "<tr>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$no_urut3</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$nama_tindakan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$total_tindakan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($harga_tindakan); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo"</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($harga_tindakan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo "</td>
                                                            
                                 </tr>";
-                                }
-                                
-                                ?>
-                                
-                                <tr> 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Cash</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
-                                </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Debit</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
-                                </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
-                                </tr>
-                                
-                                
+                                                                                                                                                }
 
-                                </tbody>
-                                </table>
+                                                                                                                                                    ?>
 
-                        </div>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Cash</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Debit</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Potongan Harga</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($total_potongan_harga); ?></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+
                     </div>
-                   
-                    
+
+
+
                     <br>
                     <hr>
                     <br>
-                    
-                    
+
+
                     <div class="row" style="margin-right: 20px; margin-left: 20px;">
-                    <div class="col-xl-4 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Pendapatan Cash</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=  formatuang($total_pendapatan_cash) ?></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Pendapatan Debit</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
-                            </div>
-                            <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Pendapatan Cash</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_cash) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Total Pendapatan</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($pendapatan_tindakan_seluruh)?></div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Pendapatan Debit</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total Potongan Harga</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_potongan_harga) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total Pendapatan</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($pendapatan_tindakan_seluruh) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <br><br>
 
-               
-                    
+
+
 
                 </div>
 

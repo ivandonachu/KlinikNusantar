@@ -31,18 +31,16 @@ if (isset($_GET['tanggal1'])) {
 } elseif (isset($_POST['tanggal1'])) {
     $tanggal_awal = $_POST['tanggal1'];
     $tanggal_akhir = $_POST['tanggal2'];
-    
 } else {
     $tanggal_awal = date('Y-m-1');
     $tanggal_akhir = date('Y-m-31');
-
 }
 
-                                function formatuang($angka)
-                                {
-                                    $uang = "Rp " . number_format($angka, 2, ',', '.');
-                                    return $uang;
-                                }
+function formatuang($angka)
+{
+    $uang = "Rp " . number_format($angka, 2, ',', '.');
+    return $uang;
+}
 
 if ($tanggal_awal == $tanggal_akhir) {
 
@@ -66,7 +64,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                             WHERE a.tanggal = '$tanggal_awal' ");
     $data_obat_seluruh = mysqli_fetch_assoc($sql_obat_seluruh);
     $pendapatan_obat_total = $data_obat_seluruh['pendapatan_obat_total'];
-    
+
     //tindakan 
     //sql total pendapatan tindakan 
     $sql_tindakan_seluruh = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_seluruh  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
@@ -77,7 +75,7 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
 
-    $pembagian_dokter = (($pendapatan_tindakan_seluruh*40)/100);
+    $pembagian_dokter = (($pendapatan_tindakan_seluruh * 40) / 100);
 
     //pembelian pokok
     //pembelian alat kesehatan
@@ -117,15 +115,20 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_pengeluaran_atk = mysqli_fetch_assoc($sql_pengeluaran_atk);
     $pengeluaran_atk = $data_pengeluaran_atk['pengeluaran_atk'];
 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                WHERE a.tanggal = '$tanggal_awal'  ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
 
     $total_pendapatan = $pendapatan_alkes_total + $pendapatan_obat_total + $pendapatan_tindakan_seluruh;
-    $total_harga_pokok = $pembelian_alkes + $pembelian_obat;
+    $total_harga_pokok = $pembelian_alkes + $pembelian_obat + $total_potongan_harga;
     $laba_kotor = $total_pendapatan - $total_harga_pokok;
     $total_pengeluaran = $pengeluaran_gaji + $pengeluaran_biaya_kantor + $pengeluaran_listrik + $pengeluaran_atk;
     $laba_bersih_sebelum_pajak = $laba_kotor - $total_pengeluaran;
-   
-
-
 } else {
 
     //alat kesehatan
@@ -157,7 +160,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
-    $pembagian_dokter = (($pendapatan_tindakan_seluruh*40)/100);
+    $pembagian_dokter = (($pendapatan_tindakan_seluruh * 40) / 100);
 
     //pembelian pokok
     //pembelian alat kesehatan
@@ -197,12 +200,19 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_pengeluaran_atk = mysqli_fetch_assoc($sql_pengeluaran_atk);
     $pengeluaran_atk = $data_pengeluaran_atk['pengeluaran_atk'];
 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'  ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
     $total_pendapatan = $pendapatan_alkes_total + $pendapatan_obat_total + $pendapatan_tindakan_seluruh;
-    $total_harga_pokok = $pembelian_alkes + $pembelian_obat;
+    $total_harga_pokok = $pembelian_alkes + $pembelian_obat + $total_potongan_harga;
     $laba_kotor = $total_pendapatan - $total_harga_pokok;
     $total_pengeluaran = $pengeluaran_gaji + $pengeluaran_biaya_kantor + $pengeluaran_listrik + $pengeluaran_atk + $pembagian_dokter;
     $laba_bersih_sebelum_pajak = $laba_kotor - $total_pengeluaran;
-   
 }
 $no_urut1 = 0;
 $no_urut2 = 0;
@@ -251,50 +261,50 @@ $no_urut3 = 0;
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      
-         <!-- Sidebar -->
-         <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-<!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
-    <div class="sidebar-brand-icon rotate-n-15">
+        <!-- Sidebar -->
+        <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-    </div>
-    <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
-</a>
-<br>
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
+                <div class="sidebar-brand-icon rotate-n-15">
 
-<br>
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
+                </div>
+                <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
+            </a>
+            <br>
 
-<!-- Nav Item - Dashboard -->
-<li class="nav-item active">
-    <a class="nav-link" href="DsManager">
-        <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
-</li>
+            <br>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-<!-- Divider -->
-<hr class="sidebar-divider">
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="DsManager">
+                    <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
+            </li>
 
-<!-- Heading -->
-<div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
-    Menu Manager
-</div>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-<!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VLabaRugi">Laba Rugi</a>
-        </div>
-    </div>
-</li>
+            <!-- Heading -->
+            <div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
+                Menu Manager
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VLabaRugi">Laba Rugi</a>
+                    </div>
+                </div>
+            </li>
 
 
 
@@ -385,244 +395,247 @@ $no_urut3 = 0;
                 </nav>
                 <!-- End of Topbar -->
                 <div class="container" style="color : black;">
-     <?php  echo "<form  method='POST' action='VLabaRugi' style='margin-bottom: 15px;'>" ?>
-    <div>
-      <div align="left" style="margin-left: 20px;"> 
-        <input type="date" id="tanggal1" style="font-size: 14px" name="tanggal1"> 
-        <span>-</span>
-        <input type="date" id="tanggal2" style="font-size: 14px" name="tanggal2">
-        <button type="submit" name="submmit" style="font-size: 12px; margin-left: 10px; margin-bottom: 2px;" class="btn1 btn btn-outline-primary btn-sm" >Lihat</button>
-      </div>
-    </div>
-  </form>
+                    <?php echo "<form  method='POST' action='VLabaRugi' style='margin-bottom: 15px;'>" ?>
+                    <div>
+                        <div align="left" style="margin-left: 20px;">
+                            <input type="date" id="tanggal1" style="font-size: 14px" name="tanggal1">
+                            <span>-</span>
+                            <input type="date" id="tanggal2" style="font-size: 14px" name="tanggal2">
+                            <button type="submit" name="submmit" style="font-size: 12px; margin-left: 10px; margin-bottom: 2px;" class="btn1 btn btn-outline-primary btn-sm">Lihat</button>
+                        </div>
+                    </div>
+                    </form>
 
- <br>
- <br>
-     <?php  echo" <a style='font-size: 12px'> Data yang Tampil  $tanggal_awal  sampai  $tanggal_akhir</a>" ?>
-     <br>
-     <br>
-     <br>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title" align="Center"><strong>Laporan Laba Rugi</strong></h3>
-                </div>
+                    <br>
+                    <br>
+                    <?php echo " <a style='font-size: 12px'> Data yang Tampil  $tanggal_awal  sampai  $tanggal_akhir</a>" ?>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title" align="Center"><strong>Laporan Laba Rugi</strong></h3>
+                                </div>
 
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-condensed"  style="color : black;">
-                            <thead>
-                                <tr>
-                                    <td><strong>Akun</strong></td>
-                                    <td class="text-left"><strong>Nama Akun</strong></td>
-                                    <td class="text-left"><strong>Debit</strong></td>
-                                    <td class="text-left"><strong>Kredit</strong></td>
-                                    <td class="text-right"><strong>Aksi</strong></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                <tr>
-                                    <td><strong>4-000</strong></td>
-                                    <td class="text-left"><strong>PENDAPATAN</strong></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <?php echo "<td class='text-right'></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>4-100</td>
-                                    <td class="text-left">Layanan Tindakan</td>
-                                    <td class="text-left"><?= formatuang($pendapatan_tindakan_seluruh); ?></td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRLayananTindakan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>4-110</td>
-                                    <td class="text-left">Penjualan Alat Kesehatan</td>
-                                    <td class="text-left"><?= formatuang($pendapatan_alkes_total); ?></td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPenjualanAlkes?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>4-120</td>
-                                    <td class="text-left">Penjualan Obat</td>
-                                    <td class="text-left"><?= formatuang($pendapatan_obat_total); ?></td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPenjualanObat?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                              
-                                <tr style="background-color:     #F0F8FF; ">
-                                    <td><strong>Total Pendapatan</strong></td>
-                                    <td class="thick-line"></td>
-                                    <td class="no-line text-left"><?= formatuang($total_pendapatan); ?></td>
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="thick-line"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>5-000</strong></td>
-                                    <td class="text-left"><strong>HARGA POKOK PENJUALAN</strong></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <?php echo "<td class='text-right'></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-100</td>
-                                    <td class="text-left">Pembelian Alat Kesehatan</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pembelian_alkes); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPembelianAlkes?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-110</td>
-                                    <td class="text-left">Pembelian Obat</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pembelian_obat); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPembelianObat?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr style="background-color:    #F0F8FF;  ">
-                                    <td><strong>Total Harga Pokok Penjualan</strong></td>
-                                    <td class="thick-line"></td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($total_harga_pokok); ?></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="thick-line"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr style="background-color: navy;  color:white;">
-                                    <td><strong>LABA KOTOR</strong></td>
-                                    <td class="thick-line"></td>
-                                    <?php
-                                   
-                                    if ($laba_kotor > 0) { ?>
-                                    
-                                    <td class="no-line text-left"><?= formatuang($laba_kotor); ?> </td>
-                                    <td class="no-line text-left"><?= formatuang(0); ?> </td>
-                                    <?php }
-                                    else if ($laba_kotor < 0) { ?>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-condensed" style="color : black;">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Akun</strong></td>
+                                                    <td class="text-left"><strong>Nama Akun</strong></td>
+                                                    <td class="text-left"><strong>Debit</strong></td>
+                                                    <td class="text-left"><strong>Kredit</strong></td>
+                                                    <td class="text-right"><strong>Aksi</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                                <tr>
+                                                    <td><strong>4-000</strong></td>
+                                                    <td class="text-left"><strong>PENDAPATAN</strong></td>
+                                                    <td class="text-left"></td>
+                                                    <td class="text-left"></td>
+                                                    <?php echo "<td class='text-right'></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>4-100</td>
+                                                    <td class="text-left">Layanan Tindakan</td>
+                                                    <td class="text-left"><?= formatuang($pendapatan_tindakan_seluruh); ?></td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRLayananTindakan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>4-110</td>
+                                                    <td class="text-left">Penjualan Alat Kesehatan</td>
+                                                    <td class="text-left"><?= formatuang($pendapatan_alkes_total); ?></td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPenjualanAlkes?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>4-120</td>
+                                                    <td class="text-left">Penjualan Obat</td>
+                                                    <td class="text-left"><?= formatuang($pendapatan_obat_total); ?></td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPenjualanObat?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
 
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <td class="no-line text-left"><?= formatuang($laba_kotor); ?></td>
-                                    <?php }
-                                    else if ($laba_kotor == 0) { ?>
+                                                <tr style="background-color:     #F0F8FF; ">
+                                                    <td><strong>Total Pendapatan</strong></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="no-line text-left"><?= formatuang($total_pendapatan); ?></td>
+                                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>5-000</strong></td>
+                                                    <td class="text-left"><strong>HARGA POKOK PENJUALAN</strong></td>
+                                                    <td class="text-left"></td>
+                                                    <td class="text-left"></td>
+                                                    <?php echo "<td class='text-right'></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-100</td>
+                                                    <td class="text-left">Pembelian Alat Kesehatan</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pembelian_alkes); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPembelianAlkes?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-110</td>
+                                                    <td class="text-left">Pembelian Obat</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pembelian_obat); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRPembelianObat?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-120</td>
+                                                    <td class="text-left">Potongan Harga</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($total_potongan_harga); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRincianPotongan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr style="background-color:    #F0F8FF;  ">
+                                                    <td><strong>Total Harga Pokok Penjualan</strong></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($total_harga_pokok); ?></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr style="background-color: navy;  color:white;">
+                                                    <td><strong>LABA KOTOR</strong></td>
+                                                    <td class="thick-line"></td>
+                                                    <?php
 
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <?php }
-                                    ?>
+                                                    if ($laba_kotor > 0) { ?>
+
+                                                        <td class="no-line text-left"><?= formatuang($laba_kotor); ?> </td>
+                                                        <td class="no-line text-left"><?= formatuang(0); ?> </td>
+                                                    <?php } else if ($laba_kotor < 0) { ?>
+
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                        <td class="no-line text-left"><?= formatuang($laba_kotor); ?></td>
+                                                    <?php } else if ($laba_kotor == 0) { ?>
+
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                    <?php }
+                                                    ?>
 
 
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="thick-line"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>5-500</strong></td>
-                                    <td class="text-left"><strong>BIAYA USAHA</strong></td>
-                                    <td class="text-left"></td>
-                                    <td class="text-left"></td>
-                                    <?php echo "<td class='text-right'></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-510</td>
-                                    <td class="text-left">Gaji Karyawan</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pengeluaran_gaji); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRGajiKaryawan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-510</td>
-                                    <td class="text-left">Gaji Dokter</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pembagian_dokter); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRGajiDokter?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-520</td>
-                                    <td class="text-left">Biaya Kantor</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pengeluaran_biaya_kantor); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRBiayaKantor?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-530</td>
-                                    <td class="text-left">Alat Tulis Kantor</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pengeluaran_atk); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRATK?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr>
-                                    <td>5-540</td>
-                                    <td class="text-left">Listrik & Telepon</td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($pengeluaran_listrik); ?></td>
-                                    <?php echo "<td class='text-right'><a href='RincianLR/VRListrik?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
-                                </tr>
-                                <tr style="background-color:    #F0F8FF; ">
-                                    <td><strong>Total Biaya Usaha</strong></td>
-                                    <td class="thick-line"></td>
-                                    <td class="text-left"><?= formatuang(0); ?></td>
-                                    <td class="text-left"><?= formatuang($total_pengeluaran); ?></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="thick-line"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="no-line text-left"></td>
-                                    <td class="thick-line"></td>
-                                </tr>
-                                <tr style="background-color: navy;  color:white;">
-                                    <td><strong>LABA BERSIH SEBELUM PAJAK</strong></td>
-                                    <td class="thick-line"></td>
-                                    <?php
-                                   
-                                    if ($laba_bersih_sebelum_pajak > 0) { ?>
-                                    
-                                    <td class="no-line text-left"><?= formatuang($laba_bersih_sebelum_pajak); ?> </td>
-                                    <td class="no-line text-left"><?= formatuang(0); ?> </td>
-                                    <?php }
-                                    else if ($laba_bersih_sebelum_pajak < 0) { ?>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>5-500</strong></td>
+                                                    <td class="text-left"><strong>BIAYA USAHA</strong></td>
+                                                    <td class="text-left"></td>
+                                                    <td class="text-left"></td>
+                                                    <?php echo "<td class='text-right'></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-510</td>
+                                                    <td class="text-left">Gaji Karyawan</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pengeluaran_gaji); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRGajiKaryawan?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-510</td>
+                                                    <td class="text-left">Gaji Dokter</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pembagian_dokter); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRGajiDokter?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-520</td>
+                                                    <td class="text-left">Biaya Kantor</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pengeluaran_biaya_kantor); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRBiayaKantor?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-530</td>
+                                                    <td class="text-left">Alat Tulis Kantor</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pengeluaran_atk); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRATK?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr>
+                                                    <td>5-540</td>
+                                                    <td class="text-left">Listrik & Telepon</td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($pengeluaran_listrik); ?></td>
+                                                    <?php echo "<td class='text-right'><a href='RincianLR/VRListrik?tanggal1=$tanggal_awal&tanggal2=$tanggal_akhir'>Rincian</a></td>"; ?>
+                                                </tr>
+                                                <tr style="background-color:    #F0F8FF; ">
+                                                    <td><strong>Total Biaya Usaha</strong></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="text-left"><?= formatuang(0); ?></td>
+                                                    <td class="text-left"><?= formatuang($total_pengeluaran); ?></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="thick-line"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="no-line text-left"></td>
+                                                    <td class="thick-line"></td>
+                                                </tr>
+                                                <tr style="background-color: navy;  color:white;">
+                                                    <td><strong>LABA BERSIH SEBELUM PAJAK</strong></td>
+                                                    <td class="thick-line"></td>
+                                                    <?php
 
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <td class="no-line text-left"><?= formatuang($laba_bersih_sebelum_pajak); ?></td>
+                                                    if ($laba_bersih_sebelum_pajak > 0) { ?>
 
-                                    <?php }
-                                    else if ($laba_bersih_sebelum_pajak == 0) { ?>
+                                                        <td class="no-line text-left"><?= formatuang($laba_bersih_sebelum_pajak); ?> </td>
+                                                        <td class="no-line text-left"><?= formatuang(0); ?> </td>
+                                                    <?php } else if ($laba_bersih_sebelum_pajak < 0) { ?>
 
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <td class="no-line text-left"><?= formatuang(0); ?></td>
-                                    <?php }
-                                    ?>
-                                    <td class="thick-line"></td>
-                                    
-                                </tr>
-                                
-                            </tbody>
-                        </table>
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                        <td class="no-line text-left"><?= formatuang($laba_bersih_sebelum_pajak); ?></td>
+
+                                                    <?php } else if ($laba_bersih_sebelum_pajak == 0) { ?>
+
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                        <td class="no-line text-left"><?= formatuang(0); ?></td>
+                                                    <?php }
+                                                    ?>
+                                                    <td class="thick-line"></td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
             </div>

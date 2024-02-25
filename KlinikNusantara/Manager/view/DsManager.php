@@ -26,11 +26,9 @@ if (isset($_GET['tanggal1'])) {
 } elseif (isset($_POST['tanggal1'])) {
     $tanggal_awal = $_POST['tanggal1'];
     $tanggal_akhir = $_POST['tanggal2'];
-    
 } else {
     $tanggal_awal = date('Y-m-d');
     $tanggal_akhir = date('Y-m-d');
-
 }
 
 
@@ -48,7 +46,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                             INNER JOIN riwayat_obat_perawatan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN obat d ON d.kode_obat=c.kode_obat
                                                                                                                             WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_obat ");
-                                                                                                                            
+
     $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , COUNT(nama_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                             INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
@@ -108,7 +106,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                             WHERE a.tanggal = '$tanggal_awal' AND e.jenis_pembayaran = 'Debit' ");
     $data_obat_debit = mysqli_fetch_assoc($sql_obat_debit);
     $pendapatan_obat_debit = $data_obat_debit['pendapatan_obat_debit'];
-    
+
     //tindakan 
     //sql tindakan total
     $sql_tindakan_seluruh = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_seluruh  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
@@ -137,10 +135,17 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
     $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                WHERE a.tanggal = '$tanggal_awal' ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
     $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
-    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
-
+    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit - $total_potongan_harga;
 } else {
     $table = mysqli_query($koneksi, "SELECT * FROM pembayaran e INNER JOIN perawatan f ON f.no_perawatan=e.no_perawatan INNER JOIN antrian a ON a.no_antrian=f.no_antrian INNER JOIN karyawan b ON a.id_dokter=b.id_karyawan INNER JOIN ruangan c ON c.kode_ruangan=a.kode_ruangan INNER JOIN pasien d ON d.id_pasien=a.id_pasien 
     WHERE tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
@@ -225,7 +230,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
-
+    
     //sql tindakan cash
     $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
@@ -244,16 +249,24 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
     $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
 
+        //sql potongan harga
+        $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+                                                                                                                    INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
+                                                                                                                    WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'  ");
+
+    $data_potongan_harga = mysqli_fetch_assoc($sql_potongan_harga);
+    $total_potongan_harga = $data_potongan_harga['total_potongan'];
+
     $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
-    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit;
+    $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit - $total_potongan_harga;
    
 }
 $no_urut1 = 0;
 $no_urut2 = 0;
 $no_urut3 = 0;
 
-
+$pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_harga;
 
 ?>
 <!DOCTYPE html>
@@ -276,16 +289,16 @@ $no_urut3 = 0;
     <!-- Custom styles for this template-->
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
 
-     <!-- Link Tabel -->
-     
+    <!-- Link Tabel -->
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
-    
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/bootstrap-select/dist/css/bootstrap-select.css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-select/dist/css/bootstrap-select.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         window.setTimeout("waktu()", 1000);
 
@@ -342,49 +355,49 @@ $no_urut3 = 0;
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-         <!-- Sidebar -->
-         <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
+        <!-- Sidebar -->
+        <ul class="navbar-nav  sidebar sidebar-dark accordion" style=" background-color: #300030" id="accordionSidebar">
 
-<!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
-    <div class="sidebar-brand-icon rotate-n-15">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="DsManager">
+                <div class="sidebar-brand-icon rotate-n-15">
 
-    </div>
-    <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
-</a>
-<br>
+                </div>
+                <div class="sidebar-brand-text mx-3"> <img style="margin-top: 50px; max-height: 55px; width: 100%;" src="../gambar/Logo Klinik.png"></div>
+            </a>
+            <br>
 
-<br>
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
+            <br>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-<!-- Nav Item - Dashboard -->
-<li class="nav-item active">
-    <a class="nav-link" href="DsManager">
-        <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
-</li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="DsManager">
+                    <i class="fas fa-fw fa-tachometer-alt" style="font-size: clamp(5px, 3vw, 15px);"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px);">Dashboard</span></a>
+            </li>
 
-<!-- Divider -->
-<hr class="sidebar-divider">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-<!-- Heading -->
-<div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
-    Menu Manager
-</div>
+            <!-- Heading -->
+            <div class="sidebar-heading" style="font-size: clamp(5px, 1vw, 22px); color:white;">
+                Menu Manager
+            </div>
 
-<!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
-        <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
-    </a>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VLabaRugi">Laba Rugi</a>
-        </div>
-    </div>
-</li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" 15 aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa-solid fa-cash-register" style="font-size: clamp(5px, 3vw, 15px); color:white;"></i>
+                    <span style="font-size: clamp(5px, 3vw, 15px); color:white;">Manager</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" style="font-size: clamp(5px, 3vw, 15px);" href="VLabaRugi">Laba Rugi</a>
+                    </div>
+                </div>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -505,9 +518,9 @@ $no_urut3 = 0;
                         </div>
                     </div>
                 </div>
-              
+
                 <div class="pinggir1" style="margin-right: 20px; margin-left: 20px;">
-                <?php echo "<form  method='POST' action='DsManager' style='margin-bottom: 15px;'>" ?>
+                    <?php echo "<form  method='POST' action='DsManager' style='margin-bottom: 15px;'>" ?>
                     <div>
                         <div align="left" style="margin-left: 20px;">
                             <input type="date" id="tanggal1" style="font-size: 14px" name="tanggal1">
@@ -517,7 +530,7 @@ $no_urut3 = 0;
                         </div>
                     </div>
                     </form>
-                <div class="row">
+                    <div class="row">
                         <!-- Tampilan tanggal -->
                         <div class="col-md-6">
                             <?php echo " <a style='font-size: 12px'> Data yang Tampil  $tanggal_awal</a>" ?>
@@ -531,15 +544,19 @@ $no_urut3 = 0;
                         <table id="example" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align='center'>
                             <thead>
                                 <tr>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
+                                <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Nama Pasien</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Nama Dokter</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Metode Pembayaran</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Jumlah Potongan Harga</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan Potongan</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">Total Tagihan setelah Potongan</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Total Pembayaran</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Kembalian</th>
 
-                                 
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -550,18 +567,21 @@ $no_urut3 = 0;
                                     $uang = "Rp " . number_format($angka, 2, ',', '.');
                                     return $uang;
                                 }
-                   
+
                                 ?>
                                 <?php while ($data = mysqli_fetch_array($table)) {
                                     $no_pembayaran = $data['no_pembayaran'];
                                     $no_antrian = $data['no_antrian'];
                                     $tanggal = $data['tanggal'];
                                     $nama_pasien = $data['nama_pasien'];
+                                    $nama_karyawan = $data['nama_karyawan'];
                                     $jenis_pembayaran = $data['jenis_pembayaran'];
                                     $jumlah_tagihan = $data['jumlah_tagihan'];
+                                    $total_potongan = $data['total_potongan'];
+                                    $jumlah_potongan = $data['jumlah_potongan'];
+                                    $jumlah_tagihan_potongan = $data['jumlah_tagihan_potongan'];
                                     $jumlah_bayar = $data['jumlah_bayar'];
-                                    $kembalian = $jumlah_bayar - $jumlah_tagihan;
-     
+                                    $kembalian = $jumlah_bayar - $jumlah_tagihan_potongan;
                                     $urut = $urut + 1;
 
 
@@ -569,14 +589,18 @@ $no_urut3 = 0;
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$urut</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$tanggal</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_pasien</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$nama_karyawan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' >$jenis_pembayaran</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_bayar); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($kembalian); ?> <?php echo"</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >$total_potongan %</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_potongan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_tagihan_potongan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($jumlah_bayar); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' >"; ?> <?= formatuang($kembalian); ?> <?php echo "</td>
                                   
                                     </tr>";
-                                }
-                                    ?>
+                                                                                                                        }
+                                                                                                                            ?>
 
                             </tbody>
                         </table>
@@ -685,137 +709,156 @@ $no_urut3 = 0;
                                 </tbody>
                                 </table>
 
-                        </div> */?>
-                        <div class="col-md-12">
-                
-                                <h6 align="Center">Rincian Tindakan</h6>
-                                <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
-                                <thead align = 'center'>
-                                    <tr>
-                                    <th  style='font-size: 12px'>No</th>
-                                    <th  style='font-size: 12px'>Nama Tindakan</th>
-                                    <th  style='font-size: 12px'>Jumlah Tindakan</th>
-                                    <th  style='font-size: 12px'>Harga</th>
-                                    <th  style='font-size: 12px'>Total Pendapatan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while($data = mysqli_fetch_array($table4)){
+                        </div> */ ?>
+                    <div class="col-md-12">
+
+                        <h6 align="Center">Rincian Tindakan</h6>
+                        <table id="example" class="table-sm table-striped table-bordered dt-responsive nowrap" style="width:100%; ">
+                            <thead align='center'>
+                                <tr>
+                                    <th style='font-size: 12px'>No</th>
+                                    <th style='font-size: 12px'>Nama Tindakan</th>
+                                    <th style='font-size: 12px'>Jumlah Tindakan</th>
+                                    <th style='font-size: 12px'>Harga</th>
+                                    <th style='font-size: 12px'>Total Pendapatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($data = mysqli_fetch_array($table4)) {
                                     $harga_tindakan = $data['harga_tindakan'];
-                                    $nama_tindakan =$data['nama_tindakan'];
-                    
+                                    $nama_tindakan = $data['nama_tindakan'];
+
                                     $total_tindakan = $data['total_tindakan'];
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
-                                    $no_urut3 += 1 ;
+                                    $no_urut3 += 1;
 
                                     echo "<tr>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$no_urut3</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$nama_tindakan</td>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$total_tindakan</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($harga_tindakan); ?> <?php echo"</td>
-                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo"</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($harga_tindakan); ?> <?php echo "</td>
+                                    <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo "</td>
                                                            
                                 </tr>";
-                                }
-                                
-                                ?>
-                                
-                                <tr> 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Cash</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
+                                                                                                                                                }
+
+                                                                                                                                                    ?>
+
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Cash</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_cash); ?></th>
                                 </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total Debit</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Debit</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_debit); ?></th>
                                 </tr>
-                                <tr > 
-                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align = "center">Total</th>
-                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF"   align = "center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Potongan Harga</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($total_potongan_harga); ?></th>
                                 </tr>
-                                
-                                
+                                <tr>
+                                    <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);" bgcolor="#F0F8FF" align="center"><?= formatuang($pendapatan_tindakan_seluruh); ?></th>
+                                </tr>
 
-                                </tbody>
-                                </table>
 
-                        </div>
+
+                            </tbody>
+                        </table>
+
                     </div>
-                   
-                    
-                    <br>
-                    <hr>
-                    <br>
-                    
-                    
-                    <div class="row" style="margin-right: 20px; margin-left: 20px;">
-                    <div class="col-xl-4 col-md-6 mb-4">
+              
+
+                <br>
+                <hr>
+                <br>
+
+
+                <div class="row" style="margin-right: 20px; margin-left: 20px;">
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Pendapatan Cash</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=  formatuang($total_pendapatan_cash) ?></div>
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Pendapatan Cash</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_cash) ?></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Pendapatan Debit</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Pendapatan Debit</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Total Pendapatan</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?=formatuang($pendapatan_tindakan_seluruh)?></div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                            </div>
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Total Potongan Harga</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_potongan_harga) ?></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Total Pendapatan</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($pendapatan_tindakan_seluruh) ?></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    </div>
-                    <br><br>
-                    </div> 
-
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="footer" style="background-color:#601848; height: 55px; padding-top: 15px; ">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span style="color:white; font-size: 12px;"></span>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
+                <br><br>
+            </div>
+
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="footer" style="background-color:#601848; height: 55px; padding-top: 15px; ">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span style="color:white; font-size: 12px;"></span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -844,32 +887,32 @@ $no_urut3 = 0;
         </div>
     </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
-<script src="/sbadmin/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/sbadmin/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="/sbadmin/js/sb-admin-2.min.js"></script>
-<script src="/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<!-- Tabel -->
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
-<script>
+    <!-- Custom scripts for all pages-->
+    <script src="/sbadmin/js/sb-admin-2.min.js"></script>
+    <script src="/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <!-- Tabel -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+    <script>
         $(document).ready(function() {
             var table = $('#example').DataTable({
                 lengthChange: false,
