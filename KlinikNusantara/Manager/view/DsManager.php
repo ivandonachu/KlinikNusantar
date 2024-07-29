@@ -230,7 +230,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' ");
     $data_tindakan_seluruh = mysqli_fetch_assoc($sql_tindakan_seluruh);
     $pendapatan_tindakan_seluruh = $data_tindakan_seluruh['pendapatan_tindakan_seluruh'];
-    
+
     //sql tindakan cash
     $sql_tindakan_cash = mysqli_query($koneksi, "SELECT  SUM(jumlah) AS pendapatan_tindakan_cash  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
@@ -249,8 +249,8 @@ if ($tanggal_awal == $tanggal_akhir) {
     $data_tindakan_debit = mysqli_fetch_assoc($sql_tindakan_debit);
     $pendapatan_tindakan_debit = $data_tindakan_debit['pendapatan_tindakan_debit'];
 
-        //sql potongan harga
-        $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    //sql potongan harga
+    $sql_potongan_harga = mysqli_query($koneksi, "SELECT  SUM(jumlah_potongan) AS total_potongan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                     INNER JOIN pembayaran e ON e.no_perawatan=b.no_perawatan
                                                                                                                     WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'  ");
 
@@ -260,7 +260,6 @@ if ($tanggal_awal == $tanggal_akhir) {
     $total_pendapatan_cash = $pendapatan_alkes_cash + $pendapatan_obat_cash + $pendapatan_tindakan_cash;
     $total_pendapatan_debit = $pendapatan_alkes_debit + $pendapatan_obat_debit + $pendapatan_tindakan_debit;
     $total_pendapatan = $total_pendapatan_cash + $total_pendapatan_debit - $total_potongan_harga;
-   
 }
 $no_urut1 = 0;
 $no_urut2 = 0;
@@ -544,7 +543,7 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
                         <table id="example" class="table-sm table-striped table-bordered  nowrap" style="width:auto" align='center'>
                             <thead>
                                 <tr>
-                                <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
+                                    <th style="font-size: clamp(12px, 1vw, 15px);">No</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Tanggal</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Nama Pasien</th>
                                     <th style="font-size: clamp(12px, 1vw, 15px);">Nama Dokter</th>
@@ -730,6 +729,7 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
 
                                     $total_tindakan = $data['total_tindakan'];
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
+                                    $total_tindakan =  $pendapatan_tindakan / $harga_tindakan;
                                     $no_urut3 += 1;
 
                                     echo "<tr>
@@ -740,9 +740,9 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center' >"; ?> <?= formatuang($pendapatan_tindakan); ?> <?php echo "</td>
                                                            
                                 </tr>";
-                                                                                                                                                }
+                                                                                                                                }
 
-                                                                                                                                                    ?>
+                                                                                                                                    ?>
 
                                 <tr>
                                     <th colspan="4" style="font-size: clamp(12px, 1vw, 15px);" align="center">Total Cash</th>
@@ -767,98 +767,98 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
                         </table>
 
                     </div>
-              
-
-                <br>
-                <hr>
-                <br>
 
 
-                <div class="row" style="margin-right: 20px; margin-left: 20px;">
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Pendapatan Cash</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_cash) ?></div>
+                    <br>
+                    <hr>
+                    <br>
+
+
+                    <div class="row" style="margin-right: 20px; margin-left: 20px;">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Pendapatan Cash</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_cash) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Pendapatan Debit</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total Potongan Harga</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_potongan_harga) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total Pendapatan</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($pendapatan_tindakan_seluruh) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Pendapatan Debit</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_pendapatan_debit) ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Total Potongan Harga</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($total_potongan_harga) ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Total Pendapatan</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= formatuang($pendapatan_tindakan_seluruh) ?></div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <br><br>
+                </div>
+
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="footer" style="background-color:#601848; height: 55px; padding-top: 15px; ">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span style="color:white; font-size: 12px;"></span>
                     </div>
                 </div>
-                <br><br>
-            </div>
-
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer class="footer" style="background-color:#601848; height: 55px; padding-top: 15px; ">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span style="color:white; font-size: 12px;"></span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
