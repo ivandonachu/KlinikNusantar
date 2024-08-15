@@ -47,7 +47,7 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                             INNER JOIN obat d ON d.kode_obat=c.kode_obat
                                                                                                                             WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_obat ");
 
-    $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , COUNT(nama_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan ,  SUM(qty_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                             INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
                                                                                                                              WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_tindakan ");
@@ -727,7 +727,7 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
                                                 $total_tindakan =$data['total_tindakan'];
                                                 $harga_tindakan = $data['harga_tindakan'];
                                                 $nama_tindakan = $data['nama_tindakan'];
-                                                $pendapatan_tindakan = $data['pendapatan_tindakan'];
+                                                $pendapatan_tindakan = $total_tindakan * $harga_tindakan;
                                        
                                     $no_urut3 += 1;
 

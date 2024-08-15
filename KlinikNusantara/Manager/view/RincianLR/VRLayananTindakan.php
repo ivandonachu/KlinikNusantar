@@ -70,7 +70,7 @@ if ($tanggal_awal == $tanggal_akhir) {
 } else {
    
 
-    $table = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan , SUM(qty_tindakan) AS total_tindakan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $table = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan ,  SUM(qty_tindakan) AS total_tindakan  FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                                                                         INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                                                                         INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
                                                                                                                                                                         WHERE a.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir' GROUP BY d.nama_tindakan ");
@@ -319,11 +319,10 @@ function formatuang($angka)
                                 <tbody>
                                     <?php while($data = mysqli_fetch_array($table)){
                                         
-                                    $total_tindakan =0;
+                                    $total_tindakan = $data['total_tindakan'];
                                     $harga_tindakan = $data['harga_tindakan'];
                                     $nama_tindakan =$data['nama_tindakan'];
-                                    $pendapatan_tindakan = $data['pendapatan_tindakan'];
-                                    $total_tindakan =  $pendapatan_tindakan/$harga_tindakan;
+                                    $pendapatan_tindakan = $total_tindakan * $harga_tindakan;
                                    
                                     $no_urut += 1 ;
 
