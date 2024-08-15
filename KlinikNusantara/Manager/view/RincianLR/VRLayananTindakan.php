@@ -322,9 +322,9 @@ function formatuang($angka)
                                     $total_tindakan =0;
                                     $harga_tindakan = $data['harga_tindakan'];
                                     $nama_tindakan =$data['nama_tindakan'];
-                    
-                                    $total_tindakan =  $pendapatan_tindakan/$harga_tindakan;
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
+                                    $total_tindakan =  $pendapatan_tindakan/$harga_tindakan;
+                                   
                                     $no_urut += 1 ;
 
                               
