@@ -318,12 +318,17 @@ function formatuang($angka)
                                 </thead>
                                 <tbody>
                                     <?php while($data = mysqli_fetch_array($table)){
+                                        
+                                    $total_tindakan =0;
                                     $harga_tindakan = $data['harga_tindakan'];
                                     $nama_tindakan =$data['nama_tindakan'];
                     
-                                    $total_tindakan = $data['total_tindakan'];
+                                    $total_tindakan =  $pendapatan_tindakan/$harga_tindakan;
                                     $pendapatan_tindakan = $data['pendapatan_tindakan'];
                                     $no_urut += 1 ;
+
+                              
+                                    
 
                                     echo "<tr>
                                     <td style='font-size: clamp(12px, 1vw, 15px);' align = 'center'>$no_urut</td>
