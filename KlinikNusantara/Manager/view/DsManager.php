@@ -726,6 +726,7 @@ $pendapatan_tindakan_seluruh = $pendapatan_tindakan_seluruh - $total_potongan_ha
                                 <?php while ($data = mysqli_fetch_array($table4)) {
                                                 $total_tindakan =$data['total_tindakan'];
                                                 $harga_tindakan = $data['harga_tindakan'];
+                                                
                                                 $nama_tindakan = $data['nama_tindakan'];
                                                 $pendapatan_tindakan = $total_tindakan * $harga_tindakan;
                                        
