@@ -52,10 +52,10 @@ if ($tanggal_awal == $tanggal_akhir) {
                                                                                                                             INNER JOIN obat d ON d.kode_obat=c.kode_obat
                                                                                                                             WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_obat ");
 
-    $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan ,  SUM(qty_tindakan) AS total_tindakan AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
+    $table4 = mysqli_query($koneksi, "SELECT harga_tindakan, nama_tindakan, SUM(jumlah) AS pendapatan_tindakan ,  SUM(qty_tindakan) AS total_tindakan FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
                                                                                                                             INNER JOIN riwayat_tindakan c ON c.no_perawatan=b.no_perawatan 
                                                                                                                             INNER JOIN tindakan d ON d.kode_tindakan=c.kode_tindakan
-                                                                                                                             WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_tindakan ");
+                                                                                                                            WHERE a.tanggal = '$tanggal_awal' GROUP BY d.nama_tindakan ");
     //alat kesehatan
     //sql total seluruh pendapatan alkes
     $sql_alkes_seluruh = mysqli_query($koneksi, "SELECT SUM(jumlah) AS pendapatan_alkes_total FROM antrian a INNER JOIN perawatan b ON a.no_antrian=b.no_antrian 
