@@ -207,6 +207,14 @@ if($obat_4 != ""){
     $jumlah_potongan= (($total_pembayaran*$potongan_bayar)/100);
     $total_pembayaran_postongan_harga = $total_pembayaran - $jumlah_potongan ;
 
+    $sql_pembayaran = mysqli_query($koneksi, "SELECT no_perawatan FROM pembayaran WHERE no_perawatan = '$no_perawatan'");
+
+    if(mysqli_num_rows($sql_pembayaran) == 1 ){
+    
+
+        echo "<script>alert('Pembayaran sudah dilakukan'); window.location='../view/VPembayaran';</script>";exit;
+          }
+    
        mysqli_query($koneksi,"INSERT INTO pembayaran VALUES('','$no_perawatan','$jenis_pembayaran','$total_pembayaran','$potongan_bayar','$jumlah_potongan','$total_pembayaran_postongan_harga','$total_bayar')");
        mysqli_query($koneksi,"UPDATE antrian SET status_antrian = '$status_antrian' WHERE no_antrian =  '$no_antrian'");
                    	
